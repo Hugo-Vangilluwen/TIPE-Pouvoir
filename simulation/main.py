@@ -10,10 +10,10 @@ import votant as vo
 c = ['A', 'B', 'C', 'D']
 test = si.SondageIteratif(c)
 for _ in range(100):
-    test.ajout_votant(vo.VotantSeuil(0.25))
+    test.ajout_votant(vo.VotantGagnantPotentiel())
 
 test.initialiser()
 print(test)
-for i in range(3):
+for i in range(10):
     test.iterer()
     print(test)
