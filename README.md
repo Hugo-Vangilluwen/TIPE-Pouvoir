@@ -1,13 +1,3 @@
-# TIPE sur les sondages
+# TIPE sur les indices de pouvoir
 
-Notre TIPE de MP* sur l'influence des sondages sur les bulletins des votants.
-
-
-
-Les différentes modélisations de votants possibles :
-
-- Seuil
-
-- Partisan
-
-- Gagnant potentiel
+Notre TIPE de MP* sur les indices de pouvoir.
