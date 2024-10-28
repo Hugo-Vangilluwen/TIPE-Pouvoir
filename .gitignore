@@ -2,6 +2,4 @@
 *.aux
 *.synctex.gz
 
-brouillon
 simulation/__pycache__
-articles
