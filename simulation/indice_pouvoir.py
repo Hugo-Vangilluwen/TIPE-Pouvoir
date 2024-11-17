@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
 """
 Calcul de l'indice de pouvoir
 
@@ -8,9 +9,9 @@ Calcul de l'indice de pouvoir
 
 
 import math
-import multiprocessing.pool
 import matplotlib.pyplot as plt
-import time
+
+import polynome as poly
 
 
 def parties(ensemble):
@@ -34,27 +35,7 @@ def parties(ensemble):
     return res
 
 
-class WorkerBanzhaf:
-    """Worker class"""
-
-    def __init__(self, quota, poids, votants):
-        self.quota = quota
-        self.poids = poids
-        self.votants = votants
-
-    def __call__(self, gagnantes):
-        decisif = dict.fromkeys(self.votants, 0)
-
-        for coalition, somme in gagnantes:
-            for v in coalition:
-                if (somme - self.poids[v]) < self.quota:
-                    decisif[v] += 1
-
-        return decisif
-
-
-
-def indice_Banzhaf(quota, poids):
+def indice_Banzhaf_naif(quota, poids):
     """Calcule l'indice de pouvoir de Banzhaf
     Algorithme naïf"""
     assert isinstance(quota, int)
@@ -72,55 +53,60 @@ def indice_Banzhaf(quota, poids):
         if somme >= quota:
             gagnantes.append((coalition, somme))
 
-    # print(gagnantes)
-
-    # Sans paraléllisme
     for coalition, somme in gagnantes:
         for v in coalition:
             if (somme - poids[v]) < quota:
                 decisif[v] += 1
 
-    # Avec paraléllisme
-    # print(gagnantes)
-    # g = len(gagnantes)
-    # WB = WorkerBanzhaf(quota, poids, votants)
-    # n = 8
-    # iterable = []
-    # for i in range(n):
-    #     iterable.append(gagnantes[int(g*i/n):int(g*(i+1)/n)])
-    # print(iterable)
-    # with multiprocessing.pool.Pool(processes=4) as mypool:
-    #     for sous_decisif in mypool.map(
-    #             func=WB,
-    #             # iterable=gagnantes
-    #             iterable=iterable):
-    #         for k, v in sous_decisif.items():
-    #             decisif[k] += v
-
-
     somme_d = 0
     for v in votants:
         somme_d += decisif[v]
 
-    # print(decisif)
-
     return {v: d/somme_d for v, d in decisif.items()}
 
 
+def indice_Banzhaf(quota, poids):
+    """Calcule l'indice de Banzhaf
+    Algorithme de Brams-Affuso avec les séries génératrices"""
+    assert isinstance(quota, int)
+    assert isinstance(poids, dict)
+    iba = {} # indice de Banzhaf absolu
+    votants = poids.keys()
 
-def indice_parlement(total, sieges):
-    """Calcule l'indice de pouvoir des différents groupes dans une assemblée"""
-    assert sum(sieges.values()) == total, f"{sum(sieges.values())} <> {total}"
+    for v in votants:
+        g = poly.Polynome([1]) # génératrice
+        for w in votants:
+            if v != w:
+                g *= poly.Polynome([1]) + poly.monome(poids[w])
+
+        iba[v] = 0
+        for i in range(quota - poids[v], min(quota, g.degre + 1)):
+            iba[v] += g.coef[i]
+
+    somme_iba = 0
+    for v in votants:
+        somme_iba += iba[v]
+
+    return {v: i/somme_iba for v, i in iba.items()}
+
+
+def indice_parlement(total, sieges, quota=1/2, verbose=False):
+    """Calcule l'indice de pouvoir des différents groupes dans une assemblée
+    Le quota s'exprime en pourcentage
+    Mettre verbose à true pour afficher les résultats détaillés"""
+    assert sum(sieges.values()) == total, f"{sum(sieges.values())} != {total}"
 
     ratio = {pays: s/total for pays, s in sieges.items()}
-    pouvoir = indice_Banzhaf(math.ceil(total/2), sieges)
-    print(f"ratio : {ratio}")
-    print(f"pouvoir : {pouvoir}")
+    pouvoir = indice_Banzhaf(math.ceil(total*quota), sieges)
 
     difference = {}
     for pays in sieges.keys():
         difference[pays] = (pouvoir[pays] - ratio[pays]) / ratio[pays]
-    print(f"écart relatif: {difference}")
+
+    if verbose:
+        print(f"ratio : {ratio}")
+        print(f"pouvoir : {pouvoir}")
+        print(f"écart relatif: {difference}")
 
     fig, axarr = plt.subplots(1, 2)
     axarr[0].pie(ratio.values(), labels=ratio.keys())
@@ -159,16 +145,15 @@ def indice_parlement_UE():
         "Finlande": 15,
         "Slovaquie": 15,
         "Irlande": 14,
-        # "Croatie": 12,
-        # "Lituanie": 11,
-        # "Lettonie": 9,
-        # "Slovénie": 9,
-        # "Estonie": 7,
-        # "Chypre": 6,
-        # "Luxembourg": 6,
-        # "Malte": 6
+        "Croatie": 12,
+        "Lituanie": 11,
+        "Lettonie": 9,
+        "Slovénie": 9,
+        "Estonie": 7,
+        "Chypre": 6,
+        "Luxembourg": 6,
+        "Malte": 6
     }
-    # assert sum(sieges.values()) == total
     total = sum(sieges.values())
 
     indice_parlement(total, sieges)
@@ -196,7 +181,7 @@ def indice_parlement_francais():
     indice_parlement(total, sieges)
 
 
-def indice_parlement_francais2():
+def indice_parlement_francais_alliance():
     """Source:
     https://www2.assemblee-nationale.fr/instances/liste/groupes_politiques/effectif"""
     total = 577 - 1  # 1 Vacant
@@ -211,15 +196,3 @@ def indice_parlement_francais2():
 
     indice_parlement(total, sieges_alliance)
 
-start = time.process_time()
-
-# trop long impossible à calculer avec les 27 pays
-indice_parlement_UE()
-# indice_parlement_francais()
-# indice_parlement_francais2()
-# print(indice_Banzhaf(5, {1:3,2:2,3:1,4:1,5:1}))
-# print(indice_Banzhaf(5, {1: 3, 2:3}))
-
-end = time.process_time()
-
-print(end - start)
