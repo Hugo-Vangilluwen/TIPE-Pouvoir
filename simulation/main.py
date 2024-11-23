@@ -10,18 +10,16 @@ Fichier principal
 import time
 
 import indice_pouvoir as ip
-import polynome as poly
+import vote_pondere as vp
+
 
 def main():
     start = time.process_time()
 
-    ip.indice_parlement_UE()
-    ip.indice_parlement_francais()
-    ip.indice_parlement_francais_alliance()
-    # print(ip.indice_Banzhaf(5, {1:3,2:2,3:1,4:1,5:1}))
-    # print(ip.indice_Banzhaf(5, {1: 3, 2:3}))
-    # print(ip.indice_Banzhaf(6, {1: 5, 2: 4, 3: 1}))
-    # print(ip.indice_Banzhaf_naif(6, {1: 5, 2: 4, 3: 1}))
+    # ip.indice_parlement_UE()
+    # ip.indice_parlement_francais()
+    # ip.indice_parlement_francais_alliance()
+    vp.poids_parlement_UE()
 
     end = time.process_time()
 

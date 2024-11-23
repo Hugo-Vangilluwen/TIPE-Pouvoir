@@ -62,6 +62,8 @@ def indice_Banzhaf_naif(quota, poids):
     for v in votants:
         somme_d += decisif[v]
 
+    if somme_d == 0:
+        return {v: 0 for v in decisif}
     return {v: d/somme_d for v, d in decisif.items()}
 
 
@@ -87,21 +89,23 @@ def indice_Banzhaf(quota, poids):
     for v in votants:
         somme_iba += iba[v]
 
+    if somme_iba == 0:
+        return{v: 0 for v in iba}
     return {v: i/somme_iba for v, i in iba.items()}
 
 
-def indice_parlement(total, sieges, quota=1/2, verbose=False):
+def indice_parlement(total, sieges, quota_relatif=1/2, verbose=False):
     """Calcule l'indice de pouvoir des différents groupes dans une assemblée
     Le quota s'exprime en pourcentage
     Mettre verbose à true pour afficher les résultats détaillés"""
     assert sum(sieges.values()) == total, f"{sum(sieges.values())} != {total}"
 
     ratio = {pays: s/total for pays, s in sieges.items()}
-    pouvoir = indice_Banzhaf(math.ceil(total*quota), sieges)
+    pouvoir = indice_Banzhaf(math.ceil(total*quota_relatif), sieges)
 
     difference = {}
-    for pays in sieges.keys():
-        difference[pays] = (pouvoir[pays] - ratio[pays]) / ratio[pays]
+    for groupe in sieges.keys():
+        difference[groupe] = (pouvoir[groupe] - ratio[groupe]) / ratio[groupe]
 
     if verbose:
         print(f"ratio : {ratio}")
@@ -154,7 +158,6 @@ def indice_parlement_UE():
         "Luxembourg": 6,
         "Malte": 6
     }
-    total = sum(sieges.values())
 
     indice_parlement(total, sieges)
 
