@@ -11,6 +11,7 @@ Calcul de l'indice de pouvoir
 import math
 import matplotlib.pyplot as plt
 
+import utils
 import polynome as poly
 
 
@@ -94,11 +95,11 @@ def indice_Banzhaf(quota, poids):
     return {v: i/somme_iba for v, i in iba.items()}
 
 
-def indice_parlement(total, sieges, quota_relatif=1/2, verbose=False):
+def indice_parlement(sieges, quota_relatif=1/2, verbose=False, returned=False):
     """Calcule l'indice de pouvoir des différents groupes dans une assemblée
     Le quota s'exprime en pourcentage
     Mettre verbose à true pour afficher les résultats détaillés"""
-    assert sum(sieges.values()) == total, f"{sum(sieges.values())} != {total}"
+    total = sum(sieges.values())
 
     ratio = {pays: s/total for pays, s in sieges.items()}
     pouvoir = indice_Banzhaf(math.ceil(total*quota_relatif), sieges)
@@ -108,9 +109,9 @@ def indice_parlement(total, sieges, quota_relatif=1/2, verbose=False):
         difference[groupe] = (pouvoir[groupe] - ratio[groupe]) / ratio[groupe]
 
     if verbose:
-        print(f"ratio : {ratio}")
-        print(f"pouvoir : {pouvoir}")
-        print(f"écart relatif: {difference}")
+        utils.print_dictionnaire(ratio, "ratio")
+        utils.print_dictionnaire(pouvoir, "pouvoir")
+        utils.print_dictionnaire(difference, "différence")
 
     fig, axarr = plt.subplots(1, 2)
     axarr[0].pie(ratio.values(), labels=ratio.keys())
@@ -122,6 +123,9 @@ def indice_parlement(total, sieges, quota_relatif=1/2, verbose=False):
     plt.bar(difference.keys(), difference.values())
     plt.title("Écart relatif entre le pouvoir et la représentation")
     plt.show()
+
+    if returned:
+        return pouvoir
 
 
 def indice_parlement_UE():
@@ -159,7 +163,7 @@ def indice_parlement_UE():
         "Malte": 6
     }
 
-    indice_parlement(total, sieges)
+    indice_parlement(sieges)
 
 
 def indice_parlement_francais():
@@ -181,7 +185,7 @@ def indice_parlement_francais():
         "NI": 10
     }
 
-    indice_parlement(total, sieges)
+    indice_parlement(sieges)
 
 
 def indice_parlement_francais_alliance():
@@ -197,5 +201,5 @@ def indice_parlement_francais_alliance():
         "NI": 10
     }
 
-    indice_parlement(total, sieges_alliance)
+    indice_parlement(sieges_alliance)
 

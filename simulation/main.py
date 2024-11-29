@@ -11,6 +11,7 @@ import time
 
 import indice_pouvoir as ip
 import vote_pondere as vp
+import penrose62
 
 
 def main():
@@ -19,7 +20,8 @@ def main():
     # ip.indice_parlement_UE()
     # ip.indice_parlement_francais()
     # ip.indice_parlement_francais_alliance()
-    vp.poids_parlement_UE()
+    # vp.poids_parlement_UE()
+    penrose62.test_indice_Banzhaf()
 
     end = time.process_time()
 
