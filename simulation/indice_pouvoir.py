@@ -68,12 +68,13 @@ def indice_Banzhaf_naif(quota, poids):
     return {v: d/somme_d for v, d in decisif.items()}
 
 
-def indice_Banzhaf(quota, poids):
-    """Calcule l'indice de Banzhaf
+
+def indice_Banzhaf_brut(quota, poids):
+    """Calcule l'indice de Banzhaf brut
     Algorithme de Brams-Affuso avec les séries génératrices"""
     assert isinstance(quota, int)
     assert isinstance(poids, dict)
-    iba = {} # indice de Banzhaf absolu
+    ibb = {} # indice de Banzhaf brut
     votants = poids.keys()
 
     for v in votants:
@@ -82,27 +83,56 @@ def indice_Banzhaf(quota, poids):
             if v != w:
                 g *= poly.Polynome([1]) + poly.monome(poids[w])
 
-        iba[v] = 0
+        ibb[v] = 0
         for i in range(quota - poids[v], min(quota, g.degre + 1)):
-            iba[v] += g.coef[i]
+            ibb[v] += g.coef[i]
 
-    somme_iba = 0
+    return ibb
+
+def indice_Banzhaf(quota, poids):
+    """Calcule l'indice de Banzhaf normalisé
+    Algorithme de Brams-Affuso avec les séries génératrices"""
+    assert isinstance(quota, int)
+    assert isinstance(poids, dict)
+    ibb = indice_Banzhaf_brut(quota, poids) # indice de Banzhaf brut
+    votants = poids.keys()
+
+    somme_ibb = 0
     for v in votants:
-        somme_iba += iba[v]
+        somme_ibb += ibb[v]
 
-    if somme_iba == 0:
-        return{v: 0 for v in iba}
-    return {v: i/somme_iba for v, i in iba.items()}
+    if somme_ibb == 0:
+        return {v: 0 for v in ibb}
+    return {v: i/somme_ibb for v, i in ibb.items()}
 
 
-def indice_parlement(sieges, quota_relatif=1/2, verbose=False, returned=False):
+def indice_Banzhaf_relatif(quota, poids):
+    """Calcule l'indice de Banzhaf relatif
+    Algorithme de Brams-Affuso avec les séries génératrices"""
+    assert isinstance(quota, int)
+    assert isinstance(poids, dict)
+    ibb = indice_Banzhaf_brut(quota, poids) # indice de Banzhaf brut
+    nb_votants = 2**(len(poids)-1)
+
+    if nb_votants == 0:
+        return {v: 0 for v in ibb}
+    return {v: i/nb_votants for v, i in ibb.items()}
+
+
+def sensibilite(quota, poids):
+    """"Calcule la sensibilité ou pouvoir d'une collectivité à agir"""
+    return sum(indice_Banzhaf_brut(quota, poids).values()) / 2**(len(poids)-1)
+
+
+def indice_parlement(sieges, quota_relatif=1/2, verbose=False, plotted=True):
     """Calcule l'indice de pouvoir des différents groupes dans une assemblée
     Le quota s'exprime en pourcentage
     Mettre verbose à true pour afficher les résultats détaillés"""
     total = sum(sieges.values())
+    quota = math.ceil(total*quota_relatif)
 
     ratio = {pays: s/total for pays, s in sieges.items()}
-    pouvoir = indice_Banzhaf(math.ceil(total*quota_relatif), sieges)
+    pouvoir = indice_Banzhaf(quota, sieges)
 
     difference = {}
     for groupe in sieges.keys():
@@ -112,27 +142,28 @@ def indice_parlement(sieges, quota_relatif=1/2, verbose=False, returned=False):
         utils.print_dictionnaire(ratio, "ratio")
         utils.print_dictionnaire(pouvoir, "pouvoir")
         utils.print_dictionnaire(difference, "différence")
+    print("sensibilité : ", sensibilite(quota, sieges))
 
-    fig, axarr = plt.subplots(1, 2)
-    axarr[0].pie(ratio.values(), labels=ratio.keys())
-    axarr[0].set_title("Ratio de sièges")
-    axarr[1].pie(pouvoir.values(), labels=pouvoir.keys())
-    axarr[1].set_title("Indice de pouvoir de Banzhaf")
-    plt.show()
+    if plotted:
+        fig, axarr = plt.subplots(1, 2)
+        axarr[0].pie(ratio.values(), labels=ratio.keys())
+        axarr[0].set_title("Ratio de sièges")
+        axarr[1].pie(pouvoir.values(), labels=pouvoir.keys())
+        axarr[1].set_title("Indice de pouvoir de Banzhaf")
+        plt.show()
 
-    plt.bar(difference.keys(), difference.values())
-    plt.title("Écart relatif entre le pouvoir et la représentation")
-    plt.show()
+        plt.bar(difference.keys(), difference.values())
+        plt.title("Écart relatif entre le pouvoir et la représentation")
+        plt.show()
 
-    if returned:
-        return pouvoir
+    return pouvoir
 
 
 def indice_parlement_UE():
     """Source:
     https://fr.wikipedia.org/wiki/Parlement_europ%C3%A9en#Composition
     """
-    total = 720
+    # total = 720
     sieges = {
         "Allemagne": 96,
         "France": 81,
@@ -169,7 +200,7 @@ def indice_parlement_UE():
 def indice_parlement_francais():
     """Source:
     https://www2.assemblee-nationale.fr/instances/liste/groupes_politiques/effectif"""
-    total = 577 - 1  # 1 Vacant
+    # total = 577 - 1  # 1 Vacant
     sieges = {
         "GDR": 17,
         "LFI-NFP": 71,
@@ -191,7 +222,7 @@ def indice_parlement_francais():
 def indice_parlement_francais_alliance():
     """Source:
     https://www2.assemblee-nationale.fr/instances/liste/groupes_politiques/effectif"""
-    total = 577 - 1  # 1 Vacant
+    # total = 577 - 1  # 1 Vacant
     sieges_alliance = {
         "NFP": 192,
         "ENS": 164,

@@ -20,8 +20,8 @@ def main():
     # ip.indice_parlement_UE()
     # ip.indice_parlement_francais()
     # ip.indice_parlement_francais_alliance()
-    # vp.poids_parlement_UE()
-    penrose62.test_indice_Banzhaf()
+    print("différence maximale absolue/relative", vp.poids_parlement_UE())
+    # penrose62.test_indice_Banzhaf()
 
     end = time.process_time()
 

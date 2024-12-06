@@ -76,7 +76,7 @@ class Polynome:
 
     def __mul__(self, p):
         """Multiplie deux polynômes"""
-        if isinstance(p, float) or isinstance(p, int):
+        if isinstance(p, (float,int)):
             res = self.copier()
             for i in range(self.degre + 1):
                 res.coef[i] *= p
@@ -86,7 +86,7 @@ class Polynome:
                 for i in range(p.degre + 1):
                     pp = self.copier()
                     pp *= p.coef[i]
-                    for j in range(i):
+                    for _ in range(i):
                         pp.coef.insert(0, 0)
                     res += pp
         else:
@@ -102,8 +102,4 @@ class Polynome:
 
 def monome(n):
     """Calcule un monôme de degré n."""
-    res = []
-    for i in range(n):
-        res.append(0)
-    res.append(1)
-    return Polynome(res)
+    return Polynome([0] * n + [1])

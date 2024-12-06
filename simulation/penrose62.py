@@ -54,10 +54,9 @@ def test_indice_Banzhaf(coef=7):
     for p in population:
         sieges[p] = round(population[p] * coef)
 
-    utils.print_dictionnaire(sieges, "Sièges au parlement par états")
-    print(sum(sieges.values()))
+    utils.print_dictionnaire(sieges, "Sièges au parlement par états", True)
 
-    pouvoir = ip.indice_parlement(sieges, 0.62, returned=True)
+    pouvoir = ip.indice_parlement(sieges, 0.62)
 
     proportionnalite = {}
     for p in population:
