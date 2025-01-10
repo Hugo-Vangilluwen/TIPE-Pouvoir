@@ -52,11 +52,28 @@ Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à
 	\end{equation}
 \end{definition}
 
-\begin{algorithm}
+\begin{algorithm}[H]
+	\caption{Calcul de l'ensemble des parties d'un ensemble}
+	\Entree{Un ensemble E (sous forme de liste)}
+	\Sortie{Ensemble des parties}
+	\lSi{E est vide}{ \Retour{$\{\emptyset\}$} }
+	\lSi{E ne contient qu'un seul élément}{ \Retour{$\{\emptyset, E\}$} }
+	Choisir $e \in E$ \\
+	\emph{Appel récursif} \\
+	$F \gets Parties(\{ E \setminus \{e\} \})$ \\
+	$P \gets \emptyset$ \\
+	\Pour{$f \in F$}{
+		Ajouter à $P$ les ensembles $f$ et $f \cup \{e\}$
+	}
+	\Retour{P}
+\end{algorithm}
+
+En notant $c_n$ la complexité de cette algorithme pour en ensemble de cardinal $n$, nous avons $c_0 = 1$, $c_1 = 2$ et $\forall n \geqslant 1, c_{n+1} = 2 + c_n + 2^n$.
+
+\begin{algorithm}[H]
 	\caption{Calcul naïf de l'indice de Banzhaf brut}
 	\Entree{Un jeu de vote pondéré}
 	\Sortie{Indice de Banzhaf brut de tous les électeurs}
-	
 	
 \end{algorithm}
 

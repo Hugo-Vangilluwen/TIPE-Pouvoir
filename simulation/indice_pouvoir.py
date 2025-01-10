@@ -25,13 +25,11 @@ def parties(ensemble):
     res = []
 
     e = ensemble[0]
-    g = parties(ensemble[1:])
-    res.extend(g)
-    gg = []
-    for h in g:
-        gg.append(h.copy())
-        gg[-1].append(e)
-    res.extend(gg)
+    f = parties(ensemble[1:])
+    for h in f:
+        res.append(h.copy())
+        res.append(h.copy())
+        res[-1].append(e)
 
     return res
 
@@ -200,7 +198,7 @@ def indice_parlement_UE():
 def indice_parlement_francais():
     """Source:
     https://www2.assemblee-nationale.fr/instances/liste/groupes_politiques/effectif"""
-    # total = 577 - 1  # 1 Vacant
+    # total = 577 - 1 Vacant
     sieges = {
         "GDR": 17,
         "LFI-NFP": 71,
@@ -222,7 +220,7 @@ def indice_parlement_francais():
 def indice_parlement_francais_alliance():
     """Source:
     https://www2.assemblee-nationale.fr/instances/liste/groupes_politiques/effectif"""
-    # total = 577 - 1  # 1 Vacant
+    # total = 577 - 1 Vacant
     sieges_alliance = {
         "NFP": 192,
         "ENS": 164,

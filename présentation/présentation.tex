@@ -10,6 +10,7 @@
 \usefonttheme{serif}
 
 \setbeamertemplate{theorems}[numbered] % to number
+\setbeamertemplate{footline}[frame number]
 
 % Formules mathématiques
 \usepackage{amsmath}
@@ -26,14 +27,16 @@
 \graphicspath{ {../simulation/figures/}}
 \usepackage{xcolor}
 
+
+\author{Hugo \textit{Vangi}lluwen Lilian Etchaïde}
+\title{Indice de pouvoir dans l'Union Européenne}
+\subtitle{TIPE}
+\date{\today}
+\subject{Systèmes de vote}
+
 \begin{document}
-	\author{Hugo \textit{Vangi}lluwen Lilian Etchaïde}
-	\title{Indice de pouvoir}
-	\subtitle{TIPE}
 	%\logo{}
 	%\institute{}
-	\date{\today}
-	\subject{Systèmes de vote}
 	%\setbeamercovered{transparent}
 	%\setbeamertemplate{navigation symbols}{}
 	
@@ -42,7 +45,7 @@
 	\end{frame}
 	
 	\begin{frame}
-		\small \tableofcontents
+		\small \tableofcontents % [hideallsubsections]
 	\end{frame}
 	
 	\AtBeginSection{
@@ -50,4 +53,59 @@
 			\small \tableofcontents[currentsection]
 		\end{frame}
 	}
+	
+	\section{Défaut de l'Union Européenne}
+	\begin{frame}{Titre}
+		Lilian
+	\end{frame}
+	
+	\section{Théorie du choix social ou théorie des jeux ???}
+	
+	\subsection{Jeu coopératif}
+	\begin{frame}
+		\begin{definition}
+			\textbf{Jeu de vote pondéré} : Pour / Contre \\
+			\begin{equation*}
+				(q, \left(w_i\right)_{i \in \mathcal{V}}) % quota, poids
+			\end{equation*}
+			$\mathcal{V}$ ensemble des votants
+		\end{definition}
+		\uncover<2>{\begin{definition}
+				\textbf{Coalition gagnante} $S$
+				\begin{equation*}
+					\sum_{i \in S} w_i \geqslant q
+				\end{equation*}
+				% sinon perdante
+		\end{definition}}
+	\end{frame}
+	
+	\begin{frame}
+		\begin{equation*}
+			v(S) = \left\{ \begin{array}{cl}
+				1 &\text{ si } \sum_{i \in S} w_i \geqslant q \\
+				0 &\text{ sinon}
+			\end{array} \right.
+		\end{equation*}
+		\uncover<2>{\begin{definition}
+				Un électeur \textbf{décisif} est nécessaire à une coalition gagnante. \\
+				Décidabilité $d_i(v)$ pour $i \in \mathcal{V}$ :
+				\begin{equation*}
+					d_i(v) = \sum_{S \subset \mathcal{V}, \ i \in S} v(S) - v(S \setminus \{i\})
+				\end{equation*}
+		\end{definition}}
+	\end{frame}
+	
+	\subsection{Indice de Banzhaf}
+	\begin{frame}
+		\begin{definition}
+			Indice de Banzhaf normalisé :
+			\begin{equation*}
+				B_i(v) = \frac{d_i(v)}{\sum_{j=1}^{n} d_j(v)}
+			\end{equation*}
+			Indice de Banzhaf relatif :
+			\begin{equation*}
+				B_i(v) = \frac{d_i(v)}{2^{|\mathcal{V}| - 1}}
+			\end{equation*}
+		\end{definition}
+	\end{frame}
 \end{document}
