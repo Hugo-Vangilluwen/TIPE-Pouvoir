@@ -1,0 +1,53 @@
+\documentclass[11pt]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[french]{babel}
+\usetheme{Copenhagen}
+%\usecolortheme{beaver}
+\useoutertheme{split} % ???
+\usefonttheme{serif}
+
+\setbeamertemplate{theorems}[numbered] % to number
+
+% Formules mathématiques
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{nicefrac}
+\usepackage{mathrsfs}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usepackage[linguistics]{forest}
+\usepackage{graphicx}
+\graphicspath{ {../simulation/figures/}}
+\usepackage{xcolor}
+
+\begin{document}
+	\author{Hugo \textit{Vangi}lluwen Lilian Etchaïde}
+	\title{Indice de pouvoir}
+	\subtitle{TIPE}
+	%\logo{}
+	%\institute{}
+	\date{\today}
+	\subject{Systèmes de vote}
+	%\setbeamercovered{transparent}
+	%\setbeamertemplate{navigation symbols}{}
+	
+	\begin{frame}[plain]
+		\maketitle
+	\end{frame}
+	
+	\begin{frame}
+		\small \tableofcontents
+	\end{frame}
+	
+	\AtBeginSection{
+		\begin{frame}
+			\small \tableofcontents[currentsection]
+		\end{frame}
+	}
+\end{document}

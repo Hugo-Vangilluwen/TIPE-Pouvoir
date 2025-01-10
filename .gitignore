@@ -1,5 +1,11 @@
 *.log
 *.aux
+*.out
 *.synctex.gz
+*.bbl
+*.blg
+*.toc
+*.nav
+*.snm
 
 simulation/__pycache__

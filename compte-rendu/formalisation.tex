@@ -1,0 +1,71 @@
+% !TeX root = compte-rendu.tex
+% !TeX spellcheck = fr
+
+
+\section{Formalisation Mathématiques}
+
+Nous utiliserons les notations de \textit{la mesure du pouvoir de vote} \cite{mesure_pouvoir}. Notons $\V$ l'ensemble des électeurs ou votants. Nous prendrons toujours $\V = [\![0;N]\!]$ avec $N \in \mathbb{N}$.
+
+\subsection{Jeu coopératif}
+
+\begin{definition}
+	Un \textit{jeu de vote pondéré} est un vote où chaque électeur ne peut voter que "pour" ou "contre" la proposition. C'est un couple $(q, \left(w_i\right)_{i \in \V})$ où $q$ est le \textit{quota} nécessaire pour que la proposition soit acceptée et $(\left(w_i\right)_{i \in \V})$ est le poids de chaque électeur dans ce vote.
+\end{definition}
+
+\begin{definition}
+	Un \textit{coalition} est dite \textit{gagnante} si
+	\begin{equation}
+		\sum_{i \in S} w_i \geqslant q
+	\end{equation}
+	c'est-à-dire si elle peut faire accepter une proposition et dite \textit{perdante} sinon.
+	Notons $\mathcal{G}$ l'ensemble des coalitions gagnantes et $\mathcal{G}_i$ l'ensemble de celles contenant l'électeur $i$. \\
+\end{definition}
+
+Posons $v : \mathcal{P}\left(\V\right) \rightarrow \left\{0,1\right\}$ la fonction indicatrice de $\mathcal{P}\left(\mathcal{G}\right)$ :
+\begin{equation}
+	v(S) = \left\{ \begin{array}{cl}
+		1 &\text{ si } \sum_{i \in S} w_i \geqslant q \\
+		0 &\text{ sinon}
+	\end{array} \right.
+\end{equation}
+Un jeu de vote pondéré peut être représenté par $(\V, v)$ (bien que certaines fonction $v : \mathcal{P}\left(\V\right) \rightarrow \left\{0,1\right\}$ ne représente aucun jeu de vote pondéré).
+
+\subsection{Indice de pouvoir}
+
+Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à modifier le résultat du vote.
+
+\begin{definition}
+	Un électeur est \textit{décisif} dans une coalition gagnante si lorsque cet électeur se retire de la coalition, celle-ci devient perdante. Notons la décidabilité ou l'indice de Banzhaf brut $d_i(v)$ le nombre de coalition où l'électeur $i$ est décisif.
+	\begin{equation}
+		d_i(v) = \sum_{S \subset \V, \ i \in S} v(S) - v(S \setminus \{i\})
+	\end{equation}
+\end{definition}
+
+\begin{definition}
+	L'indice de Banzhaf normalisé $B_i(v)$ est définit par
+	\begin{equation}
+		B_i(v) = \frac{d_i(v)}{\sum_{j=1}^{n} d_j(v)}
+	\end{equation}
+	L'indice de Banzhaf relatif $B_i(v)$ est définit par
+	\begin{equation}
+		B_i(v) = \frac{d_i(v)}{2^{|\V| - 1}}
+	\end{equation}
+\end{definition}
+
+\begin{algorithm}
+	\caption{Calcul naïf de l'indice de Banzhaf brut}
+	\Entree{Un jeu de vote pondéré}
+	\Sortie{Indice de Banzhaf brut de tous les électeurs}
+	
+	
+\end{algorithm}
+
+Dans \cite{algorithm_weight}, Dennis Leech propose
+
+Pour l'implémentation de notre algorithme nous avons choisi d'utiliser :
+\begin{equation}
+	w_0 = d
+\end{equation}
+\begin{equation}
+	\lambda(i) = \frac{0,\!83 q}{\ln(i)+1}
+\end{equation}
