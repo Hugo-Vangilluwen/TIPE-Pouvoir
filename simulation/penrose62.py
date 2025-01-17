@@ -63,5 +63,5 @@ def test_indice_Banzhaf(coef=7):
         proportionnalite[p] = pouvoir[p] / population[p]
 
     plt.bar(proportionnalite.keys(), proportionnalite.values())
-    plt.title("Rapport de l'indice de pouvoir par la racine carrée de la population")
+    plt.title("Rapport de l'indice de pouvoir par rapport la racine carrée de la population")
     plt.show()

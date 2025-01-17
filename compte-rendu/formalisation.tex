@@ -59,8 +59,8 @@ Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à
 	\lSi{E est vide}{ \Retour{$\{\emptyset\}$} }
 	\lSi{E ne contient qu'un seul élément}{ \Retour{$\{\emptyset, E\}$} }
 	Choisir $e \in E$ \\
-	\emph{Appel récursif} \\
-	$F \gets Parties(\{ E \setminus \{e\} \})$ \\
+	
+$F \gets Parties(\{ E \setminus \{e\} \})$ \quad \emph{Appel récursif} \\
 	$P \gets \emptyset$ \\
 	\Pour{$f \in F$}{
 		Ajouter à $P$ les ensembles $f$ et $f \cup \{e\}$
@@ -68,13 +68,28 @@ Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à
 	\Retour{P}
 \end{algorithm}
 
-En notant $c_n$ la complexité de cette algorithme pour en ensemble de cardinal $n$, nous avons $c_0 = 1$, $c_1 = 2$ et $\forall n \geqslant 1, c_{n+1} = 2 + c_n + 2^n$.
+En notant $c_n$ la complexité de cette algorithme pour en ensemble de cardinal $n$, nous avons $c_0 = 1$, $c_1 = 2$ et $\forall n \geqslant 1, c_{n+1} = c_n + O(2^n)$. D'où $c_n - c_2 = \sum_{k=2}^{n-1} c_{k+1} - c_k$. Finalement, la complexité temporelle est en $O(n 2^n)$.
+
+\bigbreak
 
 \begin{algorithm}[H]
 	\caption{Calcul naïf de l'indice de Banzhaf brut}
-	\Entree{Un jeu de vote pondéré}
+	\Entree{Un jeu de vote pondéré $(q, (w_v)_{v \in \mathcal{V}})$}
 	\Sortie{Indice de Banzhaf brut de tous les électeurs}
-	
+	$G \gets \emptyset$ \quad \emph{Ensemble des parties gagnantes} \\
+	\Pour{$S \in Parties(\mathcal{V})$}{
+		$somme \gets \sum_{v \in S} w_v$ \\
+		\lSi{$somme \leqslant q$}{ Ajouter à $G$ le tuple $(S, somme)$ }
+	}
+	$D \gets (0)_{v \in \mathcal{V}}$ \quad \emph{Dictionnaire associant à chaque électeur sa décidabilité} \\
+	\Pour{$(S, somme) \in G$}{
+		\Pour{$v \in S$}{
+			\lSi{$(somme - w_v) < q$}{$D_v \gets D_v + 1$}
+		}
+	}
+	$sommeD \gets \sum_{v \in S} D_v$ \quad \emph{Somme des décidabilités} \\
+	\uSi{$sommeD = 0$}{\Retour{$(0)_{v \in \mathcal{V}}$}}
+	\Sinon{\Retour{$(\nicefrac{d_v}{sommeD})_{v \in \mathcal{V}}$}}
 \end{algorithm}
 
 Dans \cite{algorithm_weight}, Dennis Leech propose

@@ -25,5 +25,3 @@
    3. Penrose 62
       
       1. quota de 62% qui remplit la condition
-
-

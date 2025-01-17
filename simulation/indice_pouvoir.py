@@ -42,8 +42,6 @@ def indice_Banzhaf_naif(quota, poids):
     votants = list(poids.keys())
 
     gagnantes = []
-    decisif = dict.fromkeys(votants, 0)
-
     # tester si la coalition est gagnante
     for coalition in parties(votants):
         somme = 0
@@ -52,6 +50,7 @@ def indice_Banzhaf_naif(quota, poids):
         if somme >= quota:
             gagnantes.append((coalition, somme))
 
+    decisif = dict.fromkeys(votants, 0)
     for coalition, somme in gagnantes:
         for v in coalition:
             if (somme - poids[v]) < quota:

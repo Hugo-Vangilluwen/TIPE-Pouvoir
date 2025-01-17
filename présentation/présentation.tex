@@ -54,7 +54,7 @@
 		\end{frame}
 	}
 	
-	\section{Défaut de l'Union Européenne}
+	\section{Défauts de l'Union Européenne}
 	\begin{frame}{Titre}
 		Lilian
 	\end{frame}
@@ -107,5 +107,24 @@
 				B_i(v) = \frac{d_i(v)}{2^{|\mathcal{V}| - 1}}
 			\end{equation*}
 		\end{definition}
+		\uncover<2>{L'algorithme naïf a une complexité de $O(n 2^n)$. ???}
+	\end{frame}
+	
+	\begin{frame}
+		\underline{Algorithme de Brams-Affuso} \\
+		\uncover<2-5>{
+			$d_i$ : décidabilité du votant $v$ \\
+			$d_k^i$ : nombre de coalitions n'incluant pas $i$ et de poids total $k$
+		}
+		\uncover<3-5>{\begin{equation*}
+				d_i = \sum_{k=q-w_i}^{q-1} d_k^i
+				\qquad \qquad
+				W = \sum_{i \in \mathcal{V}} w_i
+		\end{equation*}}
+		\uncover<4-5>{\begin{equation*}
+				\prod_{j \in \mathcal{V}, j \neq i} \left(1 + X^{w_j}\right)
+				= \sum_{k=0}^{W-w_i} d_k^i X^k
+		\end{equation*}}
+		\uncover<5>{Complexité en $O(n^3)$}
 	\end{frame}
 \end{document}
