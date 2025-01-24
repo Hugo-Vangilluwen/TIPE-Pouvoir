@@ -24,11 +24,11 @@
 \usetikzlibrary{arrows.meta}
 \usepackage[linguistics]{forest}
 \usepackage{graphicx}
-\graphicspath{ {../simulation/figures/}}
+\graphicspath{ {.}}
 \usepackage{xcolor}
 
 
-\author{Hugo \textit{Vangi}lluwen Lilian Etchaïde}
+\author{Hugo \textit{Vangi}lluwen et Lilian Etchaïde}
 \title{Indice de pouvoir dans l'Union Européenne}
 \subtitle{TIPE}
 \date{\today}
@@ -54,12 +54,7 @@
 		\end{frame}
 	}
 	
-	\section{Défauts de l'Union Européenne}
-	\begin{frame}{Titre}
-		Lilian
-	\end{frame}
-	
-	\section{Théorie du choix social ou théorie des jeux ???}
+	\section{Théorie du choix social}
 	
 	\subsection{Jeu coopératif}
 	\begin{frame}
@@ -104,10 +99,10 @@
 			\end{equation*}
 			Indice de Banzhaf relatif :
 			\begin{equation*}
-				B_i(v) = \frac{d_i(v)}{2^{|\mathcal{V}| - 1}}
+				B_i'(v) = \frac{d_i(v)}{2^{|\mathcal{V}| - 1}}
 			\end{equation*}
 		\end{definition}
-		\uncover<2>{L'algorithme naïf a une complexité de $O(n 2^n)$. ???}
+		\uncover<2>{L'algorithme naïf a une complexité de $O(n 2^n)$.}
 	\end{frame}
 	
 	\begin{frame}
@@ -125,6 +120,75 @@
 				\prod_{j \in \mathcal{V}, j \neq i} \left(1 + X^{w_j}\right)
 				= \sum_{k=0}^{W-w_i} d_k^i X^k
 		\end{equation*}}
-		\uncover<5>{Complexité en $O(n^3)$}
+		\uncover<5>{Complexité : $O(n^3)$}
+	\end{frame}
+	
+	\section{Défauts de l'Union Européenne}
+	
+	\begin{frame}{Système historique}
+		Petits états $\neq$ Grands états \\
+		12 / 17 voix \\
+		$\rightarrow$ Petits états surreprésentés
+		\bigbreak
+		Problème avec l'élargissement possible de l'UE
+	\end{frame}
+	
+	\begin{frame}{Traité de Nice}
+		\includegraphics[width=\textwidth]{Effets_réforme_Nice.png}
+	\end{frame}
+	
+	\begin{frame}{Constitution Rule}
+		\includegraphics[width=0.8\textwidth]{Effet_Constitution_Rule.png}
+	\end{frame}
+	
+	\begin{frame}{Système actuel}
+		\includegraphics[width=1.1\textwidth]{../simulation/graph_écart_pourvoir_représentation.png}
+	\end{frame}
+	
+	\section{Système de vote en deux étapes}
+	
+	\begin{frame}{Problème inverse}
+		\underline{Algorithme de Leech}
+		\begin{equation*}
+			w_0 = d
+		\end{equation*}
+		\bigbreak
+		\begin{equation*}
+			w_{n+1} = \lambda(n) ( d - w_n )
+		\end{equation*}
+		\bigbreak
+		\begin{equation*}
+			\lambda(n) = \frac{0,\!83 q}{\ln(i)+1}
+		\end{equation*}
+	\end{frame}
+	
+	\begin{frame}
+		\begin{equation*}
+			q = 400
+		\end{equation*}
+		\includegraphics[width=1.1\textwidth]{../simulation/graph_écart_problème_inverse.png}
+	\end{frame}
+	
+	\begin{frame}{Critère d'égalité}
+		\begin{equation*}
+			\left( \left\lceil\frac{|\mathcal{V}| + 1}{2}content\right\rceil, (1) \right)
+		\end{equation*}
+		\begin{equation*}
+			B_i'(v) = \frac{ \binom{n - 1}{q - 1} }{ 2^{n-1} } \sim \sqrt{\frac{2}{\pi n}}
+		\end{equation*}
+		Felsenthal and Machover ont montré que l'indice de Banzhaf relatif des électeurs sont égaux si et seulement si l'indice de Banzhaf relatif des pays est proportionnel à la racine carré du nombre d'habitants.
+	\end{frame}
+	
+	\begin{frame}{Penrose62}
+		\begin{equation*}
+			(62\%, (\sqrt{population})_{pays})
+		\end{equation*}
+		\includegraphics[width=\textwidth]{../simulation/graph_écart_pouvoir_racine_population.png}
+	\end{frame}
+	
+	\begin{frame}
+		\begin{figure}
+			\includegraphics[width=1.1\textwidth]{../simulation/graph_écart_penrose62.png}
+		\end{figure}
 	\end{frame}
 \end{document}
