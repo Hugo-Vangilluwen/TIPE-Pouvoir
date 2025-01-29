@@ -7,5 +7,6 @@
 *.toc
 *.nav
 *.snm
+*.odt#
 
 simulation/__pycache__

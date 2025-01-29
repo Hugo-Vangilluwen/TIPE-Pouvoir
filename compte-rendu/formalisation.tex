@@ -4,12 +4,12 @@
 
 \section{Formalisation Mathématiques}
 
-Nous utiliserons les notations de \textit{la mesure du pouvoir de vote} \cite{mesure_pouvoir}. Notons $\V$ l'ensemble des électeurs ou votants. Nous prendrons toujours $\V = [\![0;N]\!]$ avec $N \in \mathbb{N}$.
+Nous utiliserons les notations de \textit{la mesure du pouvoir de vote} \cite{mesure_pouvoir}. Notons $\V$ l'ensemble des électeurs ou votants. Nous prendrons souvent $\V = [\![0;N-1]\!]$ avec $N \in \mathbb{N}^*$.
 
 \subsection{Jeu coopératif}
 
 \begin{definition}
-	Un \textit{jeu de vote pondéré} est un vote où chaque électeur ne peut voter que "pour" ou "contre" la proposition. C'est un couple $(q, \left(w_i\right)_{i \in \V})$ où $q$ est le \textit{quota} nécessaire pour que la proposition soit acceptée et $(\left(w_i\right)_{i \in \V})$ est le poids de chaque électeur dans ce vote.
+	Un \textit{jeu de vote pondéré} est un vote où chaque électeur ou votant ne peut voter que "pour" ou "contre" la proposition. C'est un couple $(q, \left(w_i\right)_{i \in \V})$ où $q$ est le \textit{quota} nécessaire pour que la proposition soit acceptée et $\left(w_i\right)_{i \in \V}$ est le poids de chaque électeur dans ce vote. Posons $W = \displaystyle \sum_{i \in \mathcal{V}} w_i$ la somme de tous les poids.
 \end{definition}
 
 \begin{definition}
@@ -21,36 +21,69 @@ Nous utiliserons les notations de \textit{la mesure du pouvoir de vote} \cite{me
 	Notons $\mathcal{G}$ l'ensemble des coalitions gagnantes et $\mathcal{G}_i$ l'ensemble de celles contenant l'électeur $i$. \\
 \end{definition}
 
+
+\begin{exemple}
+	Considérons le bureau d'une association composé d'un président ayant 3 voix, d'un trésorier ayant deux voix et de quatre membres ayant chacun une seule voix. Fixons le quota à la moitié des voix soit à 5 voix.
+	La coalition \{président, membre 1, membre 2\} est gagnante et \{trésorier, membre 2, membre 4\} perdante.
+\end{exemple}
+
+Une généralisation trouvée dans la littérature des votes pondérés est possible avec la fonction suivante. Nous ne l'étudierons pas.
 Posons $v : \mathcal{P}\left(\V\right) \rightarrow \left\{0,1\right\}$ la fonction indicatrice de $\mathcal{P}\left(\mathcal{G}\right)$ :
-\begin{equation}
+\begin{equation*}
 	v(S) = \left\{ \begin{array}{cl}
 		1 &\text{ si } \sum_{i \in S} w_i \geqslant q \\
 		0 &\text{ sinon}
 	\end{array} \right.
-\end{equation}
+\end{equation*}
 Un jeu de vote pondéré peut être représenté par $(\V, v)$ (bien que certaines fonction $v : \mathcal{P}\left(\V\right) \rightarrow \left\{0,1\right\}$ ne représente aucun jeu de vote pondéré).
 
 \subsection{Indice de pouvoir}
 
-Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à modifier le résultat du vote.
+Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à modifier le résultat du vote. Il en existe des dizaines et nous nous intéresserons à ceux créés par John Banzhaf.
 
 \begin{definition}
-	Un électeur est \textit{décisif} dans une coalition gagnante si lorsque cet électeur se retire de la coalition, celle-ci devient perdante. Notons la décidabilité ou l'indice de Banzhaf brut $d_i(v)$ le nombre de coalition où l'électeur $i$ est décisif.
+	Un électeur est dit \textit{décisif} dans une coalition gagnante si lorsque cet électeur se retire de la coalition, celle-ci devient perdante. Notons la décidabilité ou l'indice de Banzhaf brut $d_i(v)$ le nombre de coalition où l'électeur $i$ est décisif.
 	\begin{equation}
-		d_i(v) = \sum_{S \subset \V, \ i \in S} v(S) - v(S \setminus \{i\})
+		d_i
+		% = \sum_{S \subset \V, \ i \in S} v(S) - v(S \setminus \{i\})
+		= \# \left\{ S \in \mathcal{G} \;|\; i \in S \text{ et } S \setminus \{i\} \notin \mathcal{G} \right\}
 	\end{equation}
 \end{definition}
 
 \begin{definition}
-	L'indice de Banzhaf normalisé $B_i(v)$ est définit par
+	L'indice de Banzhaf normalisé $B_i$ est définit par
 	\begin{equation}
-		B_i(v) = \frac{d_i(v)}{\sum_{j=1}^{n} d_j(v)}
+		B_i(v) = \frac{d_i}{\displaystyle \sum_{j=1}^{n} d_j}
 	\end{equation}
+	Il est dit normalisé car sa valeur est toujours entre 0 et 1 et la somme des indices de tous les individus vaut 1.
+	
 	L'indice de Banzhaf relatif $B_i(v)$ est définit par
 	\begin{equation}
-		B_i(v) = \frac{d_i(v)}{2^{|\V| - 1}}
+		B_i' = \frac{d_i}{\displaystyle 2^{|\V| - 1}}
 	\end{equation}
+	Cette indice donne la probabilité que le votant $i$ soit dans une coalition gagnante en considérant que ce votant $i$ a une probabilité uniforme d'appartenir à une coalition. En effet, $\# \left\{ S \subset \mathcal{V} \;|\; i \in S \right\} = 2^{|\V| - 1}$.
 \end{definition}
+
+\begin{exemple}
+	Reprenons l'exemple précédent et calculons les indices de Banzhaf.
+	\begin{center}
+		\begin{tabular}{|l|l|l|l|}
+		\hline
+		& brut & normalisé & relatif \\
+		\hline
+		Président & 11 & 0,44 & 0,6875 \\
+		\hline
+		Trésorier & 5 & 0,2 & 0,3125 \\
+		\hline
+		Membres & 3 & 0,12 & 0,1875 \\
+		\hline
+	\end{tabular}
+	\end{center}
+\end{exemple}
+
+\subsection{Algorithme de calcul}
+
+Commençons par écrire l'algorithme naïf de l'indice de Banzhaf en transcrivant la formule mathématique.
 
 \begin{algorithm}[H]
 	\caption{Calcul de l'ensemble des parties d'un ensemble}
@@ -68,7 +101,7 @@ $F \gets Parties(\{ E \setminus \{e\} \})$ \quad \emph{Appel récursif} \\
 	\Retour{P}
 \end{algorithm}
 
-En notant $c_n$ la complexité de cette algorithme pour en ensemble de cardinal $n$, nous avons $c_0 = 1$, $c_1 = 2$ et $\forall n \geqslant 1, c_{n+1} = c_n + O(2^n)$. D'où $c_n - c_2 = \sum_{k=2}^{n-1} c_{k+1} - c_k$. Finalement, la complexité temporelle est en $O(n 2^n)$.
+En notant $c_n$ la complexité de cette algorithme pour en ensemble de cardinal $n$, nous avons $c_0 = 1$, $c_1 = 2$ et $\forall n \geqslant 1, c_{n+1} = c_n + O(2^n)$. D'où $c_n - c_2 = \sum_{k=2}^{n-1} c_{k+1} - c_k$. Finalement, la complexité temporelle du calcul de l'ensemble des parties d'un ensemble est en $O(n 2^n)$.
 
 \bigbreak
 
@@ -79,7 +112,7 @@ En notant $c_n$ la complexité de cette algorithme pour en ensemble de cardinal 
 	$G \gets \emptyset$ \quad \emph{Ensemble des parties gagnantes} \\
 	\Pour{$S \in Parties(\mathcal{V})$}{
 		$somme \gets \sum_{v \in S} w_v$ \\
-		\lSi{$somme \leqslant q$}{ Ajouter à $G$ le tuple $(S, somme)$ }
+		\lSi{$somme \geqslant q$}{ Ajouter à $G$ le tuple $(S, somme)$ }
 	}
 	$D \gets (0)_{v \in \mathcal{V}}$ \quad \emph{Dictionnaire associant à chaque électeur sa décidabilité} \\
 	\Pour{$(S, somme) \in G$}{
@@ -87,10 +120,26 @@ En notant $c_n$ la complexité de cette algorithme pour en ensemble de cardinal 
 			\lSi{$(somme - w_v) < q$}{$D_v \gets D_v + 1$}
 		}
 	}
-	$sommeD \gets \sum_{v \in S} D_v$ \quad \emph{Somme des décidabilités} \\
+	$sommeD \gets \sum_{v \in \mathcal{V}} D_v$ \quad \emph{Somme des décidabilités} \\
 	\uSi{$sommeD = 0$}{\Retour{$(0)_{v \in \mathcal{V}}$}}
 	\Sinon{\Retour{$(\nicefrac{d_v}{sommeD})_{v \in \mathcal{V}}$}}
 \end{algorithm}
+
+L'appel à $Parties(\mathcal{V})$ se fait en $O(N 2^N)$. La première boucle itère sur $2^N$ éléments et effectue un corps de boucle en $O(N)$ (car $|S| \leqslant |\mathcal{V}|$). La seconde boucle a exactement la même complexité. La fin du programme s'effectue en $O(N)$. Finalement, le calcul naïf de l'indice de Banzhaf brut a une complexité temporelle de $O(N 2^N)$.
+
+\bigbreak
+
+Pour diminuer cette complexité, nous pouvons utiliser le polynôme générateur de Brams-Affuso \cite{power_european_constitution}.
+Notons $d_k^i$ le nombre de coalitions n'incluant pas $i$ et de poids total $k$ (somme des poids des votants qu'elles contiennent). Pour que le votant $i$ soit décisif dans une coalition $S$, il faut que $S \ \{i\}$ soit perdante mais de poids total pas trop faible de sorte que l'ajout de $i$ la rende gagnante, le poids total de $S \setminus \{i\}$ doit donc être compris entre $q - w_i$ et $q - 1$. Nous obtenons donc la formule ci-dessous pour tout $i \in \mathcal{V}$.
+\begin{equation}
+	d_i = \sum_{k=q-w_i}^{q-1} d_k^i
+\end{equation}
+Brams-Affuso ont démontré l'égalité suivante :
+\begin{equation}
+	\prod_{j \in \mathcal{V}, \; j \neq i} \left(1 + X^{w_j}\right)
+	= \sum_{k=0}^{W-w_i} d_k^i X^k
+\end{equation}
+
 
 Dans \cite{algorithm_weight}, Dennis Leech propose
 

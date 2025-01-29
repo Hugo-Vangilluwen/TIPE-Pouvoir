@@ -28,7 +28,7 @@
 \usepackage{xcolor}
 
 
-\author{Hugo \textit{Vangi}lluwen et Lilian Etchaïde}
+\author{Hugo Vangilluwen et Lilian Etchaïde}
 \title{Indice de pouvoir dans l'Union Européenne}
 \subtitle{TIPE}
 \date{\today}
@@ -63,7 +63,7 @@
 			\begin{equation*}
 				(q, \left(w_i\right)_{i \in \mathcal{V}}) % quota, poids
 			\end{equation*}
-			$\mathcal{V}$ ensemble des votants
+			$\mathcal{V}$ ensemble des votants. Généralement, $\mathcal{V} = [\![ 1; n ]\!]$.
 		\end{definition}
 		\uncover<2>{\begin{definition}
 				\textbf{Coalition gagnante} $S$
@@ -71,23 +71,21 @@
 					\sum_{i \in S} w_i \geqslant q
 				\end{equation*}
 				% sinon perdante
+				Notons $\mathcal{G} \in \mathcal{P}(\mathcal{V})$ l'ensemble des coalitions gagnantes.
 		\end{definition}}
 	\end{frame}
 	
 	\begin{frame}
-		\begin{equation*}
-			v(S) = \left\{ \begin{array}{cl}
-				1 &\text{ si } \sum_{i \in S} w_i \geqslant q \\
-				0 &\text{ sinon}
-			\end{array} \right.
-		\end{equation*}
-		\uncover<2>{\begin{definition}
-				Un électeur \textbf{décisif} est nécessaire à une coalition gagnante. \\
-				Décidabilité $d_i(v)$ pour $i \in \mathcal{V}$ :
+		\begin{definition}
+			Un électeur est dit \textbf{décisif} pour un coalition gagnante si le retrait de celui-ci la rend perdante. \\
+			\uncover<2>{
+				La décidabilité $d_i(v)$ pour $i \in \mathcal{V}$ est le nombre de coalitions où $i$ est décisif :
 				\begin{equation*}
-					d_i(v) = \sum_{S \subset \mathcal{V}, \ i \in S} v(S) - v(S \setminus \{i\})
+					d_i(v) =
+					\# \left\{ S \in \mathcal{G} \;|\; i \in S \text{ et } S \setminus \{i\} \notin \mathcal{G} \right\}
 				\end{equation*}
-		\end{definition}}
+			}
+		\end{definition}
 	\end{frame}
 	
 	\subsection{Indice de Banzhaf}
@@ -102,7 +100,7 @@
 				B_i'(v) = \frac{d_i(v)}{2^{|\mathcal{V}| - 1}}
 			\end{equation*}
 		\end{definition}
-		\uncover<2>{L'algorithme naïf a une complexité de $O(n 2^n)$.}
+		\uncover<2>{L'algorithme naïf du calcul de l'indice de Banzhaf normalisé a une complexité de $O(n 2^n)$.}
 	\end{frame}
 	
 	\begin{frame}
@@ -117,7 +115,7 @@
 				W = \sum_{i \in \mathcal{V}} w_i
 		\end{equation*}}
 		\uncover<4-5>{\begin{equation*}
-				\prod_{j \in \mathcal{V}, j \neq i} \left(1 + X^{w_j}\right)
+				\prod_{j \in \mathcal{V}, \; j \neq i} \left(1 + X^{w_j}\right)
 				= \sum_{k=0}^{W-w_i} d_k^i X^k
 		\end{equation*}}
 		\uncover<5>{Complexité : $O(n^3)$}
