@@ -4,9 +4,9 @@
 
 \section{Formalisation Mathématiques}
 
-Nous utiliserons les notations de \textit{la mesure du pouvoir de vote} \cite{mesure_pouvoir}. Notons $\V$ l'ensemble des électeurs ou votants. Nous prendrons souvent $\V = [\![0;N-1]\!]$ avec $N \in \mathbb{N}^*$.
+Nous utiliserons les notations de \textit{la mesure du pouvoir de vote} \cite{mesure_pouvoir}. Notons $\V$ l'ensemble des électeurs ou votants. Nous prendrons souvent $\V = [\![1;N]\!]$ avec $N \in \mathbb{N}^*$.
 
-\subsection{Jeu coopératif}
+\subsection{Jeu de vote pondéré}
 
 \begin{definition}
 	Un \textit{jeu de vote pondéré} est un vote où chaque électeur ou votant ne peut voter que "pour" ou "contre" la proposition. C'est un couple $(q, \left(w_i\right)_{i \in \V})$ où $q$ est le \textit{quota} nécessaire pour que la proposition soit acceptée et $\left(w_i\right)_{i \in \V}$ est le poids de chaque électeur dans ce vote. Posons $W = \displaystyle \sum_{i \in \mathcal{V}} w_i$ la somme de tous les poids.
@@ -27,7 +27,7 @@ Nous utiliserons les notations de \textit{la mesure du pouvoir de vote} \cite{me
 	La coalition \{président, membre 1, membre 2\} est gagnante et \{trésorier, membre 2, membre 4\} perdante.
 \end{exemple}
 
-Une généralisation trouvée dans la littérature des votes pondérés est possible avec la fonction suivante. Nous ne l'étudierons pas.
+Une généralisation appelée "jeu coopératif" dans la littérature des votes pondérés est possible avec la fonction suivante. Nous ne l'étudierons pas.
 Posons $v : \mathcal{P}\left(\V\right) \rightarrow \left\{0,1\right\}$ la fonction indicatrice de $\mathcal{P}\left(\mathcal{G}\right)$ :
 \begin{equation*}
 	v(S) = \left\{ \begin{array}{cl}
@@ -39,7 +39,7 @@ Un jeu de vote pondéré peut être représenté par $(\V, v)$ (bien que certain
 
 \subsection{Indice de pouvoir}
 
-Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à modifier le résultat du vote. Il en existe des dizaines et nous nous intéresserons à ceux créés par John Banzhaf.
+Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à modifier le résultat du vote. Il en existe des dizaines et nous nous intéresserons à ceux créés par John Banzhaf. Nous utiliserons ici les définitions données dans \textit{La mesure du pouvoir de vote} \cite{mesure_pouvoir}.
 
 \begin{definition}
 	Un électeur est dit \textit{décisif} dans une coalition gagnante si lorsque cet électeur se retire de la coalition, celle-ci devient perdante. Notons la décidabilité ou l'indice de Banzhaf brut $d_i(v)$ le nombre de coalition où l'électeur $i$ est décisif.
