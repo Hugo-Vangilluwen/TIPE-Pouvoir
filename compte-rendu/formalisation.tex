@@ -85,7 +85,7 @@ Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à
 
 Commençons par écrire l'algorithme naïf de l'indice de Banzhaf en transcrivant la formule mathématique.
 
-\begin{algorithm}[H]
+\begin{algorithm}
 	\caption{Calcul de l'ensemble des parties d'un ensemble}
 	\Entree{Un ensemble E (sous forme de liste)}
 	\Sortie{Ensemble des parties}
@@ -101,11 +101,9 @@ $F \gets Parties(\{ E \setminus \{e\} \})$ \quad \emph{Appel récursif} \\
 	\Retour{P}
 \end{algorithm}
 
-En notant $c_n$ la complexité de cette algorithme pour en ensemble de cardinal $n$, nous avons $c_0 = 1$, $c_1 = 2$ et $\forall n \geqslant 1, c_{n+1} = c_n + O(2^n)$. D'où $c_n - c_2 = \sum_{k=2}^{n-1} c_{k+1} - c_k$. Finalement, la complexité temporelle du calcul de l'ensemble des parties d'un ensemble est en $O(n 2^n)$.
+En notant $c_n$ la complexité de l'algorithme 1 pour en ensemble de cardinal $n$, nous avons $c_0 = 1$, $c_1 = 2$ et $\forall n \geqslant 1, c_{n+1} = c_n + O(2^n)$. D'où $c_n - c_2 = \sum_{k=2}^{n-1} c_{k+1} - c_k$. Finalement, la complexité temporelle du calcul de l'ensemble des parties d'un ensemble est en $O(n 2^n)$.
 
-\bigbreak
-
-\begin{algorithm}[H]
+\begin{algorithm}
 	\caption{Calcul naïf de l'indice de Banzhaf brut}
 	\Entree{Un jeu de vote pondéré $(q, (w_v)_{v \in \mathcal{V}})$}
 	\Sortie{Indice de Banzhaf brut de tous les électeurs}
@@ -125,7 +123,7 @@ En notant $c_n$ la complexité de cette algorithme pour en ensemble de cardinal 
 	\Sinon{\Retour{$(\nicefrac{d_v}{sommeD})_{v \in \mathcal{V}}$}}
 \end{algorithm}
 
-L'appel à $Parties(\mathcal{V})$ se fait en $O(N 2^N)$. La première boucle itère sur $2^N$ éléments et effectue un corps de boucle en $O(N)$ (car $|S| \leqslant |\mathcal{V}|$). La seconde boucle a exactement la même complexité. La fin du programme s'effectue en $O(N)$. Finalement, le calcul naïf de l'indice de Banzhaf brut a une complexité temporelle de $O(N 2^N)$.
+Étudions l'algorithme 2. L'appel à $Parties(\mathcal{V})$ se fait en $O(N 2^N)$. La première boucle itère sur $2^N$ éléments et effectue un corps de boucle en $O(N)$ (car $|S| \leqslant |\mathcal{V}|$). La seconde boucle a exactement la même complexité. La fin du programme s'effectue en $O(N)$. Finalement, le calcul naïf de l'indice de Banzhaf brut a une complexité temporelle de $O(N 2^N)$.
 
 \bigbreak
 
@@ -134,11 +132,13 @@ Notons $d_k^i$ le nombre de coalitions n'incluant pas $i$ et de poids total $k$ 
 \begin{equation}
 	d_i = \sum_{k=q-w_i}^{q-1} d_k^i
 \end{equation}
-Brams-Affuso ont démontré l'égalité suivante :
+Brams et Affuso ont démontré l'égalité suivante :
 \begin{equation}
 	\prod_{j \in \mathcal{V}, \; j \neq i} \left(1 + X^{w_j}\right)
 	= \sum_{k=0}^{W-w_i} d_k^i X^k
 \end{equation}
+
+Nous avons donc implémenté en python les polynômes sous forme de classe.
 
 
 Dans \cite{algorithm_weight}, Dennis Leech propose
