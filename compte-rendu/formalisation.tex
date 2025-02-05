@@ -42,7 +42,7 @@ Un jeu de vote pondéré peut être représenté par $(\V, v)$ (bien que certain
 Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à modifier le résultat du vote. Il en existe des dizaines et nous nous intéresserons à ceux créés par John Banzhaf. Nous utiliserons ici les définitions données dans \textit{La mesure du pouvoir de vote} \cite{mesure_pouvoir}.
 
 \begin{definition}
-	Un électeur est dit \textit{décisif} dans une coalition gagnante si lorsque cet électeur se retire de la coalition, celle-ci devient perdante. Notons la décidabilité ou l'indice de Banzhaf brut $d_i(v)$ le nombre de coalition où l'électeur $i$ est décisif.
+	Un électeur est dit \textit{décisif} dans une coalition gagnante si lorsque cet électeur se retire de la coalition, celle-ci devient perdante. Notons la décidabilité ou l'indice de Banzhaf brut $d_i$ le nombre de coalition où l'électeur $i$ est décisif.
 	\begin{equation}
 		d_i
 		% = \sum_{S \subset \V, \ i \in S} v(S) - v(S \setminus \{i\})
@@ -53,11 +53,11 @@ Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à
 \begin{definition}
 	L'indice de Banzhaf normalisé $B_i$ est définit par
 	\begin{equation}
-		B_i(v) = \frac{d_i}{\displaystyle \sum_{j=1}^{n} d_j}
+		B_i = \frac{d_i}{\displaystyle \sum_{j=1}^{n} d_j}
 	\end{equation}
 	Il est dit normalisé car sa valeur est toujours entre 0 et 1 et la somme des indices de tous les individus vaut 1.
 	
-	L'indice de Banzhaf relatif $B_i(v)$ est définit par
+	L'indice de Banzhaf relatif $B_i'$ est définit par
 	\begin{equation}
 		B_i' = \frac{d_i}{\displaystyle 2^{|\V| - 1}}
 	\end{equation}
@@ -138,7 +138,7 @@ Brams et Affuso ont démontré l'égalité suivante :
 	= \sum_{k=0}^{W-w_i} d_k^i X^k
 \end{equation}
 
-Nous avons donc implémenté en python les polynômes sous forme de classe.
+Nous avons implémenté en python les polynômes sous forme de classe.
 
 
 Dans \cite{algorithm_weight}, Dennis Leech propose
