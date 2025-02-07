@@ -80,9 +80,9 @@
 		\begin{definition}
 			Un électeur est dit \textbf{décisif} pour un coalition gagnante si le retrait de celui-ci la rend perdante. \\
 			\uncover<2>{
-				La décidabilité $d_i(v)$ pour $i \in \mathcal{V}$ est le nombre de coalitions où $i$ est décisif :
+				La décidabilité $d_i$ pour $i \in \mathcal{V}$ est le nombre de coalitions où $i$ est décisif :
 				\begin{equation*}
-					d_i(v) =
+					d_i =
 					\# \left\{ S \in \mathcal{G} \;|\; i \in S \text{ et } S \setminus \{i\} \notin \mathcal{G} \right\}
 				\end{equation*}
 			}
@@ -94,11 +94,11 @@
 		\begin{definition}
 			Indice de Banzhaf normalisé :
 			\begin{equation*}
-				B_i(v) = \frac{d_i(v)}{\sum_{j=1}^{n} d_j(v)}
+				B_i = \frac{d_i}{\sum_{j=1}^{n} d_j}
 			\end{equation*}
 			Indice de Banzhaf relatif :
 			\begin{equation*}
-				B_i'(v) = \frac{d_i(v)}{2^{|\mathcal{V}| - 1}}
+				B_i' = \frac{d_i}{2^{|\mathcal{V}| - 1}}
 			\end{equation*}
 		\end{definition}
 		\uncover<2>{L'algorithme naïf du calcul de l'indice de Banzhaf normalisé a une complexité de $O(n 2^n)$.}
@@ -173,7 +173,7 @@
 			\left( \left\lceil\frac{|\mathcal{V}| + 1}{2}content\right\rceil, (1) \right)
 		\end{equation*}
 		\begin{equation*}
-			B_i'(v) = \frac{ \binom{n - 1}{q - 1} }{ 2^{n-1} } \sim \sqrt{\frac{2}{\pi n}}
+			B_i' = \frac{ \binom{n - 1}{q - 1} }{ 2^{n-1} } \sim \sqrt{\frac{2}{\pi n}}
 		\end{equation*}
 		Felsenthal and Machover ont montré que l'indice de Banzhaf relatif des électeurs sont égaux si et seulement si l'indice de Banzhaf relatif des pays est proportionnel à la racine carré du nombre d'habitants.
 	\end{frame}
