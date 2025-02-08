@@ -9,7 +9,8 @@ Nous utiliserons les notations de \textit{la mesure du pouvoir de vote} \cite{me
 \subsection{Jeu de vote pondéré}
 
 \begin{definition}
-	Un \textit{jeu de vote pondéré} est un vote où chaque électeur ou votant ne peut voter que "pour" ou "contre" la proposition. C'est un couple $(q, \left(w_i\right)_{i \in \V})$ où $q$ est le \textit{quota} nécessaire pour que la proposition soit acceptée et $\left(w_i\right)_{i \in \V}$ est le poids de chaque électeur dans ce vote. Posons $W = \displaystyle \sum_{i \in \mathcal{V}} w_i$ la somme de tous les poids.
+	Un \textit{jeu de vote pondéré} est un vote où chaque électeur ou votant ne peut voter que "pour" ou "contre" la proposition. C'est un couple $(q, \left(w_i\right)_{i \in \V}) \in \mathbb{N} \times \mathbb{N}^\V$ où $q$ est le \textit{quota} nécessaire pour que la proposition soit acceptée et $\left(w_i\right)_{i \in \V}$ est le poids de chaque électeur dans ce vote.
+	Posons $W = \displaystyle \sum_{i \in \V} w_i$ la somme de tous les poids. Le jeu de vote pondéré peut aussi être représenté par $(q_f, \left(w_i\right)_{i \in \V}) \in [0;1] \times \mathbb{N}^\V$ où $q_f$ est le quota relatif et $q = \lceil q_f W \rceil$.
 \end{definition}
 
 \begin{definition}
@@ -18,9 +19,11 @@ Nous utiliserons les notations de \textit{la mesure du pouvoir de vote} \cite{me
 		\sum_{i \in S} w_i \geqslant q
 	\end{equation}
 	c'est-à-dire si elle peut faire accepter une proposition et dite \textit{perdante} sinon.
-	Notons $\mathcal{G}$ l'ensemble des coalitions gagnantes et $\mathcal{G}_i$ l'ensemble de celles contenant l'électeur $i$. \\
+	Notons $\G$ l'ensemble des coalitions gagnantes et $\G_i$ l'ensemble de celles contenant l'électeur $i$.
+	\begin{equation}
+		\G = \left\{ S \in \mathcal{P}(\V) \;|\; \sum_{i \in S} w_i \geqslant q \right\}
+	\end{equation}
 \end{definition}
-
 
 \begin{exemple}
 	Considérons le bureau d'une association composé d'un président ayant 3 voix, d'un trésorier ayant deux voix et de quatre membres ayant chacun une seule voix. Fixons le quota à la moitié des voix soit à 5 voix.
@@ -28,7 +31,7 @@ Nous utiliserons les notations de \textit{la mesure du pouvoir de vote} \cite{me
 \end{exemple}
 
 Une généralisation appelée "jeu coopératif" dans la littérature des votes pondérés est possible avec la fonction suivante. Nous ne l'étudierons pas.
-Posons $v : \mathcal{P}\left(\V\right) \rightarrow \left\{0,1\right\}$ la fonction indicatrice de $\mathcal{P}\left(\mathcal{G}\right)$ :
+Posons $v : \mathcal{P}\left(\V\right) \rightarrow \left\{0,1\right\}$ la fonction indicatrice de $\mathcal{P}\left(\G\right)$ :
 \begin{equation*}
 	v(S) = \left\{ \begin{array}{cl}
 		1 &\text{ si } \sum_{i \in S} w_i \geqslant q \\
@@ -46,7 +49,7 @@ Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à
 	\begin{equation}
 		d_i
 		% = \sum_{S \subset \V, \ i \in S} v(S) - v(S \setminus \{i\})
-		= \# \left\{ S \in \mathcal{G} \;|\; i \in S \text{ et } S \setminus \{i\} \notin \mathcal{G} \right\}
+		= \# \left\{ S \in \G \;|\; i \in S \text{ et } S \setminus \{i\} \notin \G \right\}
 	\end{equation}
 \end{definition}
 
@@ -61,7 +64,7 @@ Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à
 	\begin{equation}
 		B_i' = \frac{d_i}{\displaystyle 2^{|\V| - 1}}
 	\end{equation}
-	Cette indice donne la probabilité que le votant $i$ soit dans une coalition gagnante en considérant que ce votant $i$ a une probabilité uniforme d'appartenir à une coalition. En effet, $\# \left\{ S \subset \mathcal{V} \;|\; i \in S \right\} = 2^{|\V| - 1}$.
+	Cette indice donne la probabilité que le votant $i$ soit dans une coalition gagnante en considérant que ce votant $i$ a une probabilité uniforme d'appartenir à une coalition. En effet, $\# \left\{ S \subset \V \;|\; i \in S \right\} = 2^{|\V| - 1}$.
 \end{definition}
 
 \begin{exemple}
@@ -85,7 +88,7 @@ Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à
 
 Commençons par écrire l'algorithme naïf de l'indice de Banzhaf en transcrivant la formule mathématique.
 
-\begin{algorithm}
+\begin{algorithm}[H]
 	\caption{Calcul de l'ensemble des parties d'un ensemble}
 	\Entree{Un ensemble E (sous forme de liste)}
 	\Sortie{Ensemble des parties}
@@ -101,42 +104,91 @@ $F \gets Parties(\{ E \setminus \{e\} \})$ \quad \emph{Appel récursif} \\
 	\Retour{P}
 \end{algorithm}
 
-En notant $c_n$ la complexité de l'algorithme 1 pour en ensemble de cardinal $n$, nous avons $c_0 = 1$, $c_1 = 2$ et $\forall n \geqslant 1, c_{n+1} = c_n + O(2^n)$. D'où $c_n - c_2 = \sum_{k=2}^{n-1} c_{k+1} - c_k$. Finalement, la complexité temporelle du calcul de l'ensemble des parties d'un ensemble est en $O(n 2^n)$.
+En notant $c_n$ la complexité de l'algorithme 1 pour en ensemble de cardinal $n$, nous avons $c_0 = 1$, $c_1 = 2$ et $\forall n \geqslant 1, c_{n+1} = c_n + \Theta(2^n)$.
+Or $c_n - c_2 = \sum_{k=2}^{n-1} c_{k+1} - c_k$.
+Finalement, la complexité temporelle du calcul de l'ensemble des parties d'un ensemble est en $\Theta(n 2^n)$.
 
-\begin{algorithm}
+\begin{algorithm}[H]
 	\caption{Calcul naïf de l'indice de Banzhaf brut}
-	\Entree{Un jeu de vote pondéré $(q, (w_v)_{v \in \mathcal{V}})$}
+	\Entree{Un jeu de vote pondéré $(q, (w_v)_{v \in \V})$}
 	\Sortie{Indice de Banzhaf brut de tous les électeurs}
 	$G \gets \emptyset$ \quad \emph{Ensemble des parties gagnantes} \\
-	\Pour{$S \in Parties(\mathcal{V})$}{
+	\Pour{$S \in Parties(\V)$}{
 		$somme \gets \sum_{v \in S} w_v$ \\
 		\lSi{$somme \geqslant q$}{ Ajouter à $G$ le tuple $(S, somme)$ }
 	}
-	$D \gets (0)_{v \in \mathcal{V}}$ \quad \emph{Dictionnaire associant à chaque électeur sa décidabilité} \\
+	$D \gets (0)_{v \in \V}$ \quad \emph{Dictionnaire associant à chaque électeur sa décidabilité} \\
 	\Pour{$(S, somme) \in G$}{
 		\Pour{$v \in S$}{
 			\lSi{$(somme - w_v) < q$}{$D_v \gets D_v + 1$}
 		}
 	}
-	$sommeD \gets \sum_{v \in \mathcal{V}} D_v$ \quad \emph{Somme des décidabilités} \\
-	\uSi{$sommeD = 0$}{\Retour{$(0)_{v \in \mathcal{V}}$}}
-	\Sinon{\Retour{$(\nicefrac{d_v}{sommeD})_{v \in \mathcal{V}}$}}
+	$sommeD \gets \sum_{v \in \V} D_v$ \quad \emph{Somme des décidabilités} \\
+	\uSi{$sommeD = 0$}{\Retour{$(0)_{v \in \V}$}}
+	\Sinon{\Retour{$(\nicefrac{d_v}{sommeD})_{v \in \V}$}}
 \end{algorithm}
 
-Étudions l'algorithme 2. L'appel à $Parties(\mathcal{V})$ se fait en $O(N 2^N)$. La première boucle itère sur $2^N$ éléments et effectue un corps de boucle en $O(N)$ (car $|S| \leqslant |\mathcal{V}|$). La seconde boucle a exactement la même complexité. La fin du programme s'effectue en $O(N)$. Finalement, le calcul naïf de l'indice de Banzhaf brut a une complexité temporelle de $O(N 2^N)$.
+Étudions l'algorithme 2.
+L'appel à $Parties(\V)$ se fait en $\Theta(N 2^N)$.
+La première boucle itère sur $2^N$ éléments et effectue un corps de boucle en $O(N)$ (car $|S| \leqslant |\V|$). La seconde boucle a exactement la même complexité. La fin du programme s'effectue en $O(N)$.
+Finalement, le calcul naïf de l'indice de Banzhaf brut a une complexité temporelle de $O(N 2^N)$.
 
-\bigbreak
+\subsection{Polynôme générateur de Brams-Affuso}
 
 Pour diminuer cette complexité, nous pouvons utiliser le polynôme générateur de Brams-Affuso \cite{power_european_constitution}.
-Notons $d_k^i$ le nombre de coalitions n'incluant pas $i$ et de poids total $k$ (somme des poids des votants qu'elles contiennent). Pour que le votant $i$ soit décisif dans une coalition $S$, il faut que $S \ \{i\}$ soit perdante mais de poids total pas trop faible de sorte que l'ajout de $i$ la rende gagnante, le poids total de $S \setminus \{i\}$ doit donc être compris entre $q - w_i$ et $q - 1$. Nous obtenons donc la formule ci-dessous pour tout $i \in \mathcal{V}$.
+
+Notons $c_k^i$ le nombre de coalitions n'incluant pas $i$ et de poids total $k$ (somme des poids des votants qu'elles contiennent).
+Pour que le votant $i$ soit décisif dans une coalition $S$, il faut que $S \setminus \{i\}$ soit perdante mais de poids total pas trop faible de sorte que l'ajout de $i$ la rende gagnante, le poids total de $S \setminus \{i\}$ doit donc être compris entre $q - w_i$ et $q - 1$. Formellement avec $S \in \mathcal{P}(\V)$ :
+\begin{equation*}
+	\left\{ \begin{matrix}
+		i \in S \\
+		S \in \G \\
+		S \setminus \{i\} \not\in \G
+	\end{matrix} \right.
+	\iff
+	\left\{ \begin{matrix}
+		i \in S \\
+		\sum_{j \in S} w_j = \sum_{j \in S \setminus \{i\}} w_j + w_i \geqslant q \\
+		\sum_{j \in S \setminus \{i\}} w_j < q
+	\end{matrix} \right.
+	\iff
+	\left\{ \begin{matrix}
+		i \in S \\
+		q - w_i \leqslant \sum_{j \in S \setminus \{i\}} w_j \leqslant q - 1
+	\end{matrix} \right.
+\end{equation*}
+On a donc l'égalité ensembliste :
+\begin{equation*}
+	\left\{ S \in \G \;|\; i \in S \text{ et } S \setminus \{i\} \notin \G \right\}
+	= \left\{ S \in \mathcal{P}(\V) \;|\; i \not\in S \text{ et } q - w_i \leqslant \sum_{j \in S} w_j \leqslant q - 1 \right\}
+\end{equation*}
+
+Or les poids des votants sont des nombres entiers.
+Nous obtenons donc la formule ci-dessous pour tout $i \in \V$.
 \begin{equation}
-	d_i = \sum_{k=q-w_i}^{q-1} d_k^i
+	d_i = \sum_{k=q-w_i}^{q-1} c_k^i
 \end{equation}
-Brams et Affuso ont démontré l'égalité suivante :
-\begin{equation}
-	\prod_{j \in \mathcal{V}, \; j \neq i} \left(1 + X^{w_j}\right)
-	= \sum_{k=0}^{W-w_i} d_k^i X^k
-\end{equation}
+
+\begin{proposition}
+	Brams et Affuso ont démontré l'égalité suivante :
+	\begin{equation}
+		\prod_{j \in \V, \; j \neq i} \left(1 + X^{w_j}\right)
+		= \sum_{k=0}^{W-w_i} c_k^i X^k
+	\end{equation}
+	On appelle ce polynôme générateur de Brams-Affuso.
+\end{proposition}
+
+\begin{proof}
+	Nous n'avons pas trouvé leur démonstration et l'avons prouvé de notre coté.
+	Remarquons que le degré du polynôme de gauche est bien $\displaystyle \sum_{j \in \V, j \neq i} w_j  = W - w_i$.
+	Développons ce produit :
+	\begin{equation*}
+		\prod_{\footnotesize \begin{matrix} j \in \V \\ j \neq i \end{matrix}} \left(1 + 1 . X^{w_j}\right)
+		= \sum_{k = 0}^{W - w_i} \left( \sum_{\footnotesize \begin{matrix} S \in \mathcal{P}\left(\V \setminus \{i\}\right) \\ \sum_{j \in S} w_j = k \end{matrix}} 1 \right) X^k
+	\end{equation*}
+	
+	L'expression des coefficients polynomiaux à droite est exactement celle des $c_k^i$.
+\end{proof}
 
 Nous avons implémenté en python les polynômes sous forme de classe.
 

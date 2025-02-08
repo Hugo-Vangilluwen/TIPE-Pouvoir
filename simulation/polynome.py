@@ -15,6 +15,7 @@ class Polynome:
     def __init__(self, coef):
         """Initialise le polynôme avec la liste de ses coefficents"""
         # liste des coefficents dans l'ordre croissant des puissances
+        # Theta(len coef)
         self.coef = coef.copy()
 
     def est_nul(self):
@@ -48,10 +49,12 @@ class Polynome:
 
     def copier(self):
         """Copie le polynôme"""
+        # Theta(deg self)
         return Polynome(self.coef.copy())
 
     def __iadd__(self, p):
         """Ajoute p au polynôme"""
+        # Theta(deg P)
         assert isinstance(p, Polynome)
         if p.est_nul():
             return self
@@ -64,6 +67,7 @@ class Polynome:
 
     def __add__(self, p):
         """Additionne deux polynômes"""
+        # Theta(min(deg Self, deg P))
         if self.degre >= p.degre:
             r = self.copier()
             s = p
@@ -77,18 +81,23 @@ class Polynome:
     def __mul__(self, p):
         """Multiplie deux polynômes"""
         if isinstance(p, (float,int)):
+            # Theta(deg Self)
             res = self.copier()
             for i in range(self.degre + 1):
                 res.coef[i] *= p
+
         elif isinstance(p, Polynome):
+            # Theta( (deg P) (deg Self + deg P) )
             res = Polynome([])
             if not p.est_nul():
                 for i in range(p.degre + 1):
+                    # Theta(deg P + i)
                     pp = self.copier()
                     pp *= p.coef[i]
                     for _ in range(i):
                         pp.coef.insert(0, 0)
                     res += pp
+
         else:
             raise TypeError("p doit être un entier, un flottant ou un polynôme.")
 
@@ -96,10 +105,12 @@ class Polynome:
 
     def __imul__(self, p):
         """"Multiplie ce polynôme par p"""
+        # Theta(deg P * (deg Self + deg P))
         self = self * p
         return self
 
 
 def monome(n):
-    """Calcule un monôme de degré n."""
+    """Crée un monôme de degré n."""
+    # Theta(n)
     return Polynome([0] * n + [1])
