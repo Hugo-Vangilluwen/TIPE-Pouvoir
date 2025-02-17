@@ -87,6 +87,8 @@ class Polynome:
                 res.coef[i] *= p
 
         elif isinstance(p, Polynome):
+            if self.degre < p.degre:
+                return p * self
             # Theta( (deg P) (deg Self + deg P) )
             res = Polynome([])
             if not p.est_nul():

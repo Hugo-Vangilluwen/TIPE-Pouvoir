@@ -6,6 +6,7 @@
 
 Nous utiliserons les notations de \textit{la mesure du pouvoir de vote} \cite{mesure_pouvoir}. Notons $\V$ l'ensemble des électeurs ou votants. Nous prendrons souvent $\V = [\![1;N]\!]$ avec $N \in \mathbb{N}^*$.
 
+
 \subsection{Jeu de vote pondéré}
 
 \begin{definition}
@@ -39,6 +40,7 @@ Posons $v : \mathcal{P}\left(\V\right) \rightarrow \left\{0,1\right\}$ la foncti
 	\end{array} \right.
 \end{equation*}
 Un jeu de vote pondéré peut être représenté par $(\V, v)$ (bien que certaines fonction $v : \mathcal{P}\left(\V\right) \rightarrow \left\{0,1\right\}$ ne représente aucun jeu de vote pondéré).
+
 
 \subsection{Indice de pouvoir}
 
@@ -84,9 +86,22 @@ Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à
 	\end{center}
 \end{exemple}
 
+
 \subsection{Algorithme de calcul}
 
+\begin{algorithm}[H]
+	\caption{Calcul de l'indice de Banzhaf normalisé}
+	\Entree{Décidabilité des votants $D = \left(d_v\right)_{v \in \V}$}
+	\Sortie{Indice de Branzhaf des votants}
+	$sommeD \gets \sum_{v \in \V} d_v$ \quad \emph{Somme des décidabilités} \\
+	\uSi{$sommeD = 0$}{\Retour{$(0)_{v \in \V}$}}
+	\Sinon{\Retour{$(\nicefrac{d_v}{sommeD})_{v \in \V}$}}
+\end{algorithm}
+
+Ce programme a une complexité en $O(N)$.
+
 Commençons par écrire l'algorithme naïf de l'indice de Banzhaf en transcrivant la formule mathématique.
+Pour cela, il est nécessaire de calculer $\mathcal{P}(\V)$.
 
 \begin{algorithm}[H]
 	\caption{Calcul de l'ensemble des parties d'un ensemble}
@@ -109,33 +124,34 @@ Or $c_n - c_2 = \sum_{k=2}^{n-1} c_{k+1} - c_k$.
 Finalement, la complexité temporelle du calcul de l'ensemble des parties d'un ensemble est en $\Theta(n 2^n)$.
 
 \begin{algorithm}[H]
-	\caption{Calcul naïf de l'indice de Banzhaf brut}
+	\caption{Calcul naïf de la décidabilité}
 	\Entree{Un jeu de vote pondéré $(q, (w_v)_{v \in \V})$}
-	\Sortie{Indice de Banzhaf brut de tous les électeurs}
+	\Sortie{Décidabilité de tous les votants}
 	$G \gets \emptyset$ \quad \emph{Ensemble des parties gagnantes} \\
 	\Pour{$S \in Parties(\V)$}{
 		$somme \gets \sum_{v \in S} w_v$ \\
 		\lSi{$somme \geqslant q$}{ Ajouter à $G$ le tuple $(S, somme)$ }
 	}
-	$D \gets (0)_{v \in \V}$ \quad \emph{Dictionnaire associant à chaque électeur sa décidabilité} \\
+	$D = (d_v)_{v \in \V} \gets (0)_{v \in \V}$ \quad \emph{Dictionnaire associant à chaque électeur sa décidabilité} \\
 	\Pour{$(S, somme) \in G$}{
 		\Pour{$v \in S$}{
-			\lSi{$(somme - w_v) < q$}{$D_v \gets D_v + 1$}
+			\lSi{$(somme - w_v) < q$}{$d_v \gets d_v + 1$}
 		}
 	}
-	$sommeD \gets \sum_{v \in \V} D_v$ \quad \emph{Somme des décidabilités} \\
-	\uSi{$sommeD = 0$}{\Retour{$(0)_{v \in \V}$}}
-	\Sinon{\Retour{$(\nicefrac{d_v}{sommeD})_{v \in \V}$}}
+	\Retour{D}
 \end{algorithm}
 
-Étudions l'algorithme 2.
+\begin{proposition}
+	Le calcul naïf de l'indice de Banzhaf brut a une complexité temporelle de $O(N 2^N)$.
+\end{proposition}
+
 L'appel à $Parties(\V)$ se fait en $\Theta(N 2^N)$.
-La première boucle itère sur $2^N$ éléments et effectue un corps de boucle en $O(N)$ (car $|S| \leqslant |\V|$). La seconde boucle a exactement la même complexité. La fin du programme s'effectue en $O(N)$.
-Finalement, le calcul naïf de l'indice de Banzhaf brut a une complexité temporelle de $O(N 2^N)$.
+La première boucle itère sur $2^N$ éléments et effectue un corps de boucle en $O(N)$ (car $|S| \leqslant |\V|$) soit une complexité de $O(N 2^N)$. La seconde boucle a exactement la même complexité.
+
 
 \subsection{Polynôme générateur de Brams-Affuso}
 
-Pour diminuer cette complexité, nous pouvons utiliser le polynôme générateur de Brams-Affuso \cite{power_european_constitution}.
+Pour diminuer cette complexité, nous allons utiliser le polynôme générateur de Brams-Affuso \cite{power_european_constitution}.
 
 Notons $c_k^i$ le nombre de coalitions n'incluant pas $i$ et de poids total $k$ (somme des poids des votants qu'elles contiennent).
 Pour que le votant $i$ soit décisif dans une coalition $S$, il faut que $S \setminus \{i\}$ soit perdante mais de poids total pas trop faible de sorte que l'ajout de $i$ la rende gagnante, le poids total de $S \setminus \{i\}$ doit donc être compris entre $q - w_i$ et $q - 1$. Formellement avec $S \in \mathcal{P}(\V)$ :
@@ -166,7 +182,7 @@ On a donc l'égalité ensembliste :
 Or les poids des votants sont des nombres entiers.
 Nous obtenons donc la formule ci-dessous pour tout $i \in \V$.
 \begin{equation}
-	d_i = \sum_{k=q-w_i}^{q-1} c_k^i
+	d_i = \sum_{k=\max(0, q-w_i)}^{q-1} c_k^i
 \end{equation}
 
 \begin{proposition}
@@ -175,7 +191,7 @@ Nous obtenons donc la formule ci-dessous pour tout $i \in \V$.
 		\prod_{j \in \V, \; j \neq i} \left(1 + X^{w_j}\right)
 		= \sum_{k=0}^{W-w_i} c_k^i X^k
 	\end{equation}
-	On appelle ce polynôme générateur de Brams-Affuso.
+	On l'appelle polynôme générateur de Brams-Affuso.
 \end{proposition}
 
 \begin{proof}
@@ -190,7 +206,38 @@ Nous obtenons donc la formule ci-dessous pour tout $i \in \V$.
 	L'expression des coefficients polynomiaux à droite est exactement celle des $c_k^i$.
 \end{proof}
 
-Nous avons implémenté en python les polynômes sous forme de classe.
+
+Nous avons implémenté en python les polynômes sous forme de classe en les munissant des opérations d'addition, de multiplication par un scalaire et de multiplication par un polynôme. $P + Q$ se calcule en $\Theta(\min(\deg P, \deg Q))$, $\lambda . P$ en $\Theta(\deg P)$ et $P \times Q$ en $O(\min(\deg P, \deg Q) \times (\deg P + \deg Q))$.
+
+\begin{algorithm}[H]
+	\caption{Calcul de la décidabilité avec les polynômes générateurs de Brams-Affuso}
+	\Entree{Un jeu de vote pondéré $(q, (w_v)_{v \in \V})$}
+	\Sortie{Décidabilité de tous les votants}
+	$D = (d_v)_{v \in \V} \gets (0)_{v \in \V}$ \quad \emph{Dictionnaire associant à chaque électeur sa décidabilité} \\
+	\Pour{$v \in \V$}{
+		$P \gets 1$ \quad \emph{Polynôme générateur} \\
+		\Pour{$u \in \V$}{
+			\lSi{$v \neq u$}{$P \gets P \times (1 + X^{w_u})$}
+		}
+		\Pour{$i$ de $\max(0, q - w_v)$ à $q - 1$}{
+			$d_v \gets d_v + \text{coefficient de }X^i\text{ dans }P$
+		}
+	}
+	\Retour{D}
+\end{algorithm}
+
+\begin{proposition}
+	La complexité temporelle de cet algorithme est $O(N . W^2)$.
+\end{proposition}
+
+\begin{proof}
+	L'initialisation s'effectue en $O(W)$ car $|\V| \leqslant W$.
+	$P$ a toujours un degré inférieur à $W$. Donc $P \times (1 + X^{w_u})$ se calcule en $O(w_u \times (W + w_u))$.
+	Or $w_u \leqslant W$ donc ce produit se fait en $O(W w_u)$.
+	La première boucle s'effectue en $\sum_{u \in \V} O(W w_u) = O(W^2)$.
+	Pour la deuxième boucle, on a $\# [\![\max(0,q-w_v);q-1]\!] \leqslant q$ et on peut considérer que $q \leqslant W$ (sinon le jeu de vote pondéré étudié n'a aucun intérêt).
+	La boucle principale s'effectue donc en $O(|\V| W^2)$.
+\end{proof}
 
 
 Dans \cite{algorithm_weight}, Dennis Leech propose

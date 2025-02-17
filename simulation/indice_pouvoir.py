@@ -67,22 +67,22 @@ def indice_Banzhaf_naif(quota, poids):
 
 
 def indice_Banzhaf_brut(quota, poids):
-    """Calcule l'indice de Banzhaf brut
-    Algorithme de Brams-Affuso avec les séries génératrices"""
+    """Calcule la décidabilité / l'indice de Banzhaf brut
+    Algorithme avec les polynômes générateurs de Brams-Affuso"""
     assert isinstance(quota, int)
     assert isinstance(poids, dict)
     ibb = {} # indice de Banzhaf brut
     votants = poids.keys()
 
     for v in votants:
-        g = poly.Polynome([1]) # génératrice
+        g = poly.Polynome([1]) # polynôme générateur
         for w in votants:
             if v != w:
-                g *= poly.Polynome([1]) + poly.monome(poids[w])
+                P *= poly.Polynome([1]) + poly.monome(poids[w])
 
         ibb[v] = 0
-        for i in range(quota - poids[v], min(quota, g.degre + 1)):
-            ibb[v] += g.coef[i]
+        for i in range(max(quota - poids[v], 0), min(quota, P.degre + 1)):
+            ibb[v] += P.coef[i]
 
     return ibb
 
