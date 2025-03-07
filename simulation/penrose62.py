@@ -26,7 +26,7 @@ def test_indice_Banzhaf(coef=7):
         "Roumanie": 19.1,
         "Pays-Bas": 17.9,
         "Belgique": 11.8,
-        "République tchèque": 10.9,
+        "République\ntchèque": 10.9,
         "Portugal": 10.6,
         "Suède": 10.6,
         "Grèce": 10.4,
@@ -62,6 +62,4 @@ def test_indice_Banzhaf(coef=7):
     for p in population:
         proportionnalite[p] = pouvoir[p] / population[p]
 
-    plt.bar(proportionnalite.keys(), proportionnalite.values())
-    plt.title("Rapport de l'indice de pouvoir par rapport la racine carrée de la population")
-    plt.show()
+    utils.plot_bar(proportionnalite.keys(), proportionnalite.values(), "Rapport de l'indice de pouvoir par rapport la racine carrée de la population")

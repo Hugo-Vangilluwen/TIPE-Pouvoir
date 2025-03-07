@@ -29,13 +29,12 @@ def vote_pondere(quota, pouvoir, iteration=40):
     assert isinstance(pouvoir, dict)
 
     poids = pouvoir.copy()
-    alpha = 0.83 * quota
 
     for i in range(1, iteration + 1):
         tmp = ip.indice_Banzhaf_relatif(quota, arrondi_vote(poids))
-        #somme_poids = sum(poids.values())
+        alpha = 0.83 * quota / ( math.log(i) + 1 )
         for v in pouvoir:
-            poids[v] += alpha/(math.log(i)+1) * (pouvoir[v] - tmp[v])
+            poids[v] += alpha * (pouvoir[v] - tmp[v])
             poids[v] = max(1, poids[v])
 
     poids = arrondi_vote(poids)
@@ -87,12 +86,9 @@ def poids_parlement(quota, quantite, verbose=False, plotted=True):
         axarr[2].set_title("Indice de pouvoir de Banzhaf")
         plt.show()
 
-        plt.bar(difference.keys(), difference.values())
-        plt.title("Écart entre le pouvoir et la représentation")
-        plt.show()
-        plt.bar(difference_rel.keys(), difference_rel.values())
-        plt.title("Écart relatif entre le pouvoir et la représentation")
-        plt.show()
+        utils.plot_bar(difference.keys(), difference.values(), "Écart entre le pouvoir et la représentation")
+
+        utils.plot_bar(difference_rel.keys(), difference_rel.values(), "Écart relatif entre le pouvoir et la représentation")
 
     # calcul des écarts maxima
     max_abs = 0 # absolu
@@ -118,7 +114,7 @@ def poids_parlement_UE(quota = 400):
         "Roumanie": 19.1,
         "Pays-Bas": 17.9,
         "Belgique": 11.8,
-        "République tchèque": 10.9,
+        "République\ntchèque": 10.9,
         "Portugal": 10.6,
         "Suède": 10.6,
         "Grèce": 10.4,

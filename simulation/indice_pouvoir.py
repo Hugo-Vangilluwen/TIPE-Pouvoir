@@ -78,11 +78,11 @@ def indice_Banzhaf_brut(quota, poids):
         g = poly.Polynome([1]) # polynôme générateur
         for w in votants:
             if v != w:
-                P *= poly.Polynome([1]) + poly.monome(poids[w])
+                g *= poly.Polynome([1]) + poly.monome(poids[w])
 
         ibb[v] = 0
-        for i in range(max(quota - poids[v], 0), min(quota, P.degre + 1)):
-            ibb[v] += P.coef[i]
+        for i in range(max(quota - poids[v], 0), min(quota, g.degre + 1)):
+            ibb[v] += g.coef[i]
 
     return ibb
 
@@ -149,9 +149,7 @@ def indice_parlement(sieges, quota_relatif=1/2, verbose=False, plotted=True):
         axarr[1].set_title("Indice de pouvoir de Banzhaf")
         plt.show()
 
-        plt.bar(difference.keys(), difference.values())
-        plt.title("Écart relatif entre le pouvoir et la représentation")
-        plt.show()
+        utils.plot_bar(difference.keys(), difference.values(), "Écart relatif entre le pouvoir et la représentation")
 
     return pouvoir
 
@@ -170,7 +168,7 @@ def indice_parlement_UE():
         "Roumanie": 33,
         "Pays-Bas": 31,
         "Belgique": 22,
-        "République tchèque": 21,
+        "République\ntchèque": 21,
         "Grèce": 21,
         "Hongrie": 21,
         "Portugal": 21,

@@ -17,12 +17,12 @@ import penrose62
 def main():
     start = time.process_time()
 
-    # ip.indice_parlement_UE()
+    ip.indice_parlement_UE()
     # ip.indice_parlement_francais()
     # ip.indice_parlement_francais_alliance()
     # print("différence maximale absolue/relative", vp.poids_parlement_UE())
     # penrose62.test_indice_Banzhaf()
-    vp.poids_parlement_UE()
+    # vp.poids_parlement_UE()
 
     end = time.process_time()
 
