@@ -10,7 +10,12 @@ Nous utiliserons les notations de \textit{la mesure du pouvoir de vote} \cite{me
 \subsection{Jeu de vote pondéré}
 
 \begin{definition}
-	Un \textit{jeu de vote pondéré} est un vote où chaque électeur ou votant ne peut voter que "pour" ou "contre" la proposition. C'est un couple $(q, \left(w_i\right)_{i \in \V}) \in \mathbb{N} \times \mathbb{N}^\V$ où $q$ est le \textit{quota} nécessaire pour que la proposition soit acceptée et $\left(w_i\right)_{i \in \V}$ est le poids de chaque électeur dans ce vote.
+	Un \textit{jeu de vote pondéré} est un vote où chaque électeur ou votant ne peut voter que "pour" ou "contre" la proposition. C'est un couple 
+	\begin{equation}
+		\left( q, \left(w_i\right)_{i \in \V} \right)
+		\in \mathbb{N} \times \mathbb{N}^\V
+	\end{equation}
+	où $q$ est le \textit{quota} nécessaire pour que la proposition soit acceptée et $\left(w_i\right)_{i \in \V}$ est le poids de chaque électeur dans ce vote.
 	Posons $W = \displaystyle \sum_{i \in \V} w_i$ la somme de tous les poids. Le jeu de vote pondéré peut aussi être représenté par $(q_f, \left(w_i\right)_{i \in \V}) \in [0;1] \times \mathbb{N}^\V$ où $q_f$ est le quota relatif et $q = \lceil q_f W \rceil$.
 \end{definition}
 
@@ -98,7 +103,7 @@ Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à
 	\Sinon{\Retour{$(\nicefrac{d_v}{sommeD})_{v \in \V}$}}
 \end{algorithm}
 
-Ce programme a une complexité en $O(N)$.
+Ce programme a une complexité en $O(N)$ ce qui est inférieur à celle du calcul de la décidabilité.
 
 Commençons par écrire l'algorithme naïf de l'indice de Banzhaf en transcrivant la formule mathématique.
 Pour cela, il est nécessaire de calculer $\mathcal{P}(\V)$.
@@ -191,7 +196,7 @@ Nous obtenons donc la formule ci-dessous pour tout $i \in \V$.
 		\prod_{j \in \V, \; j \neq i} \left(1 + X^{w_j}\right)
 		= \sum_{k=0}^{W-w_i} c_k^i X^k
 	\end{equation}
-	On l'appelle polynôme générateur de Brams-Affuso.
+	On l'appelle polynôme générateur de Brams-Affuso (de la suite $(c_k^i)_{k \in \mathbb{N}}$).
 \end{proposition}
 
 \begin{proof}
@@ -240,12 +245,21 @@ Nous avons implémenté en python les polynômes sous forme de classe en les mun
 \end{proof}
 
 
-Dans \cite{algorithm_weight}, Dennis Leech propose
+\subsection{Problème inverse}
+
+Nous pouvons aussi prendre le problème dans le sens inverse.
+Jusqu'ici, nous calculions l'indice de Banzhaf connaissant les poids des électeur. Nous allons chercher les poids des électeurs à partir d'indices de Banzhaf relatifs donnés (ou désirés) noté $d \in \mathbb{N}^\V$ et du quota $q \in \mathbb{N}$.
+Dans \cite{algorithm_weight}, Dennis Leech propose de le résoudre le problème de manière itérative avec la suite suivante :
+\begin{equation}
+	p_0 = d
+\end{equation}
+\begin{equation}
+	\forall n \in \mathbb{N}, \
+	p_{n+1} = \lambda(n) \times \left( d - p_n \right)
+\end{equation}
 
 Pour l'implémentation de notre algorithme nous avons choisi d'utiliser :
-\begin{equation}
-	w_0 = d
-\end{equation}
-\begin{equation}
-	\lambda(i) = \frac{0,\!83 q}{\ln(i)+1}
-\end{equation}
+\begin{equation*}
+	\lambda(n) = \frac{0,\!83 q}{\ln(n)+1}
+\end{equation*}
+Nous effectuons 40 itérations.
