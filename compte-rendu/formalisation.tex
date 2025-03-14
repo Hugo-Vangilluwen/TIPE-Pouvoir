@@ -263,3 +263,60 @@ Pour l'implémentation de notre algorithme nous avons choisi d'utiliser :
 	\lambda(n) = \frac{0,\!83 q}{\ln(n)+1}
 \end{equation*}
 Nous effectuons 40 itérations.
+
+\section{Coalitions réalistes}
+Dans cette partie, nous munissons les votants d'une relation d'ordre "est plus à gauche que". Nous considérons donc $(\V, \preccurlyeq)$.
+Nous avons créé la notion de coalitions réalistes.
+
+\begin{definition}
+	Une coalition $C \in \mathcal{P}(\V)$ est dite \textit{réaliste} si
+	\begin{equation}
+		\forall (u, v) \in \V^2, \forall w \in \V,
+		u \preccurlyeq w \preccurlyeq v \implies w \in C
+	\end{equation}
+	Notons $\mathcal{R}$ l'ensemble des coalitions réalistes.
+\end{definition}
+
+Nous pouvons donc redéfinir la décidabilité et les indices de Banzhaf.
+
+\begin{definition}
+	Posons $d_i^r$ la décidabilité réaliste d'un électeur $i$ :
+	\begin{equation}
+		d_i^r
+		= \# \left\{ S \in \G \cap \mathcal{R} \;|\; i \in S \text{ et } S \setminus \{i\} \notin \G \right\}
+	\end{equation}
+	De même, posons les indices de Banzhaf réalistes normalisé et relatif :
+	\begin{equation*}
+		B_i = \frac{d_i^r}{\displaystyle \sum_{j=1}^{n} d_j^r}
+		\qquad \qquad
+		B_i' = \frac{d_i^r}{\displaystyle 2^{N - 1}}
+	\end{equation*}
+\end{definition}
+
+\begin{algorithm}[H]
+	\caption{Calcul de l'ensemble des coalitions réalistes de $(E, \preccurlyeq)$}
+	\Entree{Une liste L des éléments de E triée selon $\preccurlyeq$}
+	\Sortie{Ensemble des coalitions réalistes}
+	
+	$N \gets Longueur(L)$ \\
+	$R \gets \{ \emptyset \}$ \\
+	
+	\Pour{$i$ de $1$ à $N$}{
+		\Pour{$j$ de $i+1$ à $N$}{
+			Ajouter à $R$ la sous-liste de $L$ entre i et j inclus
+		}
+	}
+	\Retour{R}
+\end{algorithm}
+
+\begin{proposition}
+	L'algorithme naïf de la décidabilité réaliste (celui naïf de la décidabilité où l'on remplace $Parties(\V)$ par $Réalistes(\V, \preccurlyeq)$) a une complexité temporelle de $O(N^3)$.
+\end{proposition}
+
+\begin{proof}
+	La complexité temporelle de l'extraction d'une sous-liste est linéaire en la taille de la liste. Donc l'algorithme calculant l'ensemble des coalitions réalistes a une complexité en $\Theta(N^3)$.
+	
+	De plus, d'après cet algorithme, $\# \mathcal{R} = 1 + \sum_{i=1}^{N} (N - i) = 1 + N^2 - \frac{N^2 + N}{2} = 1 + \frac{N^2 - N}{2}$ d'où $\# \mathcal{R} \leqslant N^2$.
+	Dans l'algorithme 3, le corps des deux boucles se font en $O(N)$.
+	Ainsi la complexité de l'algorithme naïf de la décidabilité réaliste est en $O(N^3)$.
+\end{proof}

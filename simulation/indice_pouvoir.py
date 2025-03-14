@@ -34,6 +34,18 @@ def parties(ensemble):
     return res
 
 
+def realistes(l):
+    """Calcule l'ensemble des coalitions réalistes de l triée"""
+    n = len(l)
+    res = [[]]
+
+    for i in range(n+1):
+        for j in range(i+1, n+1):
+            res.append(l[i:j])
+
+    return res
+
+
 def indice_Banzhaf_naif(quota, poids):
     """Calcule l'indice de pouvoir de Banzhaf
     Algorithme naïf"""
@@ -86,12 +98,50 @@ def indice_Banzhaf_brut(quota, poids):
 
     return ibb
 
-def indice_Banzhaf(quota, poids):
+
+def indice_Banzhaf_brut_realiste(quota, poids):
+    """Calcule l'indice de pouvoir de Banzhaf
+    Algorithme naïf"""
+    assert isinstance(quota, int)
+    assert isinstance(poids, dict)
+    votants = list(poids.keys())
+
+    gagnantes = []
+    # tester si la coalition est gagnante
+    for coalition in realistes(votants):
+        somme = 0
+        for v in coalition:
+            somme += poids[v]
+        if somme >= quota:
+            gagnantes.append((coalition, somme))
+
+    decisif = dict.fromkeys(votants, 0)
+    for coalition, somme in gagnantes:
+        for v in coalition:
+            if (somme - poids[v]) < quota:
+                decisif[v] += 1
+
+    somme_d = 0
+    for v in votants:
+        somme_d += decisif[v]
+
+    if somme_d == 0:
+        return {v: 0 for v in decisif}
+    return {v: d/somme_d for v, d in decisif.items()}
+
+
+
+def indice_Banzhaf(quota, poids, r=False):
     """Calcule l'indice de Banzhaf normalisé
     Algorithme de Brams-Affuso avec les séries génératrices"""
     assert isinstance(quota, int)
     assert isinstance(poids, dict)
-    ibb = indice_Banzhaf_brut(quota, poids) # indice de Banzhaf brut
+
+    # indice de Banzhaf brut
+    if r:
+        ibb = indice_Banzhaf_brut_realiste(quota, poids)
+    else:
+        ibb = indice_Banzhaf_brut(quota, poids)
     votants = poids.keys()
 
     somme_ibb = 0
@@ -116,12 +166,12 @@ def indice_Banzhaf_relatif(quota, poids):
     return {v: i/nb_votants for v, i in ibb.items()}
 
 
-def sensibilite(quota, poids):
+def sensibilite(quota, poids, r=False):
     """"Calcule la sensibilité ou pouvoir d'une collectivité à agir"""
     return sum(indice_Banzhaf_brut(quota, poids).values()) / 2**(len(poids)-1)
 
 
-def indice_parlement(sieges, quota_relatif=1/2, verbose=False, plotted=True):
+def indice_parlement(sieges, quota_relatif=1/2, verbose=False, plotted=True, r=False):
     """Calcule l'indice de pouvoir des différents groupes dans une assemblée
     Le quota s'exprime en pourcentage
     Mettre verbose à true pour afficher les résultats détaillés"""
@@ -129,7 +179,7 @@ def indice_parlement(sieges, quota_relatif=1/2, verbose=False, plotted=True):
     quota = math.ceil(total*quota_relatif)
 
     ratio = {pays: s/total for pays, s in sieges.items()}
-    pouvoir = indice_Banzhaf(quota, sieges)
+    pouvoir = indice_Banzhaf(quota, sieges, r)
 
     difference = {}
     for groupe in sieges.keys():
@@ -154,7 +204,7 @@ def indice_parlement(sieges, quota_relatif=1/2, verbose=False, plotted=True):
     return pouvoir
 
 
-def indice_parlement_UE():
+def indice_parlement_UE_pays():
     """Source:
     https://fr.wikipedia.org/wiki/Parlement_europ%C3%A9en#Composition
     """
@@ -192,6 +242,23 @@ def indice_parlement_UE():
     indice_parlement(sieges)
 
 
+def indice_parlement_UE_groupe():
+    """Source:
+    https://fr.wikipedia.org/wiki/Parlement_europ%C3%A9en"""
+    sieges = {
+        "GUE/NGL": 46,
+        "S&D": 136,
+        "Verts/ALE": 53,
+        "RE": 75,
+        "PPE": 188,
+        "CRE": 80,
+        "PfE": 86,
+        "ENS": 26
+    }
+
+    indice_parlement(sieges, r=True)
+
+
 def indice_parlement_francais():
     """Source:
     https://www2.assemblee-nationale.fr/instances/liste/groupes_politiques/effectif"""
@@ -220,12 +287,14 @@ def indice_parlement_francais_alliance():
     # total = 577 - 1 Vacant
     sieges_alliance = {
         "NFP": 192,
+        "LIOT": 22,
         "ENS": 164,
         "DR": 47,
         "RN": 141,
-        "LIOT": 22,
         "NI": 10
     }
 
     indice_parlement(sieges_alliance)
+    del sieges_alliance["NI"]
+    indice_parlement(sieges_alliance, r=True)
 
