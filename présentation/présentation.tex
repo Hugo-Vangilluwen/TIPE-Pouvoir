@@ -21,7 +21,8 @@
 \usepackage{mathrsfs}
 
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta}
+\usetikzlibrary{shapes.arrows, arrows.meta,
+	matrix,shapes.arrows,shadows.blur}
 \usepackage[linguistics]{forest}
 \usepackage{graphicx}
 \graphicspath{ {./images/}, {../simulation/}}
@@ -29,7 +30,7 @@
 
 
 \author{Hugo Vangilluwen et Lilian Etchaïde}
-\title{Idéalisation de la répartition des pouvoirs face aux transformations de l’Union Européenne}
+\title{Idéalisation de la répartition du pouvoir des pays face aux transformations de l’Union Européenne}
 \subtitle{TIPE}
 \date{\today}
 \subject{Systèmes de vote}
@@ -42,7 +43,34 @@
 	
 	\begin{frame}[plain]
 		\maketitle
-		
+	\end{frame}
+	
+	\begin{frame}
+		\begin{figure}
+			\begin{tikzpicture}[box/.style={align=center,text width=2.7cm,
+					text=blue!75,
+					very thick,font=\bfseries,minimum height=1.5cm,minimum width=5cm},
+				arr/.style={single arrow,fill=blue!40,draw=blue,thick,minimum height=4em,
+					single arrow head extend=4pt}]
+				\matrix[matrix of nodes,nodes={box,anchor=north east},column sep=1cm,row sep=0cm] (mat) {
+					{ \includegraphics[width=80px]{CECA_drapeau.png} \\
+						CECA } % Communauté européenne du charbon et de l'acier
+					\pgfmatrixnextcell
+					{ \includegraphics[width=80px]{UE_drapeau.jpg} \\
+						UE } \\
+				};
+			
+				\path (mat-1-1) -- (mat-1-2) node [midway,sloped,arr] {};
+			\end{tikzpicture}
+		\end{figure}
+	\end{frame}
+	
+	\begin{frame}
+		\centering
+		\includegraphics[width=5cm]{ep-logo.png} \\
+		\large{Parlement européen} \\
+		\vspace{.1cm}
+		\includegraphics[width=6cm]{European_Parliament_Strasbourg_Hemicycle.jpg}
 	\end{frame}
 	
 	\begin{frame}
@@ -57,14 +85,26 @@
 	
 	\section{Théorie du choix social}
 	
+	\begin{frame}
+		\begin{tabular}{|l|l|}
+			& Voix \\
+			Président x 2 & 4 \\
+			Membres x 4 & 2 \\
+			Secrétaire x 1 & 1
+		\end{tabular}
+	\end{frame}
+	
 	\subsection{Jeu de vote pondéré}
 	\begin{frame}
 		\begin{definition}
 			\textbf{Jeu de vote pondéré} : Pour / Contre \\
 			\begin{equation*}
-				(q, \left(w_i\right)_{i \in \mathcal{V}}) % quota, poids
+				(q, \left(w_i\right)_{i \in \mathcal{V}})
+				\in \mathbb{N} \times \mathbb{N}^\mathcal{V}
+				% quota, poids
 			\end{equation*}
-			$\mathcal{V}$ ensemble des votants. Généralement, $\mathcal{V} = [\![ 1; N ]\!]$.
+			$\mathcal{V}$ ensemble des votants. Généralement, $\mathcal{V} = [\![ 1; N ]\!]$. \\
+			Poids total : $W = \sum_{i \in \mathcal{V}} w_i$
 		\end{definition}
 		\uncover<2>{\begin{definition}
 				\textbf{Coalition gagnante} $S$
@@ -72,7 +112,7 @@
 					\sum_{i \in S} w_i \geqslant q
 				\end{equation*}
 				% sinon perdante
-				Notons $\mathcal{G} \in \mathcal{P}(\mathcal{V})$ l'ensemble des coalitions gagnantes.
+				Notons $\mathcal{G} \subset \mathcal{P}(\mathcal{V})$ l'ensemble des coalitions gagnantes.
 		\end{definition}}
 	\end{frame}
 	
@@ -94,32 +134,59 @@
 		\begin{definition}
 			Indice de Banzhaf normalisé :
 			\begin{equation*}
-				B_i = \frac{d_i}{\sum_{j=1}^{n} d_j}
+				B_i = \frac{d_i}{\sum_{j=1}^{N} d_j}
 			\end{equation*}
 			Indice de Banzhaf relatif :
 			\begin{equation*}
 				B_i' = \frac{d_i}{2^{|\mathcal{V}| - 1}}
 			\end{equation*}
 		\end{definition}
-		\uncover<2>{L'algorithme naïf du calcul de l'indice de Banzhaf normalisé a une complexité de $O(n 2^n)$.}
+		\uncover<2>{L'algorithme naïf du calcul de l'indice de Banzhaf a une complexité de $O(N 2^N)$.}
+	\end{frame}
+	
+	\subsection{Polynôme générateur de Brams-Affuso}
+	\begin{frame}
+		\underline{Polynôme générateur de Brams-Affuso} \\
+		\uncover<2-5>{
+			$d_i$ : décidabilité du votant $i$ \\
+			$c_k^i$ : nombre de coalitions n'incluant pas $i$ et de poids total $k$
+		}
+		\uncover<3-5>{\begin{equation*}
+			\left\{ \begin{matrix}
+				i \in S \\
+				S \in \mathcal{G} \\
+				S \setminus \{i\} \not\in \mathcal{G}
+			\end{matrix} \right.
+			\iff
+			\left\{ \begin{matrix}
+			i \in S \\
+			\sum_{j \in S} w_j = \sum_{j \in S \setminus \{i\}} w_j + w_i \geqslant q \\
+			\sum_{j \in S \setminus \{i\}} w_j < q
+			\end{matrix} \right.
+		\end{equation*}}
+		\uncover<4-5>{\begin{equation*}
+			\iff
+			\left\{ \begin{matrix}
+				i \in S \\
+				q - w_i \leqslant \sum_{j \in S \setminus \{i\}} w_j \leqslant q - 1
+			\end{matrix} \right.
+		\end{equation*}}
+		\uncover<5>{\begin{equation*}
+				d_i = \sum_{k=q-w_i}^{q-1} c_k^i
+		\end{equation*}}
 	\end{frame}
 	
 	\begin{frame}
-		\underline{Algorithme de Brams-Affuso} \\
-		\uncover<2-5>{
-			$d_i$ : décidabilité du votant $i$ \\
-			$d_k^i$ : nombre de coalitions n'incluant pas $i$ et de poids total $k$
-		}
-		\uncover<3-5>{\begin{equation*}
-				d_i = \sum_{k=q-w_i}^{q-1} d_k^i
-				\qquad \qquad
-				W = \sum_{i \in \mathcal{V}} w_i
-		\end{equation*}}
-		\uncover<4-5>{\begin{equation*}
+		\underline{Polynôme générateur de Brams-Affuso} \\
+		\begin{equation*}
 				\prod_{j \in \mathcal{V}, \; j \neq i} \left(1 + X^{w_j}\right)
-				= \sum_{k=0}^{W-w_i} d_k^i X^k
+				= \sum_{k=0}^{W-w_i} c_k^i X^k
+		\end{equation*}
+		\uncover<2-3>{\begin{equation*}
+			\prod_{\footnotesize \begin{matrix} j \in \mathcal{V} \\ j \neq i \end{matrix}} \left(1 + 1 . X^{w_j}\right)
+			= \sum_{k = 0}^{W - w_i} \left( \sum_{\footnotesize \begin{matrix} S \in \mathcal{P}\left(\mathcal{V} \setminus \{i\}\right) \\ \sum_{j \in S} w_j = k \end{matrix}} 1 \right) X^k
 		\end{equation*}}
-		\uncover<5>{Complexité : $O(n^3)$}
+		\uncover<3>{Complexité : $O(N . W^2)$}
 	\end{frame}
 	
 	\section{Défauts de l'Union Européenne}

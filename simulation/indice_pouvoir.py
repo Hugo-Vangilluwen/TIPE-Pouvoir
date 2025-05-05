@@ -256,6 +256,7 @@ def indice_parlement_UE_groupe():
         "ENS": 26
     }
 
+    indice_parlement(sieges)
     indice_parlement(sieges, r=True)
 
 

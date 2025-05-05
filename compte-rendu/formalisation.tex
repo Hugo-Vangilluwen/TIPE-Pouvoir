@@ -4,7 +4,17 @@
 
 \section{Formalisation Mathématiques}
 
-Nous utiliserons les notations de \textit{la mesure du pouvoir de vote} \cite{mesure_pouvoir}. Notons $\V$ l'ensemble des électeurs ou votants. Nous prendrons souvent $\V = [\![1;N]\!]$ avec $N \in \mathbb{N}^*$.
+Nous utiliserons les notations de \textit{la mesure du pouvoir de vote} \cite{mesure_pouvoir}. Notons $\V$ l'ensemble des électeurs ou votants. Nous prendrons généralement $\V = [\![1;N]\!]$ avec $N \in \mathbb{N}^*$.
+
+\begin{exemple}
+	Considérons une assemblée composée de 2 président ayant chacun 4 voix, de 4 agents ayant chacun 2 voix et d'un secrétaire ayant une seul voix. Une proposition nécessite 8 voix ou plus pour être acceptée.
+	
+	Si une proposition n'a pas assez de voix pour être accepté, par exemple avec 6 voix, même si le secrétaire change d'avis et vote en faveur, il ne pourra pas faire accepter la proposition.
+	Inversement, une proposition avec 9 voix ne peux pas être refusé si le secrétaire change d'avis.
+	Ainsi le secrétaire n'influence jamais le résultat du vote.
+\end{exemple}
+
+Puisque le nombre de voix que possède un électeur ne représente pas le pouvoir qu'il possède dans le vote, il est nécessaire d'inventer une nouvelle notion pour mesurer ce pouvoir.
 
 
 \subsection{Jeu de vote pondéré}
@@ -32,7 +42,7 @@ Nous utiliserons les notations de \textit{la mesure du pouvoir de vote} \cite{me
 \end{definition}
 
 \begin{exemple}
-	Considérons le bureau d'une association composé d'un président ayant 3 voix, d'un trésorier ayant deux voix et de quatre membres ayant chacun une seule voix. Fixons le quota à la moitié des voix soit à 5 voix.
+	Considérons le bureau d'une association composé d'un président ayant 3 voix, d'un trésorier ayant 2 voix et de quatre membres ayant chacun 1 voix. Fixons le quota à la moitié des voix soit à 5 voix.
 	La coalition \{président, membre 1, membre 2\} est gagnante et \{trésorier, membre 2, membre 4\} perdante.
 \end{exemple}
 
@@ -77,15 +87,19 @@ Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à
 \begin{exemple}
 	Reprenons l'exemple précédent et calculons les indices de Banzhaf.
 	\begin{center}
-		\begin{tabular}{|l|l|l|l|}
+		\begin{tabular}{|l|l|l|l|l|}
 		\hline
-		& brut & normalisé & relatif \\
+		& Voix & brut & normalisé & relatif \\
 		\hline
-		Président & 11 & 0,44 & 0,6875 \\
+		Président & 3 & 11 & 0,44 & 0,6875 \\
 		\hline
-		Trésorier & 5 & 0,2 & 0,3125 \\
+		Trésorier & 2 & 5 & 0,2 & 0,3125 \\
 		\hline
-		Membres & 3 & 0,12 & 0,1875 \\
+		Membre 1 & 1 & 3 & 0,12 & 0,1875 \\
+		\hline
+		Membre 2 & 1 & 3 & 0,12 & 0,1875 \\
+		\hline
+		Membre 3 & 1 & 3 & 0,12 & 0,1875 \\
 		\hline
 	\end{tabular}
 	\end{center}
@@ -236,7 +250,7 @@ Nous avons implémenté en python les polynômes sous forme de classe en les mun
 \end{proposition}
 
 \begin{proof}
-	L'initialisation s'effectue en $O(W)$ car $|\V| \leqslant W$.
+	L'initialisation s'effectue en $O(N)$ et $N \leqslant W$.
 	$P$ a toujours un degré inférieur à $W$. Donc $P \times (1 + X^{w_u})$ se calcule en $O(w_u \times (W + w_u))$.
 	Or $w_u \leqslant W$ donc ce produit se fait en $O(W w_u)$.
 	La première boucle s'effectue en $\sum_{u \in \V} O(W w_u) = O(W^2)$.
@@ -263,60 +277,3 @@ Pour l'implémentation de notre algorithme nous avons choisi d'utiliser :
 	\lambda(n) = \frac{0,\!83 q}{\ln(n)+1}
 \end{equation*}
 Nous effectuons 40 itérations.
-
-\section{Coalitions réalistes}
-Dans cette partie, nous munissons les votants d'une relation d'ordre "est plus à gauche que". Nous considérons donc $(\V, \preccurlyeq)$.
-Nous avons créé la notion de coalitions réalistes.
-
-\begin{definition}
-	Une coalition $C \in \mathcal{P}(\V)$ est dite \textit{réaliste} si
-	\begin{equation}
-		\forall (u, v) \in \V^2, \forall w \in \V,
-		u \preccurlyeq w \preccurlyeq v \implies w \in C
-	\end{equation}
-	Notons $\mathcal{R}$ l'ensemble des coalitions réalistes.
-\end{definition}
-
-Nous pouvons donc redéfinir la décidabilité et les indices de Banzhaf.
-
-\begin{definition}
-	Posons $d_i^r$ la décidabilité réaliste d'un électeur $i$ :
-	\begin{equation}
-		d_i^r
-		= \# \left\{ S \in \G \cap \mathcal{R} \;|\; i \in S \text{ et } S \setminus \{i\} \notin \G \right\}
-	\end{equation}
-	De même, posons les indices de Banzhaf réalistes normalisé et relatif :
-	\begin{equation*}
-		B_i = \frac{d_i^r}{\displaystyle \sum_{j=1}^{n} d_j^r}
-		\qquad \qquad
-		B_i' = \frac{d_i^r}{\displaystyle 2^{N - 1}}
-	\end{equation*}
-\end{definition}
-
-\begin{algorithm}[H]
-	\caption{Calcul de l'ensemble des coalitions réalistes de $(E, \preccurlyeq)$}
-	\Entree{Une liste L des éléments de E triée selon $\preccurlyeq$}
-	\Sortie{Ensemble des coalitions réalistes}
-	
-	$N \gets Longueur(L)$ \\
-	$R \gets \{ \emptyset \}$ \\
-	
-	\Pour{$i$ de $1$ à $N$}{
-		\Pour{$j$ de $i+1$ à $N$}{
-			Ajouter à $R$ la sous-liste de $L$ entre i et j inclus
-		}
-	}
-	\Retour{R}
-\end{algorithm}
-
-\begin{proposition}
-	L'algorithme naïf de la décidabilité réaliste (celui naïf de la décidabilité où l'on remplace $Parties(\V)$ par $Réalistes(\V, \preccurlyeq)$) a une complexité temporelle de $O(N^3)$.
-\end{proposition}
-
-\begin{proof}
-	La complexité temporelle de l'extraction d'une sous-liste est linéaire en la taille de la liste. Donc l'algorithme calculant l'ensemble des coalitions réalistes a une complexité en $\Theta(N^3)$.
-	
-	De plus, d'après cet algorithme, $\# \mathcal{R} = 1 + \sum_{i=1}^{N} (N - i) = 1 + N^2 - \frac{N^2 + N}{2} = 1 + \frac{N^2 - N}{2}$ d'où $\# \mathcal{R} \leqslant N^2$.
-	Dans l'algorithme 3, le corps des deux boucles se font en $O(N)$.
-	Ainsi la complexité de l'algorithme naïf de la décidabilité réaliste est en $O(N^3)$.
-\end{proof}
