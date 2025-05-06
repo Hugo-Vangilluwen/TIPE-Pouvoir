@@ -25,7 +25,7 @@
 	matrix,shapes.arrows,shadows.blur}
 \usepackage[linguistics]{forest}
 \usepackage{graphicx}
-\graphicspath{ {./images/}, {../simulation/}}
+\graphicspath{ {./images/}, {../simulation/images/}}
 \usepackage{xcolor}
 
 
@@ -87,11 +87,17 @@
 	
 	\begin{frame}
 		\begin{tabular}{|l|l|}
+			\hline
 			& Voix \\
-			Président x 2 & 4 \\
-			Membres x 4 & 2 \\
-			Secrétaire x 1 & 1
-		\end{tabular}
+			\hline
+			Président $\times$ 2 & 4 \\
+			\hline
+			Membres $\times$ 4 & 2 \\
+			\hline
+			Secrétaire $\times$ 1 & 1 \\
+			\hline
+		\end{tabular} \\~\\
+		\uncover<2>{Le secrétaire n'influence jamais le résultat du vote.}
 	\end{frame}
 	
 	\subsection{Jeu de vote pondéré}
@@ -107,9 +113,9 @@
 			Poids total : $W = \sum_{i \in \mathcal{V}} w_i$
 		\end{definition}
 		\uncover<2>{\begin{definition}
-				\textbf{Coalition gagnante} $S$
+				\textbf{Coalition gagnante} $C$
 				\begin{equation*}
-					\sum_{i \in S} w_i \geqslant q
+					\sum_{i \in C} w_i \geqslant q
 				\end{equation*}
 				% sinon perdante
 				Notons $\mathcal{G} \subset \mathcal{P}(\mathcal{V})$ l'ensemble des coalitions gagnantes.
@@ -123,7 +129,7 @@
 				La décidabilité $d_i$ pour $i \in \mathcal{V}$ est le nombre de coalitions où $i$ est décisif :
 				\begin{equation*}
 					d_i =
-					\# \left\{ S \in \mathcal{G} \;|\; i \in S \text{ et } S \setminus \{i\} \notin \mathcal{G} \right\}
+					\# \left\{ C \in \mathcal{G} \;|\; i \in C \text{ et } C \setminus \{i\} \notin \mathcal{G} \right\}
 				\end{equation*}
 			}
 		\end{definition}
@@ -153,22 +159,22 @@
 		}
 		\uncover<3-5>{\begin{equation*}
 			\left\{ \begin{matrix}
-				i \in S \\
-				S \in \mathcal{G} \\
-				S \setminus \{i\} \not\in \mathcal{G}
+				i \in C \\
+				C \in \mathcal{G} \\
+				C \setminus \{i\} \not\in \mathcal{G}
 			\end{matrix} \right.
 			\iff
 			\left\{ \begin{matrix}
-			i \in S \\
-			\sum_{j \in S} w_j = \sum_{j \in S \setminus \{i\}} w_j + w_i \geqslant q \\
-			\sum_{j \in S \setminus \{i\}} w_j < q
+			i \in C \\
+			\sum_{j \in C} w_j = \sum_{j \in C \setminus \{i\}} w_j + w_i \geqslant q \\
+			\sum_{j \in C \setminus \{i\}} w_j < q
 			\end{matrix} \right.
 		\end{equation*}}
 		\uncover<4-5>{\begin{equation*}
 			\iff
 			\left\{ \begin{matrix}
-				i \in S \\
-				q - w_i \leqslant \sum_{j \in S \setminus \{i\}} w_j \leqslant q - 1
+				i \in C \\
+				q - w_i \leqslant \sum_{j \in C \setminus \{i\}} w_j \leqslant q - 1
 			\end{matrix} \right.
 		\end{equation*}}
 		\uncover<5>{\begin{equation*}
@@ -184,7 +190,7 @@
 		\end{equation*}
 		\uncover<2-3>{\begin{equation*}
 			\prod_{\footnotesize \begin{matrix} j \in \mathcal{V} \\ j \neq i \end{matrix}} \left(1 + 1 . X^{w_j}\right)
-			= \sum_{k = 0}^{W - w_i} \left( \sum_{\footnotesize \begin{matrix} S \in \mathcal{P}\left(\mathcal{V} \setminus \{i\}\right) \\ \sum_{j \in S} w_j = k \end{matrix}} 1 \right) X^k
+			= \sum_{k = 0}^{W - w_i} \left( \sum_{\footnotesize \begin{matrix} C \in \mathcal{P}\left(\mathcal{V} \setminus \{i\}\right) \\ \sum_{j \in C} w_j = k \end{matrix}} 1 \right) X^k
 		\end{equation*}}
 		\uncover<3>{Complexité : $O(N . W^2)$}
 	\end{frame}

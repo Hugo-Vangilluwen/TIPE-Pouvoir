@@ -37,7 +37,8 @@
 	urlcolor=cyan,
 	citecolor=olive,
 	pdftitle={Compte rendu de TIPE},
-	pdfauthor={\@author}
+	pdfauthor={\@author},
+	pageanchor=false
 }
 \makeatother
 
@@ -45,12 +46,14 @@
 \usepackage[ruled,lined, french]{algorithm2e}
 
 % Graphiques
-%\usepackage{graphicx}
-%\graphicspath{ {../simulation/figures/}}
+\usepackage{tikz-cd} % or \usetikzlibrary{cd}
+% \usepackage{graphicx}
+\graphicspath{ {../simulation/images/}}
 %\usepackage[linguistics]{forest}
-%\usepackage{subcaption}
+\usepackage{caption}
 %\usepackage{changepage}
-%\usepackage{float}
+\usepackage{float}
+\usepackage{diagbox}
 
 
 % Environnements
@@ -91,6 +94,10 @@
 	\include{formalisation.tex}
 	
 	\include{réaliste.tex}
+	
+	\include{union_européenne.tex}
+	
+	\include{penrose62.tex}
 	
 	\addcontentsline{toc}{section}{Références}
 	\bibliographystyle{plain}

@@ -30,14 +30,14 @@ Puisque le nombre de voix que possède un électeur ne représente pas le pouvoi
 \end{definition}
 
 \begin{definition}
-	Un \textit{coalition} est dite \textit{gagnante} si
+	Un \textit{coalition} $C$ est dite \textit{gagnante} si
 	\begin{equation}
-		\sum_{i \in S} w_i \geqslant q
+		\sum_{i \in C} w_i \geqslant q
 	\end{equation}
 	c'est-à-dire si elle peut faire accepter une proposition et dite \textit{perdante} sinon.
 	Notons $\G$ l'ensemble des coalitions gagnantes et $\G_i$ l'ensemble de celles contenant l'électeur $i$.
 	\begin{equation}
-		\G = \left\{ S \in \mathcal{P}(\V) \;|\; \sum_{i \in S} w_i \geqslant q \right\}
+		\G = \left\{ C \in \mathcal{P}(\V) \;|\; \sum_{i \in C} w_i \geqslant q \right\}
 	\end{equation}
 \end{definition}
 
@@ -49,12 +49,12 @@ Puisque le nombre de voix que possède un électeur ne représente pas le pouvoi
 Une généralisation appelée "jeu coopératif" dans la littérature des votes pondérés est possible avec la fonction suivante. Nous ne l'étudierons pas.
 Posons $v : \mathcal{P}\left(\V\right) \rightarrow \left\{0,1\right\}$ la fonction indicatrice de $\mathcal{P}\left(\G\right)$ :
 \begin{equation*}
-	v(S) = \left\{ \begin{array}{cl}
+	v(C) = \left\{ \begin{array}{cl}
 		1 &\text{ si } \sum_{i \in S} w_i \geqslant q \\
 		0 &\text{ sinon}
 	\end{array} \right.
 \end{equation*}
-Un jeu de vote pondéré peut être représenté par $(\V, v)$ (bien que certaines fonction $v : \mathcal{P}\left(\V\right) \rightarrow \left\{0,1\right\}$ ne représente aucun jeu de vote pondéré).
+Un jeu de vote pondéré peut être représenté penrose62par $(\V, v)$ (bien que certaines fonction $v : \mathcal{P}\left(\V\right) \rightarrow \left\{0,1\right\}$ ne représente aucun jeu de vote pondéré).
 
 
 \subsection{Indice de pouvoir}
@@ -66,7 +66,7 @@ Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à
 	\begin{equation}
 		d_i
 		% = \sum_{S \subset \V, \ i \in S} v(S) - v(S \setminus \{i\})
-		= \# \left\{ S \in \G \;|\; i \in S \text{ et } S \setminus \{i\} \notin \G \right\}
+		= \left| \left\{ C \in \G \;|\; i \in C \text{ et } C \setminus \{i\} \notin \G \right\} \right|
 	\end{equation}
 \end{definition}
 
@@ -76,12 +76,13 @@ Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à
 		B_i = \frac{d_i}{\displaystyle \sum_{j=1}^{n} d_j}
 	\end{equation}
 	Il est dit normalisé car sa valeur est toujours entre 0 et 1 et la somme des indices de tous les individus vaut 1.
+	Sans précision, "indice de Banzhaf" désigne cet indice.
 	
 	L'indice de Banzhaf relatif $B_i'$ est définit par
 	\begin{equation}
 		B_i' = \frac{d_i}{\displaystyle 2^{|\V| - 1}}
 	\end{equation}
-	Cette indice donne la probabilité que le votant $i$ soit dans une coalition gagnante en considérant que ce votant $i$ a une probabilité uniforme d'appartenir à une coalition. En effet, $\# \left\{ S \subset \V \;|\; i \in S \right\} = 2^{|\V| - 1}$.
+	Cette indice donne la probabilité que le votant $i$ soit dans une coalition gagnante en considérant que ce votant $i$ a une probabilité uniforme d'appartenir à une coalition. En effet, $\left| \left\{ C \subset \V \;|\; i \in C \right\} \right| = 2^{|\V| - 1}$.
 \end{definition}
 
 \begin{exemple}
@@ -147,13 +148,13 @@ Finalement, la complexité temporelle du calcul de l'ensemble des parties d'un e
 	\Entree{Un jeu de vote pondéré $(q, (w_v)_{v \in \V})$}
 	\Sortie{Décidabilité de tous les votants}
 	$G \gets \emptyset$ \quad \emph{Ensemble des parties gagnantes} \\
-	\Pour{$S \in Parties(\V)$}{
-		$somme \gets \sum_{v \in S} w_v$ \\
-		\lSi{$somme \geqslant q$}{ Ajouter à $G$ le tuple $(S, somme)$ }
+	\Pour{$C \in Parties(\V)$}{
+		$somme \gets \sum_{v \in C} w_v$ \\
+		\lSi{$somme \geqslant q$}{ Ajouter à $G$ le tuple $(C, somme)$ }
 	}
 	$D = (d_v)_{v \in \V} \gets (0)_{v \in \V}$ \quad \emph{Dictionnaire associant à chaque électeur sa décidabilité} \\
-	\Pour{$(S, somme) \in G$}{
-		\Pour{$v \in S$}{
+	\Pour{$(C, somme) \in G$}{
+		\Pour{$v \in C$}{
 			\lSi{$(somme - w_v) < q$}{$d_v \gets d_v + 1$}
 		}
 	}
@@ -173,29 +174,29 @@ La première boucle itère sur $2^N$ éléments et effectue un corps de boucle e
 Pour diminuer cette complexité, nous allons utiliser le polynôme générateur de Brams-Affuso \cite{power_european_constitution}.
 
 Notons $c_k^i$ le nombre de coalitions n'incluant pas $i$ et de poids total $k$ (somme des poids des votants qu'elles contiennent).
-Pour que le votant $i$ soit décisif dans une coalition $S$, il faut que $S \setminus \{i\}$ soit perdante mais de poids total pas trop faible de sorte que l'ajout de $i$ la rende gagnante, le poids total de $S \setminus \{i\}$ doit donc être compris entre $q - w_i$ et $q - 1$. Formellement avec $S \in \mathcal{P}(\V)$ :
+Pour que le votant $i$ soit décisif dans une coalition $C$, il faut que $C \setminus \{i\}$ soit perdante mais de poids total pas trop faible de sorte que l'ajout de $i$ la rende gagnante, le poids total de $C \setminus \{i\}$ doit donc être compris entre $q - w_i$ et $q - 1$. Formellement avec $C \in \mathcal{P}(\V)$ :
 \begin{equation*}
 	\left\{ \begin{matrix}
-		i \in S \\
-		S \in \G \\
-		S \setminus \{i\} \not\in \G
+		i \in C \\
+		C \in \G \\
+		C \setminus \{i\} \not\in \G
 	\end{matrix} \right.
 	\iff
 	\left\{ \begin{matrix}
-		i \in S \\
-		\sum_{j \in S} w_j = \sum_{j \in S \setminus \{i\}} w_j + w_i \geqslant q \\
-		\sum_{j \in S \setminus \{i\}} w_j < q
+		i \in C \\
+		\sum_{j \in C} w_j = \sum_{j \in C \setminus \{i\}} w_j + w_i \geqslant q \\
+		\sum_{j \in C \setminus \{i\}} w_j < q
 	\end{matrix} \right.
 	\iff
 	\left\{ \begin{matrix}
-		i \in S \\
-		q - w_i \leqslant \sum_{j \in S \setminus \{i\}} w_j \leqslant q - 1
+		i \in C \\
+		q - w_i \leqslant \sum_{j \in C \setminus \{i\}} w_j \leqslant q - 1
 	\end{matrix} \right.
 \end{equation*}
 On a donc l'égalité ensembliste :
 \begin{equation*}
-	\left\{ S \in \G \;|\; i \in S \text{ et } S \setminus \{i\} \notin \G \right\}
-	= \left\{ S \in \mathcal{P}(\V) \;|\; i \not\in S \text{ et } q - w_i \leqslant \sum_{j \in S} w_j \leqslant q - 1 \right\}
+	\left\{ C \in \G \;|\; i \in C \text{ et } C \setminus \{i\} \notin \G \right\}
+	= \left\{ C \in \mathcal{P}(\V) \;|\; i \not\in C \text{ et } q - w_i \leqslant \sum_{j \in C} w_j \leqslant q - 1 \right\}
 \end{equation*}
 
 Or les poids des votants sont des nombres entiers.
@@ -218,8 +219,8 @@ Nous obtenons donc la formule ci-dessous pour tout $i \in \V$.
 	Remarquons que le degré du polynôme de gauche est bien $\displaystyle \sum_{j \in \V, j \neq i} w_j  = W - w_i$.
 	Développons ce produit :
 	\begin{equation*}
-		\prod_{\footnotesize \begin{matrix} j \in \V \\ j \neq i \end{matrix}} \left(1 + 1 . X^{w_j}\right)
-		= \sum_{k = 0}^{W - w_i} \left( \sum_{\footnotesize \begin{matrix} S \in \mathcal{P}\left(\V \setminus \{i\}\right) \\ \sum_{j \in S} w_j = k \end{matrix}} 1 \right) X^k
+		\prod_{\begin{matrix} \scriptstyle j \in \V \\ \scriptstyle j \neq i \end{matrix} } \left(1 + 1 . X^{w_j}\right)
+		= \sum_{k = 0}^{W - w_i} \left( \sum_{\begin{matrix} \scriptstyle C \in \mathcal{P}\left(\V \setminus \{i\}\right) \\ \scriptstyle \sum_{j \in C} w_j = k \end{matrix}} 1 \right) X^k
 	\end{equation*}
 	
 	L'expression des coefficients polynomiaux à droite est exactement celle des $c_k^i$.
