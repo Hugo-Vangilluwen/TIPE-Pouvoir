@@ -46,7 +46,17 @@
 \usepackage[ruled,lined, french]{algorithm2e}
 
 % Graphiques
-\usepackage{tikz-cd} % or \usetikzlibrary{cd}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{tikz}
+\usetikzlibrary{cd} % or \usepackage{tikz-cd}
+\usetikzlibrary{math}
+% Pour le graphique des votes égalitaires dans penrose62.tex
+\tikzmath{\N = 31;}
+\tikzset{declare function={
+		Br(\x)=\x<=(\N+1)/2 ? 1/(\N - \x + 1) : 1/\x;
+	}
+}
 % \usepackage{graphicx}
 \graphicspath{ {../simulation/images/}}
 %\usepackage[linguistics]{forest}
@@ -73,6 +83,7 @@
 \newcommand{\pO}{\mathcal{O}}
 \newcommand{\SV}{\mathscr{S}}
 \newcommand{\D}{\mathcal{D}_\mathcal{O}}
+\newcommand{\R}{\mathcal{R}}
 
 \newcommand{\propriete}[1]{
 	\label{#1}

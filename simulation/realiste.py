@@ -50,7 +50,7 @@ def indice_Banzhaf_brut(quota, poids):
 
 
 def indice_Banzhaf(quota, poids):
-    """Calcule l'indice de Banzhaf relatif réaliste"""
+    """Calcule l'indice de Banzhaf réaliste"""
     ibb = indice_Banzhaf_brut(quota, poids)
     somme_d = sum(ibb.values())
 
@@ -59,19 +59,20 @@ def indice_Banzhaf(quota, poids):
     return {v: d/somme_d for v, d in ibb.items()}
 
 
-def indice_Banzhaf_relatif(quota, poids):
-    """Calcule l'indice de Banzhaf relatif réaliste
-    Algorithme de Brams-Affuso avec les séries génératrices"""
+def indice_Banzhaf_absolu(quota, poids):
+    """Calcule l'indice de Banzhaf absolu réaliste"""
     assert isinstance(quota, int)
     assert isinstance(poids, dict)
     ibb = indice_Banzhaf_brut(quota, poids) # indice de Banzhaf brut
-    nb_votants = 2**(nb_realistes(len(poids))-1)
+    votants = list(poids.keys)
+    nb_votants = len(poids)
 
     if nb_votants == 0:
-        return {v: 0 for v in ibb}
-    return {v: i/nb_votants for v, i in ibb.items()}
+        return {v: 0 for v in ibb.keys()}
+    return {v: i/( votants.index(v) * (nb_votants - votants.index(v) + 1) ) for v, i in ibb.items()}
 
 
 def sensibilite(quota, poids):
-    """"Calcule la sensibilité ou pouvoir d'une collectivité à agir"""
+    """"Calcule la sensibilité ou pouvoir d'une collectivité à agir
+    le calcul est faux"""
     return sum(indice_Banzhaf_brut(quota, poids).values()) / 2**(len(poids)-1)

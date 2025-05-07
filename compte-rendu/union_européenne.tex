@@ -9,13 +9,21 @@ L'Europe essaie comme toutes les démocraties, d'appliquer le principe "une pers
 
 \subsection{Équité entre pays membres}
 
+Actuellement, le nombre de sièges attribués à chaque pays résulte des traités signés entre les pays. Il n'existe pas de formule précisant la répartition des sièges.
+
 Pour évaluer le pouvoir d'un pays, imaginons que tout les eurodéputés de ce pays votent toujours ensemble. Cela revient à considérer que la possibilité des pays forment des coalitions dans leur intérêt propre et non dans celui de l'Union Européenne. \par
 Chaque pays est un votant dont le poids est égal au nombre d'eurodéputés qu'il a. Il suffit d'exécuter les algorithmes décrits dans la \hyperlink{section.2}{partie 2}.
 
 \begin{figure}[H]
 	\begin{center}
 		\begin{tabular}{|l|r|r|r|}
-			\hline \diagbox[dir=NE]{~~~~~~~~~~~~}{~} & Nombre de sièges & Pourcentage de sièges & Indice de Banzhaf normalisé \\
+			\hline \diagbox[dir=NE]{~~~~~~~~~~~~}{~} & Nombre de sièges &
+			\begin{tabular}{@{}c@{}}
+				Pourcentage \\ de sièges
+			\end{tabular} &
+			\begin{tabular}{@{}c@{}}
+				Indice de \\ Banzhaf normalisé
+			\end{tabular} \\
 			\hline Allemagne & 96 & 13,35\% & 14,32\% \\
 			\hline France & 81 & 11,27\% & 11,61\% \\
 			\hline Italie & 76 & 10,57\% & 10,81\% \\
@@ -69,20 +77,30 @@ Les membres non inscrits n'ont aucune raison de voter ensemble et sont situés �
 Nous ne les considérerons pas dans notre étude.
 
 \begin{figure}[H]
-	\hspace*{-1cm}
-	\begin{tabular}{|l|r|r|r|r|}
-		\hline \diagbox[dir=NE]{~~~~~~~}{~} & Nombre de sièges & Pourcentage de sièges & Indice de Banzhaf & Indice de Banzhaf réaliste \\
-		\hline GUE/NGL & 46 & 6,67\% & 5,65\% & 0\% \\
-		\hline S\&D & 136 & 19,71\% & 18,55\% & 5,26\% \\
-		\hline Verts/ALE & 53 & 7,68\% & 7,26\% & 5,26\% \\
-		\hline RE & 75 & 10,87\% & 8,87\% & 5,26\% \\
-		\hline PPE & 188 & 27,25\% & 31,45\% & 52,63\% \\
-		\hline CRE & 80 & 11,59\% & 10,48\% & 15,79\% \\
-		\hline PfE & 86 & 12,46\% & 13,71\% & 15,79\% \\
-		\hline ENS & 26 & 3,77\% & 4,03\% & 0\% \\
-		\hline Total & 690 & & & \\
-		\hline
+	\begin{center}
+		\begin{tabular}{|l|r|r|r|r|}
+			\hline \diagbox[dir=NE]{~~~~~~~}{~} & Nombre de sièges &
+			\begin{tabular}{@{}c@{}}
+				Pourcentage \\ de sièges
+			\end{tabular} &
+			\begin{tabular}{@{}c@{}}
+				Indice de \\ Banzhaf
+			\end{tabular} &
+			\begin{tabular}{@{}c@{}}
+				Indice de \\ Banzhaf réaliste
+			\end{tabular} \\
+			\hline GUE/NGL & 46 & 6,67\% & 5,65\% & 0\% \\
+			\hline S\&D & 136 & 19,71\% & 18,55\% & 5,26\% \\
+			\hline Verts/ALE & 53 & 7,68\% & 7,26\% & 5,26\% \\
+			\hline RE & 75 & 10,87\% & 8,87\% & 5,26\% \\
+			\hline PPE & 188 & 27,25\% & 31,45\% & 52,63\% \\
+			\hline CRE & 80 & 11,59\% & 10,48\% & 15,79\% \\
+			\hline PfE & 86 & 12,46\% & 13,71\% & 15,79\% \\
+			\hline ENS & 26 & 3,77\% & 4,03\% & 0\% \\
+			\hline Total & 690 & & & \\
+			\hline
 	\end{tabular}
+	\end{center}
 \end{figure}
 
 \begin{figure}[H]
@@ -90,7 +108,7 @@ Nous ne les considérerons pas dans notre étude.
 	\caption{diagramme en camembert représentant les sièges, l'indice de pouvoir de Banzhaf et l'indice de Banzhf réaliste que détient chaque groupe au Parlement Européen}
 \end{figure}
 
-Le parti populaire européen joue un rôle centrale dans le Parlement Européen. 
+Le parti populaire européen joue un rôle central dans le Parlement Européen simplement grâce au nombre de sièges qu'il détient.
 
 L'indice de Banzhaf réaliste accentue encore entre le PPE et les autres groupe. Ni les partis à sa gauche (310 membres) ni les partis à sa droite (192 membres) n'ont la majorité. Les coalitions gagnantes contiennent donc nécessairement le PPE. 
 Au contraire, le S\&D, bien que second groupe en term de nombre de membres, est le deuxième groupe le plus à gauche. Les groupe des Verts/ALE aux ENS peuvent facilement former des coalitions sans le S\&D. Son indice de Banzhaf réaliste est ainsi faible.

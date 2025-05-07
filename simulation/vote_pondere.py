@@ -31,7 +31,7 @@ def vote_pondere(quota, pouvoir, iteration=40):
     poids = pouvoir.copy()
 
     for i in range(1, iteration + 1):
-        tmp = ip.indice_Banzhaf_relatif(quota, arrondi_vote(poids))
+        tmp = ip.indice_Banzhaf_absolu(quota, arrondi_vote(poids))
         alpha = 0.83 * quota / ( math.log(i) + 1 )
         for v in pouvoir:
             poids[v] += alpha * (pouvoir[v] - tmp[v])

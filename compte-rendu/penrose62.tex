@@ -2,4 +2,271 @@
 % !TeX spellcheck = fr
 
 
-\section{Le système Penrose 62}
+\section{Les lois de Penrose}
+
+
+\subsection{Système de vote égalitaire}
+
+\begin{definition}
+	Un système de vote est dit \textit{égalitaire} si tous les votants ont un poids de 1 et si le quota relatif est fixé à $\nicefrac{1}{2}$. On a alors $W = N$.
+\end{definition}
+
+\begin{proposition}
+	Dans un système égalitaire,
+	\begin{equation}
+		\forall i \in \V, \
+		B_i = \frac{1}{N} \text{ et }
+		B_i' \underset{N \rightarrow +\infty}{\sim} 2\sqrt{\frac{2}{\pi}} \frac{1}{\sqrt{N}}
+	\end{equation}
+\end{proposition}
+
+\begin{proof}
+	Soit $i \in \V$.
+	Soit $C \subset \V$ tel que $C \notin \G$ et $C \cup \{i\} \in \G$. \\
+	Comme $q = \nicefrac{N}{2}$, on a $\sum_{j \in C} 1 < \nicefrac{N}{2} \leqslant \sum_{j \in C} 1 + 1$. Donc $\nicefrac{N}{2} - 1 \leqslant |C| \leqslant \nicefrac{N}{2}$ i. e. $|C| = \lfloor \nicefrac{N}{2} \rfloor$. D'où :
+	\begin{equation*}
+		d_i = \binom{N - 1}{\lfloor \nicefrac{N}{2} \rfloor}
+	\end{equation*}
+	Ainsi $\sum_{i \in \V} d_i = N \binom{N - 1}{\lfloor \nicefrac{N}{2} \rfloor}$ i. e. $B_i = \nicefrac{1}{N}$ et $B_i' = \nicefrac{\binom{N - 1}{\lfloor \nicefrac{N}{2} \rfloor}}{2^{N-1}}$.
+	D'après la formule de Stirling,
+	\begin{align*}
+		B_i'
+		&\underset{N \rightarrow +\infty}{\sim} \frac{\binom{N - 1}{\nicefrac{N}{2}}}{2^{N-1}} \\
+		&\sim  \frac{ \sqrt{2\pi(N-1)} (N-1)^N }{ 2^{N-1} \sqrt{2\pi\nicefrac{N}{2}} \left(\frac{\nicefrac{N}{2}}{\mathrm{e}}\right)^{\nicefrac{N}{2}} \sqrt{2\pi(N-1-\nicefrac{N}{2})} \left(\frac{N-1-\nicefrac{N}{2}}{\mathrm{e}}\right)^{N-1-\nicefrac{N}{2}} } \\
+		&\sim \frac{ \sqrt{N} N^N }{ 2^{N-1} \sqrt{2\pi} \sqrt{\nicefrac{N}{2}} \sqrt{\nicefrac{N}{2}-1} \left(\nicefrac{N}{2}\right)^{\nicefrac{N}{2}} \left(\nicefrac{N}{2}-1\right)^{\nicefrac{N}{2}-1} } \\
+		&\sim \frac{ \sqrt{N} N^N }{ 2^{N-1} \sqrt{2\pi} \nicefrac{N}{2} \left(\nicefrac{N}{2}\right)^N } \\
+		&\sim \frac{1}{ 2^{-2} \sqrt{2\pi} \sqrt{N}} \\
+		&\sim \frac{2\sqrt2}{\sqrt{N\pi}}
+	\end{align*}
+\end{proof}
+
+Nous retrouvons la loi de la racine carrée de Penrose \cite{penrose62} : pour compenser cette proportionnalité à $\nicefrac{1}{\sqrt{N}}$ et donner à chaque citoyen européen le même pouvoir, il faut que le pouvoir de chaque état membre soit proportionnel à la racine carrée de sa population.
+Ce qui contredit l'intuition commune donnant à chaque pays un nombre de sièges proportionnel à sa population.
+
+\begin{proposition}
+	Dans un système égalitaire, avec $(\V, \preccurlyeq) = ([\![1;N]\!], \leqslant)$, on a
+	\begin{equation}
+		\forall i \in \V, \
+		B_i^r \underset{N \rightarrow +\infty}{\sim} \left\{ \begin{matrix}
+			\frac{1}{2} i N^2 & \text{si } i \leqslant \lceil\nicefrac{N}{2}\rceil \\
+			\frac{1}{2} (N - i + 1) N^2 & \text{si } i \geqslant \lceil\nicefrac{N}{2}\rceil \\
+		\end{matrix} \right.
+		\text{ et }
+		B_i'^r = \left\{ \begin{matrix}
+			\displaystyle \frac{1}{N - i + 1} & \text{si } i \leqslant \lceil\nicefrac{N}{2}\rceil \\
+			~\\
+			\displaystyle \frac{1}{i} & \text{si } i \geqslant \lceil\nicefrac{N}{2}\rceil \\
+		\end{matrix} \right.
+	\end{equation}
+\end{proposition}
+
+\begin{proof}
+	Soit $i \in \V$. \\
+	Soit $C \in \G_i \cap \R$ telle que $C \setminus \{i\} \notin \G$. \\
+	On a $\R = \{\emptyset\} \cup \{ [\![i;j]\!] \;|\; (i, j) \in \V^2, i \leqslant j \}$. Donc
+	\begin{align*}
+		d_i^r
+		&= \left| \left\{ [\![j;j']\!] \;|\; (j, j') \in \V^2, j \leqslant j' \text{ et } |j' - j + 1| = \lfloor \nicefrac{N}{2} \rfloor + 1 \text{ et } i \in [\![j;j']\!] \right\} \right| \\
+		&= \left| \left\{ [\![ j ; j + \lfloor\nicefrac{N}{2}\rfloor ]\!] \;|\; j \in \mathbb{N}, j \geqslant 1 \text{ et } j + \lfloor\nicefrac{N}{2}\rfloor \leqslant N \text{ et } j \leqslant i \leqslant j + \lfloor\nicefrac{N}{2}\rfloor \right\} \right| \\
+		&= \left\{ \begin{matrix}
+			| [\![1;i]\!] | & \text{si } i \leqslant \lceil\nicefrac{N}{2}\rceil \\
+			| [\![i;N]\!] | & \text{si } i \geqslant \lceil\nicefrac{N}{2}\rceil \\
+		\end{matrix} \right. \\
+		&= \left\{ \begin{matrix}
+			i & \text{si } i \leqslant \lceil\nicefrac{N}{2}\rceil \\
+			N - i + 1 & \text{si } i \geqslant \lceil\nicefrac{N}{2}\rceil \\
+		\end{matrix} \right. \\
+	\end{align*}
+	Ainsi
+	\begin{align*}
+		\sum_{i \in \V} d_i^r
+		&= \sum_{i = 1}^{\lceil\nicefrac{N}{2}\rceil} i + \sum_{i = \lceil\nicefrac{N}{2}\rceil + 1}^{N} N - i + 1 \\
+		&= \frac{\lceil\nicefrac{N}{2}\rceil \left( \lceil\nicefrac{N}{2}\rceil + 1 \right)}{2} + (N + 1) \left(N - \lceil\nicefrac{N}{2}\rceil + 1\right) - \lceil\nicefrac{N}{2}\rceil \left( N - \lceil\nicefrac{N}{2}\rceil + 1\right) - \sum_{i = 1}^{N - \lceil\nicefrac{N}{2}\rceil} i \\
+		&= \frac{\lceil\nicefrac{N}{2}\rceil \left( \lceil\nicefrac{N}{2}\rceil + 1 \right)}{2} + \left(N-\lceil\nicefrac{N}{2}\rceil+1\right)^2 - \frac{\left(N-\lceil\nicefrac{N}{2}\rceil\right) \left(N-\lceil\nicefrac{N}{2}\rceil+1\right)}{2} \\
+		&= \left(N-\lceil\nicefrac{N}{2}\rceil+1\right)^2 + \frac{1}{2} \left( - N^2 + 2 N \lceil\nicefrac{N}{2}\rceil + N + 2 \lceil\nicefrac{N}{2}\rceil \right) \\
+		&\underset{N \rightarrow +\infty}{\sim} \frac{1}{2} N^2
+	\end{align*}
+\end{proof}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}
+			\addplot[samples at={1,...,\N}, only marks] { Br(x) } ;
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Suite des $(B_i'^r)_{i \in \V}$ pour $N = 31$}
+\end{figure}
+
+\begin{theoreme}
+	L'électeur médian est l'électeur qui possède l'indice de Banzhaf réaliste absolu le plus élevé.
+\end{theoreme}
+
+
+\subsection{Le système Penrose 62}
+
+Le système de vote de Penrose 62 est un jeu de vote pondéré où chaque pays a un nombre de sièges proportionnel à la racine carrée de son nombre d'habitants et où le quota relatif est fixé à 62\%. Notons $\mu$ le coefficient de proportionnalité.
+
+\begin{figure}[H]
+	\begin{center}
+		\begin{tabular}{|l|r|r|r|r|}
+			\hline &
+			\begin{tabular}{@{}c@{}}
+				Pourcentage de \\ la population \\ européenne
+			\end{tabular} &
+			\begin{tabular}{@{}c@{}}
+				Nombre \\ de sièges
+			\end{tabular} &
+			\begin{tabular}{@{}c@{}}
+				Pourcentage \\ de sièges
+			\end{tabular} &
+			\begin{tabular}{@{}c@{}}
+				Indice de \\ Banzhaf normalisé
+			\end{tabular} \\
+			\hline Allemagne & 18,57\% & 73 & 9,97\% & 10,44\% \\
+			\hline France & 15,23\% & 66 & 9,02\% & 9,29\% \\
+			\hline Italie & 13,13\% & 61 & 8,33\% & 8,51\% \\
+			\hline Espagne & 10,82\% & 56 & 7,65\% & 7,75\% \\
+			\hline Pologne & 8,15\% & 48 & 6,56\% & 6,57\% \\
+			\hline Roumanie & 4,25\% & 35 & 4,78\% & 4,73\% \\
+			\hline Pays-Bas & 3,98\% & 34 & 4,64\% & 4,59\% \\
+			\hline Belgique & 2,63\% & 27 & 3,69\% & 3,63\% \\
+			\hline République tchèque & 2,43\% & 26 & 3,55\% & 3,49\% \\
+			\hline Grèce & 2,32\% & 26 & 3,55\% & 3,49\% \\
+			\hline Hongrie & 2,14\% & 25 & 3,42\% & 3,36\% \\
+			\hline Portugal & 2,36\% & 26 & 3,55\% & 3,49\% \\
+			\hline Suède & 2,36\% & 26 & 3,55\% & 3,49\% \\
+			\hline Autriche & 2,05\% & 24 & 3,27\% & 3,22\% \\
+			\hline Bulgarie & 1,42\% & 20 & 2,73\% & 2,68\% \\
+			\hline Danemark & 1,34\% & 20 & 2,73\% & 2,68\% \\
+			\hline Finlande & 1,25\% & 19 & 2,60\% & 2,54\% \\
+			\hline Slovaquie & 1,20\% & 19 & 2,60\% & 2,54\% \\
+			\hline Irlande & 1,18\% & 18 & 2,46\% & 2,41\% \\
+			\hline Croatie & 0,87\% & 16 & 2,19\% & 2,14\% \\
+			\hline Lituanie & 0,65\% & 14 & 1,91\% & 1,87\% \\
+			\hline Lettonie & 0,42\% & 11 & 1,50\% & 1,47\% \\
+			\hline Slovénie & 0,48\% & 12 & 1,64\% & 1,60\% \\
+			\hline Estonie & 0,31\% & 9 & 1,23\% & 1,20\% \\
+			\hline Chypre & 0,20\% & 8 & 1,09\% & 1,07\% \\
+			\hline Luxembourg & 0,16\% & 7 & 0,96\% & 0,93\% \\
+			\hline Malte & 0,13\% & 6 & 0,82\% & 0,80\% \\
+			\hline Total & & 732 & & \\
+			\hline
+		\end{tabular}
+	\end{center}
+	\caption{Répartition des sièges selon le système Penrose 62 avec $\mu = \nicefrac{8}{10^6}$ \\ Le quota vaut 453}
+\end{figure}
+
+Le nombre devant être entier est un arrondi. Malgré cette approximation, le graphique suivant montre nous obtenons bien un pouvoir proportionnel à la racine carré de la population.
+En outre, le maximum de 750 sièges au Parlement Européen est respecté.
+
+\begin{figure}[H]
+	\includegraphics[width=\textwidth]{graph_rapport_pouvoir_racine_population.png}
+	\caption{Graphique montrant pour chaque pays
+	$\frac{B_{pays}}{\sqrt{population}}$}
+\end{figure}
+
+Nous pouvons donc confirmer les conclusions de \cite{votingEU} et \cite{penrose62}. Le système Penrose 62 ou P-62 est simple, transparent (résultant d'une formule mathématiques et non de négociations entre pays), facilement extensible (lors de l'arrivée de nouveau membres).
+
+
+\subsection{Justification du 62\%}
+
+D'après \cite{votingEU}, il faut choisir un quota relatif qui minimise l'écart entre le pourcentage de sièges et l'indice de Banzhaf absolu soit qui minimise la quantité
+\begin{equation*}
+	\sigma = \sum_{i \in \V} \left( \frac{w_i}{W} - B_i' \right)^2
+\end{equation*}
+
+La répartition des sièges est celle du tableau ci-dessus c'est-à-dire proportionnelle à la racine carrée de la population.
+
+Pour $q_f = 61\%$, on a $\sigma = 3,23 * 10^{-7}$ et pour $q_f = 62\%$, $\sigma = 4,36 * 10^{-7}$. Nous avons rajouté deux pays par rapport à \cite{votingEU}. C'est pourquoi on trouve un quota relatif meilleur à $61\%$. On devrai plutôt appliquer P-61 dans l'Europe des 27.
+
+\begin{figure}[H]
+	\includegraphics[width=\textwidth]{graph_sigma_quota_relatif.png}
+	\caption{$\sigma$ en fonction de $q_f$ pour l'Europe des 27}
+\end{figure}
+
+
+\subsection{Ajout de nouveaux pays membres dans l'Union Européenne}
+
+Plaçons nous dans l'hypothèse où les 9 pays officiellement candidats à l'adhésion à l'Union Européenne (l'Albanie, la Bosnie-Herzégovine, la Géorgie, la Macédoine du Nord, la Moldavie, le Monténégro, la Serbie, la Turquie, l'Ukraine) ont des eurodéputés selon le système de Penrose. Nous l'appellerons l'Europe des 36.
+
+\begin{figure}[H]
+	\includegraphics[width=\textwidth]{Europe_36/diagramme_pouvoir_UE_pays.png}
+	\caption{Répartition des sièges et du pouvoir dans l'Europe des 36}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\begin{tabular}{|l|r|r|r|r|}
+			\hline &
+			\begin{tabular}{@{}c@{}}
+				Pourcentage de \\ la population \\ européenne
+			\end{tabular} &
+			\begin{tabular}{@{}c@{}}
+				Nombre \\ de sièges
+			\end{tabular} &
+			\begin{tabular}{@{}c@{}}
+				Pourcentage \\ de sièges
+			\end{tabular} &
+			\begin{tabular}{@{}c@{}}
+				Indice de \\ Banzhaf normalisé
+			\end{tabular} \\
+			\hline Allemagne & 14,02\% & 55 & 7,70\% & 7,71\% \\
+			\hline France & 11,50\% & 50 & 7,00\% & 7,01\% \\
+			\hline Italie & 9,92\% & 46 & 6,44\% & 6,45\% \\
+			\hline Espagne & 8,17\% & 42 & 5,88\% & 5,89\% \\
+			\hline Pologne & 6,15\% & 36 & 5,04\% & 5,05\% \\
+			\hline Roumanie & 3,21\% & 26 & 3,64\% & 3,64\% \\
+			\hline Pays-Bas & 3,01\% & 25 & 3,50\% & 3,50\% \\
+			\hline Belgique & 1,98\% & 21 & 2,94\% & 2,94\% \\
+			\hline République tchèque & 1,83\% & 20 & 2,80\% & 2,80\% \\
+			\hline Grèce & 1,75\% & 19 & 2,66\% & 2,66\% \\
+			\hline Hongrie & 1,61\% & 19 & 2,66\% & 2,66\% \\
+			\hline Portugal & 1,78\% & 20 & 2,80\% & 2,80\% \\
+			\hline Suède & 1,78\% & 20 & 2,80\% & 2,80\% \\
+			\hline Autriche & 1,55\% & 18 & 2,52\% & 2,52\% \\
+			\hline Bulgarie & 1,08\% & 15 & 2,10\% & 2,10\% \\
+			\hline Danemark & 1,01\% & 15 & 2,10\% & 2,10\% \\
+			\hline Finlande & 0,94\% & 14 & 1,96\% & 1,96\% \\
+			\hline Slovaquie & 0,91\% & 14 & 1,96\% & 1,96\% \\
+			\hline Irlande & 0,89\% & 14 & 1,96\% & 1,96\% \\
+			\hline Croatie & 0,66\% & 12 & 1,68\% & 1,68\% \\
+			\hline Lituanie & 0,49\% & 10 & 1,40\% & 1,40\% \\
+			\hline Lettonie & 0,32\% & 8 & 1,12\% & 1,12\% \\
+			\hline Slovénie & 0,35\% & 9 & 1,26\% & 1,26\% \\
+			\hline Estonie & 0,24\% & 7 & 0,98\% & 0,98\% \\
+			\hline Chypre & 0,15\% & 6 & 0,84\% & 0,84\% \\
+			\hline Luxembourg & 0,12\% & 5 & 0,70\% & 0,70\% \\
+			\hline Malte & 0,10\% & 5 & 0,70\% & 0,70\% \\
+			\hline Albanie & 0,40\% & 9 & 1,26\% & 1,26\% \\
+			\hline Bosnie-Herzégovine & 0,54\% & 11 & 1,54\% & 1,54\% \\
+			\hline Macédoine du Nord & 0,30\% & 8 & 1,12\% & 1,12\% \\
+			\hline Moldavie & 0,45\% & 10 & 1,40\% & 1,40\% \\
+			\hline Serbie & 1,13\% & 16 & 2,24\% & 2,24\% \\
+			\hline Turquie & 14,36 \% & 55 & 7,70\% & 7,71\% \\
+			\hline Ukraine & 6,51\% & 37 & 5,18\% & 5,19\% \\
+			\hline Total & & 714 & & \\
+			\hline
+		\end{tabular}
+	\end{center}
+	\caption{Répartition des sièges selon le système Penrose avec $\mu = \nicefrac{6}{10^6}$}
+\end{figure}
+
+Dans l'Europe des 36, $\sigma$ est minimale pour $q_f = 60\%$ et vaut alors $4,20 * 10^{-8}$. Le quota est alors de 429. Comme ce minimum de $q_f$ est plus faible que celui de P-62 dans l'Europe des 27, l'écart entre le pourcentage de sièges et l'indice de Banzhaf est très faible et même toujours inférieur à $0,2\%$. Nous avons représenté non pas l'écart absolu mais l'écart relatif $ \nicefrac {(pouvoir - repr\acute{e}sentation)} {repr\acute{e}sentation} $.
+
+\begin{figure}[H]
+	\includegraphics[width=\textwidth]{Europe_36/graph_sigma_quota_relatif.png}
+	\caption{$\sigma$ en fonction de $q_f$ pour l'Europe des 36}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=\textwidth]{Europe_36/graph_écart_pourvoir_représentation_pays.png}
+	\caption{Écart relatif dans l'Europe des 36}
+\end{figure}
+
+Même avec l'approximation de l'arrondi sur les sièges, le rapport 
+du pouvoir sur la racine carrée de la population est constant entre les pays.
+
+\begin{figure}[H]
+	\includegraphics[width=\textwidth]{Europe_36/graph_rapport_pouvoir_racine_population.png}
+\end{figure}

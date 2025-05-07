@@ -13,11 +13,11 @@ Nous avons créé la notion de coalitions réalistes.
 		u \preccurlyeq w \preccurlyeq v \implies w \in C
 	\end{equation}
 	Cette notion serait une sorte de convexité non continue. \\
-	Notons $\mathcal{R}$ l'ensemble des coalitions réalistes.
+	Notons $\R$ l'ensemble des coalitions réalistes et $\R_i$ l'ensemble de celles contenant l'électeur $i$.
 \end{definition}
 
 \begin{exemple}
-	Considérons $\V = \{G, C, D\}$ avec $G \preccurlyeq C \preccurlyeq D$ pour gauche, centre et droite. Dessinons le diagramme de Hasse de $(\mathcal{R}, \subseteq)$ :
+	Considérons $\V = \{G, C, D\}$ avec $G \preccurlyeq C \preccurlyeq D$ pour gauche, centre et droite. Dessinons le diagramme de Hasse de $(\R, \subseteq)$ :
 	\begin{equation*}
 		\begin{tikzcd}[column sep=0, row sep=1.5cm]
 			&& \{G, C, D\} \drar[dash] \dlar[dash] && \\
@@ -28,10 +28,19 @@ Nous avons créé la notion de coalitions réalistes.
 	\end{equation*}
 \end{exemple}
 
-Pour $\V$ quelconque, si on lit le digramme de Hasse de haut en bas, on obtient $|\mathcal{R}| = \left( \sum_{k=1}^{|\V|} i \right) + 1$.
+Pour $\V$ quelconque, si on lit le digramme de Hasse de haut en bas, on obtient $|\R| = \left( \sum_{k=1}^{|\V|} i \right) + 1$.
 
 \begin{equation}
-	 |\mathcal{R}| = \frac{N \left(N+1\right)}{2} + 1
+	 |\R| = \frac{N \left(N+1\right)}{2} + 1
+\end{equation}
+
+Considérons que $\V = [\![1;N]\!]$.
+Soit $i \in \V$.
+On a $\R_i = \left\{ [\![j;j']\!] \;|\; (j, j') \in \V^2, j \leqslant i \leqslant j' \right\} = \left\{ [\![j;j']\!] \;|\; (j, j') \in [\![1;i]\!] \times [\![i;N]\!] \right\}$.
+Donc
+\begin{equation}
+	\forall i \in V, \
+	|\R_i| = i (N-i+1)
 \end{equation}
 
 Nous pouvons ainsi redéfinir la décidabilité et les indices de Banzhaf.
@@ -40,13 +49,13 @@ Nous pouvons ainsi redéfinir la décidabilité et les indices de Banzhaf.
 	Posons $d_i^r$ la décidabilité réaliste d'un électeur $i$ :
 	\begin{equation}
 		d_i^r
-		= \# \left\{ C \in \G \cap \mathcal{R} \;|\; i \in C \text{ et } C \setminus \{i\} \notin \G \right\}
+		= \left| \left\{ C \in \G_i \cap \R \;|\; C \setminus \{i\} \notin \G \right\} \right|
 	\end{equation}
-	De même, posons les indices de Banzhaf réalistes normalisé et relatif :
+	De même, posons les indices de Banzhaf réalistes normalisé et absolu :
 	\begin{equation*}
 		B_i^r = \frac{d_i^r}{\displaystyle \sum_{j=1}^{n} d_j^r}
 		\qquad \qquad
-		B_i'^r = \frac{d_i^r}{\displaystyle 2^{|{R}| - 1}}
+		B_i'^r = \frac{d_i^r}{\displaystyle |\R_i|} = \frac{d_i^r}{i(N-i+1)}
 	\end{equation*}
 \end{definition}
 
@@ -73,7 +82,7 @@ Nous pouvons ainsi redéfinir la décidabilité et les indices de Banzhaf.
 \begin{proof}
 	La complexité temporelle de l'extraction d'une sous-liste est linéaire en la taille de la liste. Donc l'algorithme calculant l'ensemble des coalitions réalistes a une complexité en $\Theta(N^3)$.
 	
-	De plus, $\# \mathcal{R} \leqslant N^2$.
+	De plus, $\# \R \leqslant N^2$.
 	Dans l'algorithme 3, le corps des deux boucles se font en $O(N)$.
 	Ainsi la complexité de l'algorithme naïf de la décidabilité réaliste est en $O(N^3)$.
 \end{proof}

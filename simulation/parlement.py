@@ -16,7 +16,7 @@ import indice_pouvoir as ip
 import realiste
 
 
-def indice_parlement(parlement, quota_relatif=1/2, verbose=False, plotted=True, r=False, ndigits=None):
+def indice_parlement(parlement, quota_relatif=1/2, verbose=False, plotted=True, r=False, ndigits=1, normalise=True):
     """Calcule l'indice de pouvoir des différents groupes dans une assemblée
     Le quota s'exprime en pourcentage
     Mettre verbose à true pour afficher les résultats détaillés
@@ -28,9 +28,15 @@ def indice_parlement(parlement, quota_relatif=1/2, verbose=False, plotted=True, 
     quota = math.ceil(total*quota_relatif)
 
     ratio = {pays: s/total for pays, s in parlement.sieges.items()}
-    pouvoir = ip.indice_Banzhaf(quota, parlement.sieges)
+    if normalise:
+        pouvoir = ip.indice_Banzhaf(quota, parlement.sieges)
+    else:
+        pouvoir = ip.indice_Banzhaf_absolu(quota, parlement.sieges)
     if r:
-        pouvoir_realiste = realiste.indice_Banzhaf(quota, parlement.sieges)
+        if normalise:
+            pouvoir_realiste = realiste.indice_Banzhaf(quota, parlement.sieges)
+        else:
+            pouvoir_realiste = realiste.indice_Banzhaf_absolu(quota, parlement.sieges)
 
     difference = {}
     difference_realiste = {}
@@ -42,9 +48,15 @@ def indice_parlement(parlement, quota_relatif=1/2, verbose=False, plotted=True, 
     if verbose:
         utils.print_dictionnaire(ratio, "ratio")
         utils.print_dictionnaire(difference, "différence")
-        utils.print_dictionnaire(pouvoir, "pouvoir")
+        if normalise:
+            utils.print_dictionnaire(pouvoir, "pouvoir")
+        else:
+            utils.print_dictionnaire(pouvoir, "pouvoir absolu")
         if r:
-            utils.print_dictionnaire(pouvoir_realiste, "pouvoir réaliste")
+            if normalise:
+                utils.print_dictionnaire(pouvoir_realiste, "pouvoir réaliste")
+            else:
+                utils.print_dictionnaire(pouvoir_realiste, "pouvoir réaliste absolu")
             utils.print_dictionnaire(difference_realiste, "différence réaliste")
     print("sensibilité : ", ip.sensibilite(quota, parlement.sieges))
 
@@ -57,7 +69,7 @@ def indice_parlement(parlement, quota_relatif=1/2, verbose=False, plotted=True, 
             data_pouvoir.append((pouvoir_realiste, "Indice de pouvoir\nréaliste de Banzhaf"))
         utils.plot_pie(data_pouvoir, couleurs=parlement.couleurs)
 
-        utils.plot_bar(difference.keys(), difference.values(), "Écart relatif entre le pouvoir et la représentation", couleurs=parlement.couleurs, ndigits=ndigits)
+        utils.plot_bar(difference.keys(), difference.values(), "", couleurs=parlement.couleurs, ndigits=ndigits) # "Écart relatif entre le pouvoir et la représentation"
 
         if r:
             utils.plot_bar(difference_realiste.keys(), difference_realiste.values(), "Écart relatif entre le pouvoir réaliste et la représentation", couleurs=parlement.couleurs, ndigits=ndigits)

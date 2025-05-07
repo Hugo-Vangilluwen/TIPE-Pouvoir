@@ -4,7 +4,8 @@
 
 \section{Formalisation Mathématiques}
 
-Nous utiliserons les notations de \textit{la mesure du pouvoir de vote} \cite{mesure_pouvoir}. Notons $\V$ l'ensemble des électeurs ou votants. Nous prendrons généralement $\V = [\![1;N]\!]$ avec $N \in \mathbb{N}^*$.
+Nous utiliserons les notations de \textit{la mesure du pouvoir de vote} \cite{mesure_pouvoir}. Notons $\V$ l'ensemble des électeurs ou votants.
+Posons $N = |\V| \in \mathbb{N}^*$. Nous prendrons généralement $\V = [\![1;N]\!]$.
 
 \begin{exemple}
 	Considérons une assemblée composée de 2 président ayant chacun 4 voix, de 4 agents ayant chacun 2 voix et d'un secrétaire ayant une seul voix. Une proposition nécessite 8 voix ou plus pour être acceptée.
@@ -67,6 +68,7 @@ Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à
 		d_i
 		% = \sum_{S \subset \V, \ i \in S} v(S) - v(S \setminus \{i\})
 		= \left| \left\{ C \in \G \;|\; i \in C \text{ et } C \setminus \{i\} \notin \G \right\} \right|
+		= \left| \left\{ C \in \G_i \;|\; C \setminus \{i\} \notin \G \right\} \right|
 	\end{equation}
 \end{definition}
 
@@ -78,11 +80,12 @@ Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à
 	Il est dit normalisé car sa valeur est toujours entre 0 et 1 et la somme des indices de tous les individus vaut 1.
 	Sans précision, "indice de Banzhaf" désigne cet indice.
 	
-	L'indice de Banzhaf relatif $B_i'$ est définit par
+	L'indice de Banzhaf absolu $B_i'$ est définit par
 	\begin{equation}
 		B_i' = \frac{d_i}{\displaystyle 2^{|\V| - 1}}
 	\end{equation}
-	Cette indice donne la probabilité que le votant $i$ soit dans une coalition gagnante en considérant que ce votant $i$ a une probabilité uniforme d'appartenir à une coalition. En effet, $\left| \left\{ C \subset \V \;|\; i \in C \right\} \right| = 2^{|\V| - 1}$.
+	Cette indice donne la probabilité que le votant $i$ soit décisif pour une coalition gagnante en munissant l'ensemble des coalitions contenant $i$ d'une loi de probabilité uniforme.
+	En effet, $\left| \left\{ C \subset \V \;|\; i \in C \right\} \right| = 2^{|\V| - 1}$.
 \end{definition}
 
 \begin{exemple}
@@ -90,7 +93,7 @@ Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à
 	\begin{center}
 		\begin{tabular}{|l|l|l|l|l|}
 		\hline
-		& Voix & brut & normalisé & relatif \\
+		& Voix & brut & normalisé & absolu \\
 		\hline
 		Président & 3 & 11 & 0,44 & 0,6875 \\
 		\hline
@@ -263,7 +266,7 @@ Nous avons implémenté en python les polynômes sous forme de classe en les mun
 \subsection{Problème inverse}
 
 Nous pouvons aussi prendre le problème dans le sens inverse.
-Jusqu'ici, nous calculions l'indice de Banzhaf connaissant les poids des électeur. Nous allons chercher les poids des électeurs à partir d'indices de Banzhaf relatifs donnés (ou désirés) noté $d \in \mathbb{N}^\V$ et du quota $q \in \mathbb{N}$.
+Jusqu'ici, nous calculions l'indice de Banzhaf connaissant les poids des électeur. Nous allons chercher les poids des électeurs à partir d'indices de Banzhaf absolus donnés (ou désirés) noté $d \in \mathbb{N}^\V$ et du quota $q \in \mathbb{N}$.
 Dans \cite{algorithm_weight}, Dennis Leech propose de le résoudre le problème de manière itérative avec la suite suivante :
 \begin{equation}
 	p_0 = d

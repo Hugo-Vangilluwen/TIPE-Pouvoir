@@ -27,22 +27,33 @@ def print_dictionnaire(d, nom=None, print_total=False):
         print(f"\tTOTAL : {total}")
     print("}")
 
-def plot_bar(x, y, titre, couleurs=None, ndigits=None):
+def plot_bar(x, y, titre, couleurs=None, ndigits=1):
     assert len(x) == len(y), "x et y doivent être de la même taille"
 
     y_pos = range(len(x))
     if couleurs == None:
-        couleurs_pos = None
+        couleurs_pos = ["deepskyblue"]
+        rot = 70
     else:
         couleurs_pos = list(couleurs.values())
+        rot = 0
+
     rectarr = plt.bar(y_pos, y, color=couleurs_pos)
     for rect in rectarr:
         height = rect.get_height()
-        if height < 0:
-            va = "top"
-        else:
+        if (height < 0) == (couleurs==None):
             va = "bottom"
-        plt.text(rect.get_x() + rect.get_width()/2, height, str(round(height*100, ndigits)) + "%", ha="center", va=va)
+        else:
+            va = "top"
+
+        plt.text(
+            rect.get_x() + rect.get_width()/2,
+            height,
+            str(round(height*100, ndigits)) + "%",
+            ha="center",
+            va=va,
+            rotation=rot
+            ).set_fontsize(9)
     plt.xticks(y_pos, x, rotation=60)
     plt.title(titre)
     plt.subplots_adjust(bottom=0.15)

@@ -102,8 +102,8 @@ def indice_Banzhaf(quota, poids):
     return {v: i/somme_ibb for v, i in ibb.items()}
 
 
-def indice_Banzhaf_relatif(quota, poids):
-    """Calcule l'indice de Banzhaf relatif
+def indice_Banzhaf_absolu(quota, poids):
+    """Calcule l'indice de Banzhaf absolu
     Algorithme de Brams-Affuso avec les séries génératrices"""
     assert isinstance(quota, int)
     assert isinstance(poids, dict)
