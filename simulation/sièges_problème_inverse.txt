@@ -1,0 +1,31 @@
+Sièges au parlement par états : {
+        Allemagne : 64
+        France : 55
+        Italie : 50
+        Espagne : 45
+        Pologne : 38
+        Roumanie : 27
+        Pays-Bas : 26
+        Belgique : 21
+        République tchèque : 20
+        Portugal : 20
+        Suède : 20
+        Grèce : 20
+        Hongrie : 19
+        Autriche : 19
+        Bulgarie : 16
+        Danemark : 15
+        Finlande : 15
+        Slovaquie : 14
+        Irlande : 14
+        Croatie : 12
+        Lituanie : 11
+        Slovénie : 9
+        Lettonie : 8
+        Estonie : 7
+        Chypre : 6
+        Luxembourg : 6
+        Malte : 5
+        TOTAL : 582
+}
+q = 400

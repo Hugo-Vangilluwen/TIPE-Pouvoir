@@ -5,14 +5,14 @@
 \section{Les lois de Penrose}
 
 
-\subsection{Système de vote égalitaire}
+\subsection{Jeu de vote égalitaire}
 
 \begin{definition}
-	Un système de vote est dit \textit{égalitaire} si tous les votants ont un poids de 1 et si le quota relatif est fixé à $\nicefrac{1}{2}$. On a alors $W = N$.
+	Un jeu de vote est dit \textit{égalitaire} si tous les votants ont un poids de 1 et si le quota relatif est fixé à $\nicefrac{1}{2}$. On a alors $W = N$.
 \end{definition}
 
 \begin{proposition}
-	Dans un système égalitaire,
+	Dans un jeu égalitaire,
 	\begin{equation}
 		\forall i \in \V, \
 		B_i = \frac{1}{N} \text{ et }
@@ -44,7 +44,7 @@ Nous retrouvons la loi de la racine carrée de Penrose \cite{penrose62} : pour c
 Ce qui contredit l'intuition commune donnant à chaque pays un nombre de sièges proportionnel à sa population.
 
 \begin{proposition}
-	Dans un système égalitaire, avec $(\V, \preccurlyeq) = ([\![1;N]\!], \leqslant)$, on a
+	Dans un jeu égalitaire, avec $(\V, \preccurlyeq) = ([\![1;N]\!], \leqslant)$, on a
 	\begin{equation}
 		\forall i \in \V, \
 		B_i^r \underset{N \rightarrow +\infty}{\sim} \left\{ \begin{matrix}
@@ -173,7 +173,7 @@ Nous pouvons donc confirmer les conclusions de \cite{votingEU} et \cite{penrose6
 
 D'après \cite{votingEU}, il faut choisir un quota relatif qui minimise l'écart entre le pourcentage de sièges et l'indice de Banzhaf absolu soit qui minimise la quantité
 \begin{equation*}
-	\sigma = \sum_{i \in \V} \left( \frac{w_i}{W} - B_i' \right)^2
+	\sigma = \sum_{i \in \V} \left( \frac{w_i}{W} - B_i \right)^2
 \end{equation*}
 
 La répartition des sièges est celle du tableau ci-dessus c'est-à-dire proportionnelle à la racine carrée de la population.
@@ -261,7 +261,7 @@ Dans l'Europe des 36, $\sigma$ est minimale pour $q_f = 60\%$ et vaut alors $4,2
 
 \begin{figure}[H]
 	\includegraphics[width=\textwidth]{Europe_36/graph_écart_pourvoir_représentation_pays.png}
-	\caption{Écart relatif dans l'Europe des 36}
+	\caption{Écart relatif entre l'indice de Banzhaf dans le Parlement Européen et la racine carrée de la population dans l'Europe des 36}
 \end{figure}
 
 Même avec l'approximation de l'arrondi sur les sièges, le rapport 

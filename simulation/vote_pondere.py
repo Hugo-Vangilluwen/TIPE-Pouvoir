@@ -73,22 +73,27 @@ def poids_parlement(quota, quantite, verbose=False, plotted=True):
         utils.print_dictionnaire(ratio_quantite, "ratio")
         utils.print_dictionnaire(pouvoir, "pouvoir réel")
         utils.print_dictionnaire(difference, "écart")
-    utils.print_dictionnaire(poids, "poids", True)
+    utils.print_dictionnaire(poids, "Sièges au parlement par états", True)
     print(f"Sensibilité : {ip.sensibilite(quota, poids)}")
 
     if plotted:
-        fig, axarr = plt.subplots(1, 3)
-        axarr[0].pie(ratio_poids.values(), labels=ratio_poids.keys())
-        axarr[0].set_title("Ratio de sièges")
-        axarr[1].pie(ratio_quantite.values(), labels=ratio_quantite.keys())
-        axarr[1].set_title("Ratio des quantités")
-        axarr[2].pie(pouvoir.values(), labels=pouvoir.keys())
-        axarr[2].set_title("Indice de pouvoir de Banzhaf")
-        plt.show()
+        utils.plot_pie([
+            (ratio_poids, "Sièges"),
+            (ratio_quantite, "Population européenne"),
+            (pouvoir, "Indice de Banzhaf")
+            ])
+        # fig, axarr = plt.subplots(1, 3)
+        # axarr[0].pie(ratio_poids.values(), labels=ratio_poids.keys())
+        # axarr[0].set_title("Sièges")
+        # axarr[1].pie(ratio_quantite.values(), labels=ratio_quantite.keys())
+        # axarr[1].set_title("Population européenne")
+        # axarr[2].pie(pouvoir.values(), labels=pouvoir.keys())
+        # axarr[2].set_title("Indice de pouvoir de Banzhaf")
+        # plt.show()
 
-        utils.plot_bar(difference.keys(), difference.values(), "Écart entre le pouvoir et la représentation")
+        utils.plot_bar(difference.keys(), difference.values(), "") # "Écart entre le pouvoir et la représentation")
 
-        utils.plot_bar(difference_rel.keys(), difference_rel.values(), "Écart relatif entre le pouvoir et la représentation")
+        utils.plot_bar(difference_rel.keys(), difference_rel.values(), "") # "Écart relatif entre le pouvoir et la représentation")
 
     # calcul des écarts maxima
     max_abs = 0 # absolu

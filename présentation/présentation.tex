@@ -23,13 +23,14 @@
 \usepackage{tikz}
 \usetikzlibrary{shapes.arrows, arrows.meta,
 	matrix,shapes.arrows,shadows.blur}
+\usetikzlibrary{cd}
 \usepackage[linguistics]{forest}
 \usepackage{graphicx}
 \graphicspath{ {./images/}, {../simulation/images/}}
 \usepackage{xcolor}
 
 
-\author{Hugo Vangilluwen et Lilian Etchaïde}
+\author{Hugo Vangilluwen}
 \title{Idéalisation de la répartition du pouvoir des pays face aux transformations de l’Union Européenne}
 \subtitle{TIPE}
 \date{\today}
@@ -90,14 +91,13 @@
 			\hline
 			& Voix \\
 			\hline
-			Président $\times$ 2 & 4 \\
-			\hline
-			Membres $\times$ 4 & 2 \\
+			Coprésident $\times$ 2 & 4 \\
 			\hline
 			Secrétaire $\times$ 1 & 1 \\
 			\hline
 		\end{tabular} \\~\\
-		\uncover<2>{Le secrétaire n'influence jamais le résultat du vote.}
+		Majorité : 5 \\
+		\uncover<2>{Le secrétaire et les coprésidents influence autant le scrutin.}
 	\end{frame}
 	
 	\subsection{Jeu de vote pondéré}
@@ -110,7 +110,8 @@
 				% quota, poids
 			\end{equation*}
 			$\mathcal{V}$ ensemble des votants. Généralement, $\mathcal{V} = [\![ 1; N ]\!]$. \\
-			Poids total : $W = \sum_{i \in \mathcal{V}} w_i$
+			Poids total : $W = \sum_{i \in \mathcal{V}} w_i$ \\
+			Posons le quota relatif $q_f \in [0;1]$ tel que $q = \lceil q_f W  \rceil$.
 		\end{definition}
 		\uncover<2>{\begin{definition}
 				\textbf{Coalition gagnante} $C$
@@ -128,8 +129,7 @@
 			\uncover<2>{
 				La décidabilité $d_i$ pour $i \in \mathcal{V}$ est le nombre de coalitions où $i$ est décisif :
 				\begin{equation*}
-					d_i =
-					\# \left\{ C \in \mathcal{G} \;|\; i \in C \text{ et } C \setminus \{i\} \notin \mathcal{G} \right\}
+					d_i = \left| \left\{ C \in \mathcal{G} \;|\; i \in C \text{ et } C \setminus \{i\} \notin \mathcal{G} \right\} \right|
 				\end{equation*}
 			}
 		\end{definition}
@@ -144,7 +144,7 @@
 			\end{equation*}
 			Indice de Banzhaf absolu :
 			\begin{equation*}
-				B_i' = \frac{d_i}{2^{|\mathcal{V}| - 1}}
+				B_i' = \frac{d_i}{2^{N - 1}}
 			\end{equation*}
 		\end{definition}
 		\uncover<2>{L'algorithme naïf du calcul de l'indice de Banzhaf a une complexité de $O(N 2^N)$.}
@@ -153,11 +153,9 @@
 	\subsection{Polynôme générateur de Brams-Affuso}
 	\begin{frame}
 		\underline{Polynôme générateur de Brams-Affuso} \\
-		\uncover<2-5>{
-			$d_i$ : décidabilité du votant $i$ \\
-			$c_k^i$ : nombre de coalitions n'incluant pas $i$ et de poids total $k$
-		}
-		\uncover<3-5>{\begin{equation*}
+		$d_i$ : décidabilité du votant $i$ \\
+		$c_k^i$ : nombre de coalitions n'incluant pas $i$ et de poids total $k$
+		\uncover<2-4>{\begin{equation*}
 			\left\{ \begin{matrix}
 				i \in C \\
 				C \in \mathcal{G} \\
@@ -170,14 +168,14 @@
 			\sum_{j \in C \setminus \{i\}} w_j < q
 			\end{matrix} \right.
 		\end{equation*}}
-		\uncover<4-5>{\begin{equation*}
+		\uncover<3-4>{\begin{equation*}
 			\iff
 			\left\{ \begin{matrix}
 				i \in C \\
 				q - w_i \leqslant \sum_{j \in C \setminus \{i\}} w_j \leqslant q - 1
 			\end{matrix} \right.
 		\end{equation*}}
-		\uncover<5>{\begin{equation*}
+		\uncover<4>{\begin{equation*}
 				d_i = \sum_{k=q-w_i}^{q-1} c_k^i
 		\end{equation*}}
 	\end{frame}
@@ -198,40 +196,88 @@
 	\section{Défauts de l'Union Européenne}
 	
 	\begin{frame}{Système historique}
-		Petits états $\neq$ Grands états \\
-		12 / 17 voix \\
+		
+		Petits états : 2 voix $\neq$ Grands états : 4 voix \\
+		Majorité : 12 / 17 voix \\
 		$\rightarrow$ Petits états surreprésentés
 		\bigbreak
 		Problème avec l'élargissement possible de l'UE
 	\end{frame}
 	
-	\begin{frame}{Traité de Nice}
-		\includegraphics[width=\textwidth]{Effets_réforme_Nice.png}
-	\end{frame}
+%	\begin{frame}{Traité de Nice}
+%		\includegraphics[width=\textwidth]{Effets_réforme_Nice.png}
+%	\end{frame}
 
-	\begin{frame}{Constitution Rule}
-		\includegraphics[width=0.8\textwidth]{Effet_Constitution_Rule.png}
+%	\begin{frame}{Constitution Rule}
+%		\includegraphics[width=0.8\textwidth]{Effet_Constitution_Rule.png}
+%	\end{frame}
+
+	\begin{frame}{Système actuel}
+		\includegraphics[width=\textwidth]{diagramme_pouvoir_UE_pays.png}
 	\end{frame}
 	
 	\begin{frame}{Système actuel}
 		\includegraphics[width=1.1\textwidth]{graph_écart_pourvoir_représentation_pays.png}
 	\end{frame}
 	
-	\section{Système de vote en deux étapes}
+	\section{Système de vote idéal}
 	
-	\begin{frame}{Problème inverse}
-		\underline{Algorithme de Leech}
+	\subsection{Problème inverse}
+	
+	\begin{frame}{Algorithme de Leech}
 		\begin{equation*}
-			w_0 = d
+			p_0 = d \in \mathbb{R}^\mathcal{V}
 		\end{equation*}
 		\bigbreak
 		\begin{equation*}
-			w_{n+1} = \lambda(n) ( d - w_n )
+			p_{n+1} = p_n + \lambda(n) ( d - B'(p_n) ) \in \mathbb{R}^\mathcal{V}
 		\end{equation*}
 		\bigbreak
 		\begin{equation*}
-			\lambda(n) = \frac{0,\!83 q}{\ln(i)+1}
+			\lambda(n) = \frac{0,\!83 q}{\ln(n)+1}
 		\end{equation*}
+	\end{frame}
+	
+	\begin{frame}
+		\begin{center}
+			q = 400
+		\end{center}
+		\begin{tabular}{cc}
+			\begin{tabular}{|c|c|c|}
+				\hline Allemagne & 64 & 96 \\
+				\hline France & 55 & 81 \\
+				\hline Italie & 50 & 76 \\
+				\hline Espagne & 45 & 60 \\
+				\hline Pologne & 38 & 53 \\
+				\hline Roumanie & 27 & 33 \\
+				\hline Pays-Bas & 26 & 31 \\
+				\hline Belgique & 21 & 22 \\
+				\hline République tchèque & 20 & 21 \\
+				\hline Portugal & 20 & 21 \\
+				\hline Suède & 20 & 21 \\
+				\hline Grèce & 20 & 21 \\
+				\hline Hongrie & 19 & 21 \\
+				\hline Autriche & 19 & 20 \\
+				\hline
+			\end{tabular}
+			\begin{tabular}{|c|c|c|}
+				\hline Bulgarie & 16 & 17 \\
+				\hline Danemark & 15 & 15 \\
+				\hline Finlande & 15 & 15 \\
+				\hline Slovaquie & 14 & 15 \\
+				\hline Irlande & 14 & 14 \\
+				\hline Croatie & 12 & 12 \\
+				\hline Lituanie & 11 & 11 \\
+				\hline Slovénie & 9 & 9 \\
+				\hline Lettonie & 8 & 9 \\
+				\hline Estonie & 7 & 7 \\
+				\hline Chypre & 6 & 6 \\
+				\hline Luxembourg & 6 & 6 \\
+				\hline Malte & 5 & 6 \\
+				\hline TOTAL & 582 & 720 \\
+				\hline
+			\end{tabular}
+		\end{tabular}
 	\end{frame}
 	
 	\begin{frame}
@@ -241,17 +287,76 @@
 		\includegraphics[width=1.1\textwidth]{graph_écart_problème_inverse.png}
 	\end{frame}
 	
-	\begin{frame}{Critère d'égalité}
-		\begin{equation*}
-			\left( \left\lceil\frac{|\mathcal{V}| + 1}{2}content\right\rceil, (1) \right)
-		\end{equation*}
-		\begin{equation*}
-			B_i' = \frac{ \binom{n - 1}{q - 1} }{ 2^{n-1} } \sim \sqrt{\frac{2}{\pi n}}
-		\end{equation*}
-		Felsenthal and Machover ont montré que l'indice de Banzhaf absolu des électeurs sont égaux si et seulement si l'indice de Banzhaf absolu des pays est proportionnel à la racine carré du nombre d'habitants.
+	\subsection{Penrose 62}
+	
+	\begin{frame}{Jeu de vote égalitaire}
+		Si $w = (1)_{i \in \mathcal{V}}$ et $q_f = \nicefrac{1}{2}$ alors
+		\uncover<2-3>{
+			\begin{equation*}
+				\forall i \in \mathcal{V}, \
+				d_i = \binom{N - 1}{\lfloor \nicefrac{N}{2} \rfloor}
+			\end{equation*}
+		}
+		\uncover<3>{
+			\begin{equation*}
+				\forall i \in \mathcal{V}, \
+				B_i = \frac{1}{N} \text{ et }
+				B_i' \underset{N \rightarrow +\infty}{\sim} 2\sqrt{\frac{2}{\pi}} \frac{1}{\sqrt{N}}
+			\end{equation*}
+		}
+		% Felsenthal and Machover ont montré que l'indice de Banzhaf absolu des électeurs sont égaux si et seulement si l'indice de Banzhaf absolu des pays est proportionnel à la racine carré du nombre d'habitants.
 	\end{frame}
 	
-	\begin{frame}{Penrose62}
+	\begin{frame}
+		\begin{equation*}
+			\sigma = \sum_{i \in \mathcal{V}} \left( \frac{w_i}{W} - B_i \right)^2
+		\end{equation*}
+		\includegraphics[width=\textwidth]{graph_sigma_quota_relatif.png}
+	\end{frame}
+	
+	\begin{frame}
+		\begin{center}
+			q = 453
+		\end{center}
+		\begin{tabular}{cc}
+			\begin{tabular}{|c|c|c|}
+				\hline Allemagne & 73 & 96 \\
+				\hline France & 66 & 81 \\
+				\hline Italie & 61 & 76 \\
+				\hline Espagne & 56 & 60 \\
+				\hline Pologne & 48 & 53 \\
+				\hline Roumanie & 35 & 33 \\
+				\hline Pays-Bas & 34 & 31 \\
+				\hline Belgique & 27 & 22 \\
+				\hline République tchèque & 26 & 21 \\
+				\hline Portugal & 26 & 21 \\
+				\hline Suède & 26 & 21 \\
+				\hline Grèce & 26 & 21 \\
+				\hline Hongrie & 25 & 21 \\
+				\hline Autriche & 24 & 20 \\
+				\hline
+			\end{tabular}
+			\begin{tabular}{|c|c|c|}
+				\hline Bulgarie & 20 & 17 \\
+				\hline Danemark & 20 & 15 \\
+				\hline Finlande & 19 & 15 \\
+				\hline Slovaquie & 19 & 15 \\
+				\hline Irlande & 18 & 14 \\
+				\hline Croatie & 16 & 12 \\
+				\hline Lituanie & 14 & 11 \\
+				\hline Slovénie & 12 & 9 \\
+				\hline Lettonie & 11 & 9 \\
+				\hline Estonie & 9 & 7 \\
+				\hline Chypre & 8 & 6 \\
+				\hline Luxembourg & 7 & 6 \\
+				\hline Malte & 6 & 6 \\
+				\hline TOTAL & 732 & 720 \\
+				\hline
+			\end{tabular}
+		\end{tabular}
+	\end{frame}
+	
+	\begin{frame}
 		\begin{equation*}
 			(62\%, (\sqrt{population})_{pays})
 		\end{equation*}
@@ -261,6 +366,109 @@
 	\begin{frame}
 		\begin{figure}
 			\includegraphics[width=1.1\textwidth]{graph_écart_penrose62.png}
+			\caption{Écart relatif entre l'indice de Banzhaf et la racine carrée de la population}
 		\end{figure}
+	\end{frame}
+	
+	\subsection{Nouveaux pays membres}
+	
+	\begin{frame}
+		Pays officiellement candidats à l'adhésion à l'Union Européenne
+		\begin{itemize}
+			\item Albanie
+			\item Bosnie-Herzégovine
+			\item Géorgie
+			\item Macédoine du Nord
+			\item Moldavie
+			\item Monténégro
+			\item Serbie
+			\item Turquie
+			\item Ukraine
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}
+		$q_f = 60\%$
+		\includegraphics[width=\textwidth]{Europe_36/graph_sigma_quota_relatif.png}
+	\end{frame}
+	
+	\begin{frame}
+		\includegraphics[width=\textwidth]{Europe_36/graph_écart_pourvoir_représentation_pays.png}
+	\end{frame}
+	
+	
+	\section{Spectre politique gauche/droite}
+	
+	\subsection{Coalitions réalistes}
+	
+	\begin{frame}
+		Considérons maintenant $(\mathcal{V}, \preccurlyeq)$.
+		
+		\uncover<2>{\begin{definition}
+			Une coalition $C \in \mathcal{P}(\mathcal{V})$ est dite \textit{réaliste} si
+			\begin{equation*}
+				\forall (i, j) \in \mathcal{V}^2, \forall k \in \mathcal{V},
+				i \preccurlyeq k \preccurlyeq j \implies k \in C
+			\end{equation*}
+			Notons $\mathcal{R}$ l'ensemble des coalitions réalistes et $\mathcal{R}_i$ celles contenant le votant $i$.
+		\end{definition}}
+	\end{frame}
+	
+	\begin{frame}
+		$\mathcal{V} = \{G, C, D\}$ avec $G \preccurlyeq C \preccurlyeq D$
+		
+		\uncover<2>{\begin{equation*}
+			\begin{tikzcd}[column sep=0, row sep=1.2cm, ampersand replacement=\&]
+				\&\& \{G, C, D\} \drar[dash] \dlar[dash] \&\& \\
+				\& \{G, C\} \drar[dash] \dlar[dash] \&\& \{C, D\} \drar[dash] \dlar[dash] \& \\
+				\{G\} \arrow[dash]{drr} \&\& \{C\} \dar[dash] \&\& \{D\} \arrow[dash]{dll} \\
+				\&\& \emptyset \&\& \\
+			\end{tikzcd}
+		\end{equation*}
+		\vspace{-1.9cm}
+		\begin{center}
+			diagramme de Hasse de $(\mathcal{R}, \subseteq)$
+		\end{center}}
+	\end{frame}
+	
+	\begin{frame}
+		\begin{equation*}
+			d_i^r
+			= \left| \left\{ C \in \mathcal{G} \cap \mathcal{R}_i \;|\; C \setminus \{i\} \notin \mathcal{G} \right\} \right|
+		\end{equation*}
+		~\\
+		\uncover<2>{\begin{equation*}
+			B_i^r = \frac{d_i^r}{\displaystyle \sum_{j=1}^{n} d_j^r}
+			\qquad \qquad
+			B_i'^r = \frac{d_i^r}{\displaystyle |\mathcal{R}_i|}
+		\end{equation*}}
+	\end{frame}
+	
+	\begin{frame}
+		Considérons $\left( \mathcal{V}, \preccurlyeq \right) = \left( [\![1; N]\!], \leqslant \right)$.
+		\begin{equation*}
+			\mathcal{R} = \left\{\emptyset\right\} \cup \left\{ [\![j;j']\!] \;|\; (j, j') \in \mathcal{V}^2, j \leqslant j' \right\}
+		\end{equation*}
+		\uncover<2>{Complexité : $O(N^3)$}
+	\end{frame}
+	
+	\subsection{Groupes au Parlement Européen}
+	
+	\begin{frame}
+		\includegraphics[width=\textwidth]{hémicycle_PE.png}
+	\end{frame}
+	
+	\begin{frame}
+		\hspace*{-1.5cm}
+		\includegraphics[width=1.2\textwidth]{diagramme_pouvoir_UE_groupe.png}
+	\end{frame}
+	
+	\appendix
+	\AtBeginSection{
+	}
+	\section{Conclusion}
+	
+	\begin{frame}{Conclusion}
+		Oui
 	\end{frame}
 \end{document}

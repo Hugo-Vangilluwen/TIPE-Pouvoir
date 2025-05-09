@@ -8,6 +8,7 @@ Toutes les petites fonctions utiles
 
 import math
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 
 
 def print_dictionnaire(d, nom=None, print_total=False):
@@ -61,6 +62,7 @@ def plot_bar(x, y, titre, couleurs=None, ndigits=1):
     plt.show()
 
 
+# @mpl.rc_context({'font.size': 8})
 def plot_pie(data, couleurs=None):
     """Affiche des diagrammes circulaires
     un par élément de data qui sont de la forme (dictionnaire, titre)
@@ -83,6 +85,7 @@ def plot_pie(data, couleurs=None):
         axarr[i].pie(dwz.values(), labels=dwz.keys(), rotatelabels=True, colors=c)
         axarr[i].set_title(data[i][1], pad=40)
 
-    #fig.tight_layout(w_pad=90)
+    # fig.tight_layout(pad=-2)
+    # fig.set_figwidth(5)
     plt.get_current_fig_manager().full_screen_toggle()
     plt.show()

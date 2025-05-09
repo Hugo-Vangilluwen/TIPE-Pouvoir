@@ -4,13 +4,13 @@
 
 \section{Coalitions réalistes}
 Dans cette partie, nous munissons les votants d'une relation d'ordre totale "est plus à gauche que". Nous considérons donc $(\V, \preccurlyeq)$.
-Nous avons créé la notion de coalitions réalistes.
+Nous avons créé la notion de coalitions réalistes pour étudier des votants placés sur le spectre politique droite/gauche (à une seule dimension).
 
 \begin{definition}
 	Une coalition $C \in \mathcal{P}(\V)$ est dite \textit{réaliste} si
 	\begin{equation}
-		\forall (u, v) \in \V^2, \forall w \in \V,
-		u \preccurlyeq w \preccurlyeq v \implies w \in C
+		\forall (i, j) \in \V^2, \forall k \in \V,
+		i \preccurlyeq k \preccurlyeq j \implies k \in C
 	\end{equation}
 	Cette notion serait une sorte de convexité non continue. \\
 	Notons $\R$ l'ensemble des coalitions réalistes et $\R_i$ l'ensemble de celles contenant l'électeur $i$.
@@ -59,6 +59,10 @@ Nous pouvons ainsi redéfinir la décidabilité et les indices de Banzhaf.
 	\end{equation*}
 \end{definition}
 
+La \hyperlink{section.5}{partie 5} donne un exemple où le calcul formel de $B_i'^r$ est possible.
+Décrivons ici un algorithme qui permet de calculer ces deux indices.
+On sait que $\R = \left\{\emptyset\right\} \cup \left\{ [\![j;j']\!] \;|\; (j, j') \in \V^2, j \leqslant j' \right\}$. \\
+
 \begin{algorithm}[H]
 	\caption{Calcul de l'ensemble des coalitions réalistes de $(E, \preccurlyeq)$}
 	\Entree{Une liste L des éléments de l'ensemble E triés selon $\preccurlyeq$}
@@ -86,3 +90,5 @@ Nous pouvons ainsi redéfinir la décidabilité et les indices de Banzhaf.
 	Dans l'algorithme 3, le corps des deux boucles se font en $O(N)$.
 	Ainsi la complexité de l'algorithme naïf de la décidabilité réaliste est en $O(N^3)$.
 \end{proof}
+
+Ainsi $B_i^r$ et $B_i'^r$ peuvent être calculés avec un complexité temporelle en $O(N^3)$.

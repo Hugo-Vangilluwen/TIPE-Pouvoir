@@ -273,7 +273,7 @@ Dans \cite{algorithm_weight}, Dennis Leech propose de le résoudre le problème 
 \end{equation}
 \begin{equation}
 	\forall n \in \mathbb{N}, \
-	p_{n+1} = \lambda(n) \times \left( d - p_n \right)
+	p_{n+1} = p_n + \lambda(n) \times \left( d - B'(p_n) \right)
 \end{equation}
 
 Pour l'implémentation de notre algorithme nous avons choisi d'utiliser :
