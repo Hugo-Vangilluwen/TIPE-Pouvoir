@@ -121,7 +121,7 @@ Le but des indices de pouvoir est de mesurer la capacité de chaque électeur à
 	\Sinon{\Retour{$(\nicefrac{d_v}{sommeD})_{v \in \V}$}}
 \end{algorithm}
 
-Ce programme a une complexité en $O(N)$ ce qui est inférieur à celle du calcul de la décidabilité.
+Ce programme a une complexité en $\mathcal{O}(N)$ ce qui est inférieur à celle du calcul de la décidabilité.
 
 Commençons par écrire l'algorithme naïf de l'indice de Banzhaf en transcrivant la formule mathématique.
 Pour cela, il est nécessaire de calculer $\mathcal{P}(\V)$.
@@ -165,11 +165,11 @@ Finalement, la complexité temporelle du calcul de l'ensemble des parties d'un e
 \end{algorithm}
 
 \begin{proposition}
-	Le calcul naïf de l'indice de Banzhaf brut a une complexité temporelle de $O(N 2^N)$.
+	Le calcul naïf de l'indice de Banzhaf brut a une complexité temporelle de $\mathcal{O}(N 2^N)$.
 \end{proposition}
 
 L'appel à $Parties(\V)$ se fait en $\Theta(N 2^N)$.
-La première boucle itère sur $2^N$ éléments et effectue un corps de boucle en $O(N)$ (car $|S| \leqslant |\V|$) soit une complexité de $O(N 2^N)$. La seconde boucle a exactement la même complexité.
+La première boucle itère sur $2^N$ éléments et effectue un corps de boucle en $\mathcal{O}(N)$ (car $|S| \leqslant |\V|$) soit une complexité de $\mathcal{O}(N 2^N)$. La seconde boucle a exactement la même complexité.
 
 
 \subsection{Polynôme générateur de Brams-Affuso}
@@ -230,7 +230,7 @@ Nous obtenons donc la formule ci-dessous pour tout $i \in \V$.
 \end{proof}
 
 
-Nous avons implémenté en python les polynômes sous forme de classe en les munissant des opérations d'addition, de multiplication par un scalaire et de multiplication par un polynôme. $P + Q$ se calcule en $\Theta(\min(\deg P, \deg Q))$, $\lambda . P$ en $\Theta(\deg P)$ et $P \times Q$ en $O(\min(\deg P, \deg Q) \times (\deg P + \deg Q))$.
+Nous avons implémenté en python les polynômes sous forme de classe en les munissant des opérations d'addition, de multiplication par un scalaire et de multiplication par un polynôme. $P + Q$ se calcule en $\Theta(\min(\deg P, \deg Q))$, $\lambda . P$ en $\Theta(\deg P)$ et $P \times Q$ en $\mathcal{O}(\min(\deg P, \deg Q) \times (\deg P + \deg Q))$.
 
 \begin{algorithm}[H]
 	\caption{Calcul de la décidabilité avec les polynômes générateurs de Brams-Affuso}
@@ -250,16 +250,16 @@ Nous avons implémenté en python les polynômes sous forme de classe en les mun
 \end{algorithm}
 
 \begin{proposition}
-	La complexité temporelle de cet algorithme est $O(N . W^2)$.
+	La complexité temporelle de cet algorithme est $\mathcal{O}(N . W^2)$.
 \end{proposition}
 
 \begin{proof}
-	L'initialisation s'effectue en $O(N)$ et $N \leqslant W$.
-	$P$ a toujours un degré inférieur à $W$. Donc $P \times (1 + X^{w_u})$ se calcule en $O(w_u \times (W + w_u))$.
-	Or $w_u \leqslant W$ donc ce produit se fait en $O(W w_u)$.
-	La première boucle s'effectue en $\sum_{u \in \V} O(W w_u) = O(W^2)$.
+	L'initialisation s'effectue en $\mathcal{O}(N)$ et $N \leqslant W$.
+	$P$ a toujours un degré inférieur à $W$. Donc $P \times (1 + X^{w_u})$ se calcule en $\mathcal{O}(w_u \times (W + w_u))$.
+	Or $w_u \leqslant W$ donc ce produit se fait en $\mathcal{O}(W w_u)$.
+	La première boucle s'effectue en $\sum_{u \in \V} \mathcal{O}(W w_u) = \mathcal{O}(W^2)$.
 	Pour la deuxième boucle, on a $\# [\![\max(0,q-w_v);q-1]\!] \leqslant q$ et on peut considérer que $q \leqslant W$ (sinon le jeu de vote pondéré étudié n'a aucun intérêt).
-	La boucle principale s'effectue donc en $O(|\V| W^2)$.
+	La boucle principale s'effectue donc en $\mathcal{O}(|\V| W^2)$.
 \end{proof}
 
 
@@ -278,6 +278,7 @@ Dans \cite{algorithm_weight}, Dennis Leech propose de le résoudre le problème 
 
 Pour l'implémentation de notre algorithme nous avons choisi d'utiliser :
 \begin{equation*}
-	\lambda(n) = \frac{0,\!83 q}{\ln(n)+1}
+	\lambda(n) = \frac{\Lambda q}{\ln(n)+1}
+	\text{ avec } \Lambda = 0,\!83
 \end{equation*}
 Nous effectuons 40 itérations.

@@ -124,7 +124,7 @@ parlements = {
         ),
     "UE groupe": Parlement(
         {
-            "GUE/NGL": 46,
+            "The Left": 46,
             "S&D": 136,
             "Verts/ALE": 53,
             "RE": 75,
@@ -135,7 +135,7 @@ parlements = {
         },
         "https://www.europarl.europa.eu/meps/fr/search/chamber",
         {
-            "GUE/NGL": "#460000",
+            "The Left": "#460000",
             "S&D": "#c80000",
             "Verts/ALE": "#32c800",
             "RE": "#ffaa00",

@@ -59,6 +59,10 @@ def plot_bar(x, y, titre, couleurs=None, ndigits=1):
     plt.title(titre)
     plt.subplots_adjust(bottom=0.15)
     plt.get_current_fig_manager().full_screen_toggle()
+
+    # ax = plt.gca()
+    # ax.set_ylim([-0.1, 0.1])
+
     plt.show()
 
 
