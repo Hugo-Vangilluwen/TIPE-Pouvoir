@@ -9,7 +9,7 @@ Nous avons créé la notion de coalitions réalistes pour étudier des votants p
 \begin{definition}
 	Une coalition $C \in \mathcal{P}(\V)$ est dite \textit{réaliste} si
 	\begin{equation}
-		\forall (i, j) \in \V^2, \forall k \in \V,
+		\forall (i, j) \in C^2, \forall k \in \V,
 		i \preccurlyeq k \preccurlyeq j \implies k \in C
 	\end{equation}
 	Cette notion serait une sorte de convexité non continue. \\
@@ -30,18 +30,18 @@ Nous avons créé la notion de coalitions réalistes pour étudier des votants p
 
 Pour $\V$ quelconque, si on lit le digramme de Hasse de haut en bas, on obtient $|\R| = \left( \sum_{k=1}^{|\V|} i \right) + 1$.
 
-\begin{equation}
+\begin{equation*}
 	 |\R| = \frac{N \left(N+1\right)}{2} + 1
-\end{equation}
+\end{equation*}
 
 Considérons que $\V = [\![1;N]\!]$.
 Soit $i \in \V$.
 On a $\R_i = \left\{ [\![j;j']\!] \;|\; (j, j') \in \V^2, j \leqslant i \leqslant j' \right\} = \left\{ [\![j;j']\!] \;|\; (j, j') \in [\![1;i]\!] \times [\![i;N]\!] \right\}$.
 Donc
-\begin{equation}
+\begin{equation*}
 	\forall i \in V, \
 	|\R_i| = i (N-i+1)
-\end{equation}
+\end{equation*}
 
 Nous pouvons ainsi redéfinir la décidabilité et les indices de Banzhaf.
 
@@ -52,11 +52,11 @@ Nous pouvons ainsi redéfinir la décidabilité et les indices de Banzhaf.
 		= \left| \left\{ C \in \G_i \cap \R \;|\; C \setminus \{i\} \notin \G \right\} \right|
 	\end{equation}
 	De même, posons les indices de Banzhaf réalistes normalisé et absolu :
-	\begin{equation*}
+	\begin{equation}
 		B_i^r = \frac{d_i^r}{\displaystyle \sum_{j=1}^{n} d_j^r}
 		\qquad \qquad
 		B_i'^r = \frac{d_i^r}{\displaystyle |\R_i|} = \frac{d_i^r}{i(N-i+1)}
-	\end{equation*}
+	\end{equation}
 \end{definition}
 
 La \hyperlink{section.5}{partie 5} donne un exemple où le calcul formel de $B_i'^r$ est possible.

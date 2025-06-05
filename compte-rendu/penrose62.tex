@@ -2,7 +2,7 @@
 % !TeX spellcheck = fr
 
 
-\section{Les lois de Penrose}
+\section{Loi de Penrose}
 
 
 \subsection{Jeu de vote égalitaire}
@@ -40,8 +40,15 @@
 	\end{align*}
 \end{proof}
 
-Nous retrouvons la loi de la racine carrée de Penrose \cite{penrose62} : pour compenser cette proportionnalité à $\nicefrac{1}{\sqrt{N}}$ et donner à chaque citoyen européen le même pouvoir, il faut que le pouvoir de chaque état membre soit proportionnel à la racine carrée de sa population.
-Ce qui contredit l'intuition commune donnant à chaque pays un nombre de sièges proportionnel à sa population.
+\begin{theoreme}
+	\underline{de Penrose} (démontré par Felsenthal et Manchover \cite{penrose62}) \\
+	Tous les participants d’un jeu en 2 étapes ont le même pouvoir si les indices de pouvoir des groupes de la $2^{\grave{e}me}$ étape sont proportionnels aux racines carrées de leur cardinal.
+\end{theoreme}
+
+\begin{proof}
+	Un jeu de vote pondéré en deux étapes peut être modélisé comme une réunion d’ensembles de votants disjoints et indépendants où chaque première étape est un jeu de vote égalitaire.
+	Pour compenser cette proportionnalité à $\nicefrac{1}{\sqrt{N}}$ et donner à chaque votant de la $1^{\grave{e}re}$ étape le même pouvoir, il faut que le pouvoir de chaque élu de la $2^{\grave{e}me}$ étape soit proportionnel à la racine carrée de sa population.
+\end{proof}
 
 \begin{proposition}
 	Dans un jeu égalitaire, avec $(\V, \preccurlyeq) = ([\![1;N]\!], \leqslant)$, on a
@@ -105,7 +112,10 @@ Ce qui contredit l'intuition commune donnant à chaque pays un nombre de sièges
 
 \subsection{Le système Penrose 62}
 
-Le système de vote de Penrose 62 est un jeu de vote pondéré où chaque pays a un nombre de sièges proportionnel à la racine carrée de son nombre d'habitants et où le quota relatif est fixé à 62\%. Notons $\mu$ le coefficient de proportionnalité.
+D'après le théorème de Penrose, dans l’UE, tous les citoyens possèdent le même pouvoir si les indices de pouvoirs des pays au Parlement Européen sont proportionnels à la racine carrée de leur population.
+Ce qui contredit l'intuition commune donnant à chaque pays un nombre de sièges proportionnel à sa population.
+
+Le système de vote de Penrose 62 est un jeu de vote pondéré où chaque pays a un nombre de sièges proportionnel à la racine carrée de son nombre d'habitants et où le quota relatif est fixé à 62\% (voir la sous-partie suivante pour la justification du 62\%). Notons $\mu$ le coefficient de proportionnalité.
 
 \begin{figure}[H]
 	\begin{center}
@@ -154,7 +164,7 @@ Le système de vote de Penrose 62 est un jeu de vote pondéré où chaque pays a
 			\hline
 		\end{tabular}
 	\end{center}
-	\caption{Répartition des sièges selon le système Penrose 62 avec $\mu = \nicefrac{8}{10^6}$ \\ Le quota vaut 453}
+	\caption{Répartition des sièges selon le système Penrose 62 avec $\mu = \nicefrac{8}{10^6}$ \\ $q = 453$}
 \end{figure}
 
 Le nombre devant être entier est un arrondi. Malgré cette approximation, le graphique suivant montre nous obtenons bien un pouvoir proportionnel à la racine carré de la population.

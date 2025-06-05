@@ -72,6 +72,52 @@ Dans le système actuel du Parlement Européen, les trois grands pays l'Allemagn
 Les autres pays ont un écart relatif d'environ 3\%.
 
 
+\subsection{Résolution du problème inverse}
+
+J'ai exécuté l'algorithme de Leech en donnant en entrée pour chaque pays le pourcentage de population européenne qu'il possède et un quota de 400. Voici les résultats obtenus avec dans la colonne de droite le nombre de sièges calculé et dans la colonne de gauche celui actuel.
+
+\begin{center}
+	\begin{tabular}{|c|c|c|}
+		\hline Allemagne & 64 & 96 \\
+		\hline France & 55 & 81 \\
+		\hline Italie & 50 & 76 \\
+		\hline Espagne & 45 & 60 \\
+		\hline Pologne & 38 & 53 \\
+		\hline Roumanie & 27 & 33 \\
+		\hline Pays-Bas & 26 & 31 \\
+		\hline Belgique & 21 & 22 \\
+		\hline République tchèque & 20 & 21 \\
+		\hline Portugal & 20 & 21 \\
+		\hline Suède & 20 & 21 \\
+		\hline Grèce & 20 & 21 \\
+		\hline Hongrie & 19 & 21 \\
+		\hline Autriche & 19 & 20 \\
+		\hline
+	\end{tabular}
+	\begin{tabular}{|c|c|c|}
+		\hline Bulgarie & 16 & 17 \\
+		\hline Danemark & 15 & 15 \\
+		\hline Finlande & 15 & 15 \\
+		\hline Slovaquie & 14 & 15 \\
+		\hline Irlande & 14 & 14 \\
+		\hline Croatie & 12 & 12 \\
+		\hline Lituanie & 11 & 11 \\
+		\hline Slovénie & 9 & 9 \\
+		\hline Lettonie & 8 & 9 \\
+		\hline Estonie & 7 & 7 \\
+		\hline Chypre & 6 & 6 \\
+		\hline Luxembourg & 6 & 6 \\
+		\hline Malte & 5 & 6 \\
+		\hline TOTAL & 582 & 720 \\
+		\hline
+	\end{tabular}
+\end{center}
+
+On voit clairement un repondération en faveur des petits états.
+Cependant, le total de 582 rend difficile de réunir les 400 voix nécessaires. Le Parlement Européen serait alors paralysé. Ce n’est selon nous pas satisfaisant bien que l'algorithme retourne exactement ce qui lui a été demandé.
+Ainsi, nous avons besoin de construire un autre système : \hyperlink{section.5}{Penrose62}.
+
+
 \subsection{Pouvoir des différents groupes}
 
 Les membres non inscrits n'ont aucune raison de voter ensemble et sont situés à des endroits très différents dans le spectre droite-gauche. Ils ne peuvent donc pas être considérés comme un groupe.

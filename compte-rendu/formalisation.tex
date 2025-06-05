@@ -55,7 +55,7 @@ Posons $v : \mathcal{P}\left(\V\right) \rightarrow \left\{0,1\right\}$ la foncti
 		0 &\text{ sinon}
 	\end{array} \right.
 \end{equation*}
-Un jeu de vote pondéré peut être représenté penrose62par $(\V, v)$ (bien que certaines fonction $v : \mathcal{P}\left(\V\right) \rightarrow \left\{0,1\right\}$ ne représente aucun jeu de vote pondéré).
+Un jeu de vote pondéré peut être représenté par $(\V, v)$ (bien que certaines fonction $v : \mathcal{P}\left(\V\right) \rightarrow \left\{0,1\right\}$ ne représente aucun jeu de vote pondéré).
 
 
 \subsection{Indice de pouvoir}
@@ -268,17 +268,20 @@ Nous avons implémenté en python les polynômes sous forme de classe en les mun
 Nous pouvons aussi prendre le problème dans le sens inverse.
 Jusqu'ici, nous calculions l'indice de Banzhaf connaissant les poids des électeur. Nous allons chercher les poids des électeurs à partir d'indices de Banzhaf absolus donnés (ou désirés) noté $d \in \mathbb{N}^\V$ et du quota $q \in \mathbb{N}$.
 Dans \cite{algorithm_weight}, Dennis Leech propose de le résoudre le problème de manière itérative avec la suite suivante :
-\begin{equation}
+\begin{equation*}
 	p_0 = d
-\end{equation}
-\begin{equation}
+\end{equation*}
+\begin{equation*}
 	\forall n \in \mathbb{N}, \
-	p_{n+1} = p_n + \lambda(n) \times \left( d - B'(p_n) \right)
-\end{equation}
+	p_{n+1} = p_n + \lambda \times \left( d - B'(p_n) \right)
+\end{equation*}
 
+Dans l'algorithme classique proposé par Leech, $\lambda$ est constant. Pour améliorer la vitesse de convergence, je l'ai fait dépendre de $n$.
 Pour l'implémentation de notre algorithme nous avons choisi d'utiliser :
 \begin{equation*}
-	\lambda(n) = \frac{\Lambda q}{\ln(n)+1}
-	\text{ avec } \Lambda = 0,\!83
+	\lambda(n) = \frac{\Lambda q}{f(n)}
+	\text{ avec } f(n) = \ln(n) + 1
+	\text{ et } \Lambda = 0,\!83
 \end{equation*}
+Si $f$ est polynomial, $\lambda$ décroît trop rapidement donc j'ai pris $f$ logarithmique.
 Nous effectuons 40 itérations.
