@@ -1,10 +1,6 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 """
 Utilitaire et données de différents parlements
-
-@author: Hugo
 """
 
 
@@ -16,11 +12,11 @@ import indice_pouvoir as ip
 import realiste
 
 
-def indice_parlement(parlement, quota_relatif=1/2, verbose=False, plotted=True, r=False, ndigits=1, normalise=True):
+def indice_parlement(parlement, quota_relatif=1/2, verbose=False, plotted=True, reel=False, ndigits=1, normalise=True):
     """Calcule l'indice de pouvoir des différents groupes dans une assemblée
     Le quota s'exprime en pourcentage
     Mettre verbose à true pour afficher les résultats détaillés
-    r indique si les indices doivent réalistes ou non (par défaut non)"""
+    reel indique si les indices doivent réalistes ou non (par défaut non)"""
     assert isinstance(parlement, Parlement)
 
 
@@ -32,7 +28,7 @@ def indice_parlement(parlement, quota_relatif=1/2, verbose=False, plotted=True, 
         pouvoir = ip.indice_Banzhaf(quota, parlement.sieges)
     else:
         pouvoir = ip.indice_Banzhaf_absolu(quota, parlement.sieges)
-    if r:
+    if reel:
         if normalise:
             pouvoir_realiste = realiste.indice_Banzhaf(quota, parlement.sieges)
         else:
@@ -42,7 +38,7 @@ def indice_parlement(parlement, quota_relatif=1/2, verbose=False, plotted=True, 
     difference_realiste = {}
     for groupe in parlement.sieges.keys():
         difference[groupe] = (pouvoir[groupe] - ratio[groupe]) / ratio[groupe]
-        if r:
+        if reel:
             difference_realiste[groupe] = (pouvoir_realiste[groupe]  - ratio[groupe]) / ratio[groupe]
 
     if verbose:
@@ -52,7 +48,7 @@ def indice_parlement(parlement, quota_relatif=1/2, verbose=False, plotted=True, 
             utils.print_dictionnaire(pouvoir, "pouvoir")
         else:
             utils.print_dictionnaire(pouvoir, "pouvoir absolu")
-        if r:
+        if reel:
             if normalise:
                 utils.print_dictionnaire(pouvoir_realiste, "pouvoir réaliste")
             else:
@@ -65,13 +61,13 @@ def indice_parlement(parlement, quota_relatif=1/2, verbose=False, plotted=True, 
             (ratio, "Ratio de sièges"),
             (pouvoir, "Indice de pouvoir de Banzhaf")
         ]
-        if r:
+        if reel:
             data_pouvoir.append((pouvoir_realiste, "Indice de pouvoir\nréaliste de Banzhaf"))
         utils.plot_pie(data_pouvoir, couleurs=parlement.couleurs)
 
         utils.plot_bar(difference.keys(), difference.values(), "", couleurs=parlement.couleurs, ndigits=ndigits) # "Écart relatif entre le pouvoir et la représentation"
 
-        if r:
+        if reel:
             utils.plot_bar(difference_realiste.keys(), difference_realiste.values(), "Écart relatif entre le pouvoir réaliste et la représentation", couleurs=parlement.couleurs, ndigits=ndigits)
 
     return pouvoir
@@ -89,8 +85,8 @@ class Parlement:
         return sum(self.sieges.values())
 
 
-parlements = {
-    "UE pays": Parlement( # total = 720
+parlement_UE = {
+    "pays": Parlement( # total = 720
         {
             "Allemagne": 96,
             "France": 81,
@@ -122,7 +118,7 @@ parlements = {
         },
         "https://www.europarl.europa.eu/meps/fr/search/table"
         ),
-    "UE groupe": Parlement(
+    "groupe": Parlement(
         {
             "The Left": 46,
             "S&D": 136,
@@ -144,47 +140,5 @@ parlements = {
             "PfE": "#9b20a9",
             "ENS": "#808080"
         }
-        ),
-    "français": Parlement( # total = 577 - 1 Vacant
-        {
-            "GDR": 17,
-            "LFI-NFP": 71,
-            "ECO": 38,
-            "SOC": 66,
-            "DEM": 36,
-            "EPR": 95,
-            "HOR": 33,
-            "LIOT": 22,
-            "DR": 47,
-            "UDR": 16,
-            "RN": 125,
-            "NI": 10
-        },
-        "https://www2.assemblee-nationale.fr/instances/liste/groupes_politiques/effectif",
-        {
-            "GDR": "#830e21",
-            "LFI-NFP": "#c00d0d",
-            "ECO": "#77aa79",
-            "SOC": "#f5b4ce",
-            "DEM": "#f07e26",
-            "EPR": "#7b4591",
-            "HOR": "#b5e2f9",
-            "LIOT": "#ffd96f",
-            "DR": "#8cb0dc",
-            "UDR": "#3367a7",
-            "RN": "#313567",
-            "NI": "#8d949a"
-        },
-        ),
-    "français alliance": Parlement(
-        {
-            "NFP": 192,
-            "LIOT": 22,
-            "ENS": 164,
-            "DR": 47,
-            "RN": 141,
-            "NI": 10
-        },
-        "https://fr.wikipedia.org/wiki/Parlement_europ%C3%A9en"
         )
     }

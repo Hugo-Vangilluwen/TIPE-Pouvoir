@@ -1,12 +1,7 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 """
 Calcul de l'indice de pouvoir réaliste
-
-@author: Hugo
 """
-
 
 def coalitions_realistes(l):
     """Calcule l'ensemble des coalitions réalistes de l triée"""
@@ -45,7 +40,6 @@ def indice_Banzhaf_brut(quota, poids):
         for v in coalition:
             if (somme - poids[v]) < quota:
                 decisif[v] += 1
-
     return decisif
 
 
@@ -70,9 +64,3 @@ def indice_Banzhaf_absolu(quota, poids):
     if nb_votants == 0:
         return {v: 0 for v in ibb.keys()}
     return {v: i/( votants.index(v) * (nb_votants - votants.index(v) + 1) ) for v, i in ibb.items()}
-
-
-def sensibilite(quota, poids):
-    """"Calcule la sensibilité ou pouvoir d'une collectivité à agir
-    le calcul est faux"""
-    return sum(indice_Banzhaf_brut(quota, poids).values()) / 2**(len(poids)-1)

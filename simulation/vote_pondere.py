@@ -1,9 +1,6 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Crée un vote pondéré pour des indices de Banzhaf donnés
-
-@author: hugo
+Crée un vote pondéré pour des indices de Banzhaf et un quota donnés
 """
 
 
@@ -39,15 +36,6 @@ def vote_pondere(quota, pouvoir, iteration=40):
 
     poids = arrondi_vote(poids)
 
-    # simplification des poids
-    # ne fonctionne pas car le quota ne change pas
-    # pgcd_poids = 0 # élément neutre du pgcd
-    # for _, p in poids.items():
-    #     pgcd_poids = math.gcd(pgcd_poids, p)
-    #     print(pgcd_poids)
-    # for v in poids:
-    #     poids[v] //= pgcd_poids
-
     return poids
 
 
@@ -82,14 +70,6 @@ def poids_parlement(quota, quantite, verbose=False, plotted=True):
             (ratio_quantite, "Population européenne"),
             (pouvoir, "Indice de Banzhaf")
             ])
-        # fig, axarr = plt.subplots(1, 3)
-        # axarr[0].pie(ratio_poids.values(), labels=ratio_poids.keys())
-        # axarr[0].set_title("Sièges")
-        # axarr[1].pie(ratio_quantite.values(), labels=ratio_quantite.keys())
-        # axarr[1].set_title("Population européenne")
-        # axarr[2].pie(pouvoir.values(), labels=pouvoir.keys())
-        # axarr[2].set_title("Indice de pouvoir de Banzhaf")
-        # plt.show()
 
         utils.plot_bar(difference.keys(), difference.values(), "") # "Écart entre le pouvoir et la représentation")
 
@@ -140,8 +120,9 @@ def poids_parlement_UE(quota = 400):
         "Malte": 0.6
     }
 
+    sqrt_population = {}
     for p in population:
-        population[p] = math.sqrt(population[p])
+        sqrt_population[p] = math.sqrt(population[p])
 
     print(f"Quota : {quota}")
-    return poids_parlement(quota, population)
+    return poids_parlement(quota, sqrt_population)

@@ -10,3 +10,5 @@
 *.odt#
 
 simulation/__pycache__
+
+présentation/_minted

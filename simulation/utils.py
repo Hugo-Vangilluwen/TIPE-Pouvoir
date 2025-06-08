@@ -1,14 +1,10 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Toutes les petites fonctions utiles
-
-@author: hugo
 """
 
 import math
 import matplotlib.pyplot as plt
-import matplotlib as mpl
 
 
 def print_dictionnaire(d, nom=None, print_total=False):
@@ -66,7 +62,6 @@ def plot_bar(x, y, titre, couleurs=None, ndigits=1):
     plt.show()
 
 
-# @mpl.rc_context({'font.size': 8})
 def plot_pie(data, couleurs=None):
     """Affiche des diagrammes circulaires
     un par élément de data qui sont de la forme (dictionnaire, titre)

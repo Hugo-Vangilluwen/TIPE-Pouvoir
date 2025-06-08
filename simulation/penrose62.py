@@ -1,9 +1,6 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Teste le système de vote Penrose-62
-
-@author: hugo
 """
 
 

@@ -23,6 +23,7 @@
 \usepackage{mathrsfs}
 
 \usepackage{tikz}
+%\usetikzlibrary{positioning}
 \usetikzlibrary{shapes.arrows, arrows.meta,
 	matrix,shapes.arrows,shadows.blur}
 \usetikzlibrary{cd}
@@ -32,7 +33,27 @@
 \usepackage{xcolor}
 \usepackage{tcolorbox}
 
+% File code coloration
+\usepackage{minted}
+% Replace #2 by #3 in #1
+% https://tex.stackexchange.com/questions/213947/how-to-replace-text
+\ExplSyntaxOn
+\NewDocumentCommand{\replace}{mmm}
+{
+	\marian_replace:nnn {#1} {#2} {#3}
+}
 
+\tl_new:N \l_marian_input_text_tl
+
+\cs_new_protected:Npn \marian_replace:nnn #1 #2 #3
+{
+	\tl_set:Nn \l_marian_input_text_tl { #1 }
+	\tl_replace_all:Nnn \l_marian_input_text_tl { #2 } { #3 }
+	\tl_use:N \l_marian_input_text_tl
+}
+\ExplSyntaxOff
+
+% Title
 \title{Idéalisation du pouvoir des pays face aux transformations de l’UE}
 \author{Hugo Vangilluwen - 46848}
 \subtitle{TIPE}
@@ -138,37 +159,67 @@
 	\subsection{Jeu de vote pondéré}
 	
 	\begin{frame}
-		\begin{definition}
-			\textbf{Jeu de vote pondéré} : Pour / Contre \\
-			$\mathcal{V}$ ensemble des votants. Généralement, $\mathcal{V} = [\![ 1; N ]\!]$. \\
-			\begin{equation*}
-				(q, \left(w_i\right)_{i \in \mathcal{V}})
-				\in \mathbb{N} \times \mathbb{N}^\mathcal{V}
-				% quota, poids
-			\end{equation*}
-			Poids total $W = \sum_{i \in \mathcal{V}} w_i$ \\
-			\textcolor{red}{Quota relatif $q_f \in [0;1]$ tel que $q = \lceil q_f W  \rceil$}
-		\end{definition}
-		\uncover<2>{\begin{definition}
-				\textbf{Coalition gagnante} $C \subset \mathcal{V}$
-				\begin{equation*}
-					\sum_{i \in C} w_i \geqslant q
-				\end{equation*}
-				% sinon perdante
-				Notons $\mathcal{G} \subset \mathcal{P}(\mathcal{V})$ l'ensemble des coalitions gagnantes.
-		\end{definition}}
+		\begin{columns}
+			\begin{column}{0.8\textwidth}
+				\begin{definition}
+					\textbf{Jeu de vote pondéré} : Pour / Contre \\
+					$\mathcal{V}$ ensemble des votants. Généralement, $\mathcal{V} = [\![ 1; N ]\!]$. \\
+					\begin{equation*}
+						(q, \left(w_i\right)_{i \in \mathcal{V}})
+						\in \mathbb{N} \times \mathbb{N}^\mathcal{V}
+						% quota, poids
+					\end{equation*}
+					Poids total $W = \sum_{i \in \mathcal{V}} w_i$ \\
+					\textcolor{red}{Quota relatif $q_f \in [0;1]$ tel que $q = \lceil q_f W  \rceil$}
+				\end{definition}
+				\uncover<2>{\begin{definition}
+						\textbf{Coalition gagnante} $C \subset \mathcal{V}$
+						\begin{equation*}
+							\sum_{i \in C} w_i \geqslant q
+						\end{equation*}
+						% sinon perdante
+						Notons $\mathcal{G} \subset \mathcal{P}(\mathcal{V})$ l'ensemble des coalitions gagnantes.
+				\end{definition}}
+			\end{column}
+			\begin{column}{0.2\textwidth}
+				\begin{align*}
+					\mathcal{V} &= [\![ 1; 3 ]\!] \\
+					q &= 5 \\
+					w_1 &= 4 \\
+					w_2 &= 3 \\
+					w_3 &= 2 \\
+					W &= 9 \\
+					q_f &= \nicefrac{1}{2} \\
+					\uncover<2>{ \mathcal{G} &= \{ \\
+					&\begin{matrix}
+						\{1, 2, 3\}, \\
+						\{1, 2\}, \\
+						\{1, 3\}, \\
+						\{2, 3\}, \\
+						\{1\}
+					\end{matrix} \\
+					\} }&
+				\end{align*}
+			\end{column}
+		\end{columns}
 	\end{frame}
 	
 	\begin{frame}
 		\begin{definition}
 			Un électeur est dit \textbf{décisif} pour une coalition gagnante si le retrait de celui-ci la rend perdante. \\
-			\uncover<2>{
+			\uncover<2->{
 				La décidabilité $d_i$ pour $i \in \mathcal{V}$ est le nombre de coalitions où $i$ est décisif :
 				\begin{equation*}
 					d_i = \left| \left\{ C \in \mathcal{G} \;|\; i \in C \text{ et } C \setminus \{i\} \notin \mathcal{G} \right\} \right|
 				\end{equation*}
 			}
 		\end{definition}
+		\uncover<3>{
+			Le votant 1 est décisif pour $\{1, 2\}$, $\{1, 3\}$ et $\{1\}$.
+			\begin{equation*}
+				d_1 = 3 \quad d_2 = d_3 = 1
+			\end{equation*}
+		}
 	\end{frame}
 	
 	\subsection{Indice de Banzhaf}
@@ -183,6 +234,12 @@
 				B_i' = \frac{d_i}{\displaystyle 2^{N - 1}}
 			\end{equation*}
 		\end{definition}
+		\uncover<2>{
+			\begin{align*}
+				B_1 = \nicefrac{3}{5} \quad B_2 = B_3 = \nicefrac{1}{5} \\
+				B_1' = \nicefrac{3}{4} \quad B_2' = B_3' = \nicefrac{1}{4}
+			\end{align*}
+		}
 	\end{frame}
 	
 	\begin{frame}{Algorithme naïf}
@@ -352,13 +409,6 @@
 		\end{tabular}
 	\end{frame}
 	
-%	\begin{frame}
-%		\begin{equation*}
-%			q = 400
-%		\end{equation*}
-%		\includegraphics[width=1.1\textwidth]{graph_écart_problème_inverse.png}
-%	\end{frame}
-	
 	\subsection{Penrose 62}
 	
 	\begin{frame}{Jeu de vote égalitaire}
@@ -456,26 +506,30 @@
 	
 	\subsection{Nouveaux pays membres}
 	
-	\begin{frame}{Europe des 36}
-		Pays officiellement candidats à l'adhésion à l'Union Européenne
+	\begin{frame}{Transformation ultime : "Europe des 36"}
+		\textcolor{red}{
+			Pays officiellement candidats à l'adhésion à l'Union Européenne
+		}
 		\begin{columns}
 			\begin{column}{0.3\textwidth}
 				\begin{itemize}
-					\item Albanie
-					\item Bosnie-Herzégovine
-					\item Géorgie
-					\item Macédoine du Nord
-					\item Moldavie
-					\item Monténégro
-					\item Serbie
-					\item Turquie
-					\item Ukraine
+					\item \textcolor{red}{Albanie}
+					\item \textcolor{red}{Bosnie-Herzégovine}
+					\item \textcolor{red}{Géorgie}
+					\item \textcolor{red}{Macédoine du Nord}
+					\item \textcolor{red}{Moldavie}
+					\item \textcolor{red}{Monténégro}
+					\item \textcolor{red}{Serbie}
+					\item \textcolor{red}{Turquie}
+					\item \textcolor{red}{Ukraine}
 				\end{itemize}
 			\end{column}
 			\begin{column}{0.7\textwidth}
-				\begin{equation*}
-					q_f = 60\%
-				\end{equation*}
+				\textcolor{red}{
+					\begin{equation*}
+						q_f = 60\%
+					\end{equation*}
+				}
 				\includegraphics[width=\textwidth]{Europe_36/graph_sigma_quota_relatif.png}
 			\end{column}
 		\end{columns}
@@ -566,6 +620,7 @@
 	\appendix
 	\AtBeginSection{
 	}
+	
 	\section{Conclusion}
 	
 	\begin{frame}{Conclusion}
@@ -574,4 +629,63 @@
 			\item J'ai adapté l'indice de Banzhaf au spectre gauche/droite pour comprendre les dynamiques parlementaires.
 		\end{itemize}
 	\end{frame}
+	
+	\section{Annexe : Programmes Python}
+
+	\begin{frame}{Programmes Python}
+%		\begin{tikzpicture}
+%			[
+%				thick,
+%				main/.style = {draw, signal}
+%			]
+%			\path (0, 0) node[main] (U) {utils.py}
+%				+ (0, -2) node[main] (P) {polynome.py}
+%				+ (4, -2) node[main] (IP) {indice{\_}pouvoir.py}
+%				+ (5, -1) node[main] (Pa) {parlement.py};
+%				
+%			\draw[->] (P) -- (IP);
+%		\end{tikzpicture}
+		\begin{itemize}
+			\item indice{\_}pouvoir.py %\hyperlink{pythonfile:indice_pouvoir.py}{indice{\_}pouvoir.py}
+			\item main.py
+			\item parlement.py
+			\item penrose62.py
+			\item polynome.py
+			\item realiste.py
+			\item utils.py
+			\item vote{\_}pondere.py
+			
+		\end{itemize}
+	\end{frame}
+
+	\setbeamertemplate{frametitle}{\color{black}\bfseries\insertframetitle\par\vskip-6pt\hrulefill \vspace*{-0.5cm}}
+	
+	\newcommand{\inputcode}[1]{
+		\begin{frame}[
+			allowframebreaks,
+			label={pythonfile:#1.py},
+			plain,
+			noframenumbering
+			]
+			\frametitle{\replace{#1.py}{_}{\_}}
+			\begin{center}
+				\inputminted[
+					linenos,
+					breaklines,
+					fontsize=\tiny,
+					]
+					{python}
+					{../simulation/#1.py}
+			\end{center}
+		\end{frame}
+	}
+
+	\inputcode{indice_pouvoir}
+	\inputcode{main}
+	\inputcode{parlement}
+	\inputcode{penrose62}
+	\inputcode{polynome}
+	\inputcode{realiste}
+	\inputcode{utils}
+	\inputcode{vote_pondere}
 \end{document}
